@@ -1,0 +1,306 @@
+=================================================================
+WP SOCIAL CHAT BUTTON - DEVELOPMENT ROADMAP
+=================================================================
+Plugin: WP Social Chat Button
+Version: 1.0.0
+Date: November 11, 2025
+
+=================================================================
+PHASE 1: AVAILABILITY SETTINGS (COMPLETED)
+=================================================================
+
+Feature: Contact Availability (Days & Hours)
+---------------------------------------------
+Description:
+  - Added accordion section in Add/Edit Contact modal
+  - Users can select active days (Mon-Sun) and time range
+  - Default: 7 days/week, 00:00-23:59
+  - Frontend automatically filters contacts based on current day/time
+
+Files Modified:
+  ✓ assets/js/admin.js
+    - Extended normalizeContact() to include availability object
+    - Added accordion toggle in modal markup
+    - Added days checkboxes grid (Mon-Sun)
+    - Added time range inputs (start/end)
+    - Collect availability data on save/update
+    - Send JSON-encoded availability to backend
+
+  ✓ assets/css/admin.css
+    - Added .wpscb-accordion-toggle styles
+    - Added .wpscb-accordion-arrow with rotation
+    - Added .wpscb-availability-panel styling
+    - Added .wpscb-days-grid responsive layout
+    - Added .wpscb-day-checkbox hover effects
+
+  ✓ includes/class-wpscb-admin.php
+    - Added i18n strings:
+      * availability, availableDays, availableHours
+      * day_mon, day_tue, day_wed, day_thu, day_fri, day_sat, day_sun
+
+  ✓ includes/class-wpscb-ajax.php
+    - Updated save_contact() to parse availability JSON
+    - Updated update_contact() to parse availability JSON
+    - Store availability in contact array
+    - Validate and default to 24/7 if missing
+
+Testing Steps:
+  1. Go to WP Admin → WP Social Chat Button → Panel
+  2. Click "Add Contact"
+  3. Scroll down and click "Availability Settings" button
+  4. Select specific days (e.g., Mon-Fri)
+  5. Set hours (e.g., 09:00 - 17:00)
+  6. Save contact
+  7. Verify data persists when editing
+  8. Test frontend: contact should only appear during selected days/hours
+
+=================================================================
+PHASE 2: MATERIAL DESIGN 3 FRONTEND WIDGET (COMPLETED)
+=================================================================
+
+Feature: Circular Floating Action Button + Popup Window
+--------------------------------------------------------
+Description:
+  - Replaced old toggle button with MD3 circular FAB
+  - Chat icon (SVG) inside button
+  - Click → opens popup window above button
+  - Popup shows available contacts with avatars/icons
+  - Copyright footer with plugin credit + sponsor link
+  - Automatic availability filtering (only show contacts available now)
+
+Files Modified:
+  ✓ includes/class-wpscb-frontend.php
+    - Simplified render_frontend_widget() to output only root div
+    - Added wp_localize_script with contacts, settings, i18n
+    - Contacts enriched with photo_url
+    - i18n: chat, poweredBy, sponsoredBy
+
+  ✓ assets/js/front.js
+    - Complete rewrite for MD3 widget
+    - isContactAvailable() function (checks day/time)
+    - buildURL() function (generates network URLs)
+    - render() creates FAB + popup DOM
+    - Contact items with avatar, name, time range
+    - Click outside to close popup
+    - Network icons embedded (whatsapp, messenger, telegram, etc.)
+
+  ✓ assets/css/front.css
+    - Complete rewrite for MD3 styling
+    - .wpscb-fab: 56x56px rounded button with gradient shadow
+    - .wpscb-popup: 340px card with rounded corners
+    - .wpscb-popup-header: gradient background (primary → secondary)
+    - .wpscb-contact-item: hover effects, flex layout
+    - .wpscb-contact-avatar: circular 40px
+    - .wpscb-popup-footer: copyright section
+    - Mobile responsive (max-width: 480px)
+
+Testing Steps:
+  1. Enable widget in Settings → Enable Widget (checked)
+  2. Add at least one contact with availability
+  3. Visit frontend (any page)
+  4. Verify circular chat button appears (bottom-right or bottom-left)
+  5. Click button → popup should open
+  6. Verify contact list shows with avatar/icon
+  7. Verify time range shows if less than 7 days
+  8. Verify copyright footer appears
+  9. Click contact → should open correct chat URL in new tab
+  10. Test on mobile (button should be visible)
+
+=================================================================
+PHASE 3: ADVANCED SETTINGS PAGE (PENDING)
+=================================================================
+
+Feature: Comprehensive Widget Customization
+--------------------------------------------
+Description:
+  - Color pickers for button, popup background, labels
+  - Widget size controls (button size, popup width/height)
+  - Day/Night mode toggle
+  - Mobile visibility toggle
+  - Icon/Text toggle for button
+  - Copyright footer show/hide (premium feature flag)
+  - Live preview pane
+
+Planned Files:
+  - includes/class-wpscb-admin.php (add settings fields)
+  - assets/js/admin.js (color pickers, preview logic)
+  - assets/css/admin.css (settings page layout)
+  - includes/class-wpscb-ajax.php (save advanced settings)
+  - assets/js/front.js (read settings, apply colors/sizes)
+  - assets/css/front.css (dynamic CSS variables)
+
+Status: NOT STARTED
+
+=================================================================
+PHASE 4: DRAG-AND-DROP CONTACT REORDERING (PENDING)
+=================================================================
+
+Feature: Sortable Contact Rows in Panel
+----------------------------------------
+Description:
+  - Enable drag-and-drop on contact table rows
+  - Use SortableJS or jQuery UI Sortable
+  - Save new order via AJAX
+  - Frontend respects saved order
+
+Planned Files:
+  - assets/js/admin.js (init sortable, save order AJAX)
+  - includes/class-wpscb-ajax.php (reorder_contacts action)
+  - includes/class-wpscb.php (persist order)
+
+Status: NOT STARTED
+
+=================================================================
+EARLIER PHASES (PREVIOUSLY COMPLETED)
+=================================================================
+
+✓ Material Design 3 UI/UX (Admin Panel)
+  - MD3 color palette (primary #6610f2, secondary #d63384)
+  - Standardized heights (38px for inputs, buttons)
+  - Modal improvements (ARIA, focus management, Escape to close)
+  - Success/error notices (WordPress-style)
+  - Field-level validation with inline messages
+  - Delete confirmation modal (instead of native confirm)
+  - Searchable network dropdown with icons
+  - Avatar fallback (network icon when no photo)
+
+✓ Message Field
+  - Added message field to contacts
+  - Default message: "Hello from WP Social Chat Button — how can we help?"
+  - Persisted in database and AJAX
+
+✓ Photo Upload & Preview
+  - WP Media Library integration
+  - Immediate preview after selection
+  - Photo URL enrichment in AJAX responses
+
+✓ Network Icons
+  - Inline SVG icons for all 25+ networks
+  - Icons shown in table, dropdown, modal, frontend
+
+✓ Internationalization (i18n)
+  - All UI strings translatable
+  - Ready for .po/.mo files
+
+=================================================================
+KNOWN ISSUES & NOTES
+=================================================================
+
+1. Parse Error Fixed:
+   - class-wpscb-frontend.php had orphaned code after class closing brace
+   - Removed duplicate widget rendering code
+
+2. Availability Logic:
+   - Frontend JS checks current day (0=Sun, 1=Mon, etc.)
+   - Compares current time (minutes since midnight)
+   - Only shows contacts matching criteria
+
+3. Copyright Footer:
+   - Currently always visible
+   - Phase 3 will add setting to hide (premium version)
+
+4. Network URL Building:
+   - Simplified in front.js (covers main networks)
+   - Full mapping exists in backend PHP (class-wpscb.php)
+
+=================================================================
+TESTING CHECKLIST
+=================================================================
+
+Admin Panel:
+  □ Add new contact with all fields (name, network, value, message, photo, availability)
+  □ Edit existing contact
+  □ Delete contact (verify modal shows)
+  □ Test accordion (days/hours)
+  □ Verify validation messages
+  □ Check success notices after save/update/delete
+  □ Test network dropdown search
+  □ Upload photo and verify immediate preview
+
+Frontend:
+  □ Verify FAB appears on public pages
+  □ Click FAB → popup opens
+  □ Verify contact list (avatars, names, times)
+  □ Verify availability filtering (only current day/time contacts)
+  □ Click contact → correct URL opens
+  □ Test mobile responsive
+  □ Verify copyright footer
+  □ Test left/right positioning (Settings → Position)
+
+Settings Page:
+  □ Enable/disable widget
+  □ Change position (left/right)
+  □ Save settings → verify notice
+
+=================================================================
+NEXT STEPS
+=================================================================
+
+Immediate:
+  1. Test all completed features (Phases 1 & 2)
+  2. Fix any bugs discovered during testing
+  3. Prepare for Phase 3 implementation
+
+Phase 3 Implementation Plan:
+  1. Add settings fields for colors (button, popup bg, text)
+  2. Add size controls (button diameter, popup dimensions)
+  3. Add dark mode toggle
+  4. Add mobile visibility toggle
+  5. Add icon/text/custom image for button
+  6. Add copyright hide option
+  7. Build live preview iframe/simulation
+  8. Save settings to options table
+  9. Frontend reads settings and applies styles dynamically
+
+Phase 4 Implementation Plan:
+  1. Enqueue SortableJS library
+  2. Make table tbody sortable
+  3. On drag end → send new order to AJAX
+  4. Backend saves order array
+  5. Frontend respects order when rendering
+
+=================================================================
+FILE STRUCTURE REFERENCE
+=================================================================
+
+Plugin Root:
+  wpscb.php                    - Main plugin file (bootstrap)
+  uninstall.php                - Cleanup on uninstall
+  readme.txt                   - WordPress.org readme
+  README.md                    - GitHub readme
+  roadmap.txt                  - This file
+
+includes/:
+  class-wpscb.php              - Core class (networks, URLs, options)
+  class-wpscb-admin.php        - Admin pages, menus, assets
+  class-wpscb-ajax.php         - AJAX handlers (save/update/delete)
+  class-wpscb-frontend.php     - Frontend widget rendering
+
+assets/css/:
+  admin.css                    - Admin panel styles (MD3)
+  front.css                    - Frontend widget styles (MD3)
+
+assets/js/:
+  admin.js                     - Admin panel logic (modal, accordion, AJAX)
+  front.js                     - Frontend widget logic (FAB, popup, availability)
+
+languages/:
+  index.php                    - Empty index (security)
+
+=================================================================
+SUPPORT & DEVELOPMENT
+=================================================================
+
+Developer: Hassan Tafreshi
+Repository: hassantafreshi/WP-Social-Chat-Button
+License: GPL-2.0+
+Requires PHP: 5.4+
+Requires WordPress: 5.0+
+
+Credits:
+  - Developed by WP Chat Button
+  - Sponsored by whitestudio.team
+
+=================================================================
+END OF ROADMAP
+=================================================================
