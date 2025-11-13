@@ -1,28 +1,76 @@
 /* global WPSCB_FRONT */
 (function(){
     if(typeof WPSCB_FRONT === 'undefined') return;
-    const contacts = WPSCB_FRONT.contacts || [];
+    let contacts = WPSCB_FRONT.contacts || [];
     const settings = WPSCB_FRONT.settings || {};
+    const advanced = WPSCB_FRONT.advanced || {};
     const i18n = WPSCB_FRONT.i18n || {};
+    const isPreview = WPSCB_FRONT.isPreview || false;
     const root = document.getElementById('wpscb-widget-root');
+
+    // Debug advanced settings
+    console.log('WPSCB_FRONT Full Object:', WPSCB_FRONT);
+    console.log('WPSCB Frontend Advanced Settings:', advanced);
+    console.log('Advanced Settings Keys:', Object.keys(advanced));
+
+    // In preview mode, show sample contacts if none exist
+    if(isPreview && !contacts.length){
+        contacts = [
+            {
+                network: 'whatsapp',
+                name: 'WhatsApp Support',
+                value: '1234567890',
+                availability: {mon: [{start:'09:00', end:'17:00'}], tue: [{start:'09:00', end:'17:00'}], wed: [{start:'09:00', end:'17:00'}], thu: [{start:'09:00', end:'17:00'}], fri: [{start:'09:00', end:'17:00'}], sat: [], sun: []}
+            },
+            {
+                network: 'telegram',
+                name: 'Telegram Chat',
+                value: 'yourusername',
+                availability: {mon: [{start:'00:00', end:'23:59'}], tue: [{start:'00:00', end:'23:59'}], wed: [{start:'00:00', end:'23:59'}], thu: [{start:'00:00', end:'23:59'}], fri: [{start:'00:00', end:'23:59'}], sat: [{start:'00:00', end:'23:59'}], sun: [{start:'00:00', end:'23:59'}]}
+            }
+        ];
+    }
+
     if(!root || !contacts.length) return;
 
     let isOpen = false;
 
+    function getWordPressTime(){
+        const timezone = WPSCB_FRONT.timezone || {};
+        const offsetHours = timezone.offset || 0;
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const wpTime = new Date(utc + (offsetHours * 3600000));
+        return wpTime;
+    }
+
     function isContactAvailable(availability){
         if(!availability) return true;
-        const now = new Date();
+        const wpNow = getWordPressTime();
         const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
-        const currentDay = dayNames[now.getDay()];
-        const currentTime = now.getHours()*60 + now.getMinutes();
-        const days = availability.days || [];
-        const hours = availability.hours || {start:'00:00',end:'23:59'};
-        if(!days.includes(currentDay)) return false;
-        const [sh,sm] = hours.start.split(':').map(Number);
-        const [eh,em] = hours.end.split(':').map(Number);
-        const start = sh*60+sm;
-        const end = eh*60+em;
-        return currentTime >= start && currentTime <= end;
+        const currentDay = dayNames[wpNow.getDay()];
+        const currentMinutes = wpNow.getHours()*60 + wpNow.getMinutes();
+        // Backward compatibility: old shape had availability.days + availability.hours
+        if(Array.isArray(availability.days) && availability.hours){
+            if(!availability.days.includes(currentDay)) return false;
+            const [sh,sm] = (availability.hours.start||'00:00').split(':').map(Number);
+            const [eh,em] = (availability.hours.end||'23:59').split(':').map(Number);
+            const start = sh*60+sm; const end = eh*60+em;
+            return currentMinutes >= start && currentMinutes <= end;
+        }
+        // New schema: availability[day] => array of ranges
+        const slots = availability[currentDay];
+        if(!Array.isArray(slots) || !slots.length) return false;
+        for(let i=0;i<slots.length;i++){
+            const slot = slots[i];
+            const [sh,sm] = (slot.start||'00:00').split(':').map(Number);
+            const [eh,em] = (slot.end||'23:59').split(':').map(Number);
+            const start = sh*60+sm; const end = eh*60+em;
+            if(currentMinutes >= start && currentMinutes <= end){
+                return true;
+            }
+        }
+        return false;
     }
 
     const chatIcon = '<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
@@ -48,12 +96,104 @@
 
     function esc(str){ return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+    function applyAdvancedStyles(){
+        // Remove existing dynamic styles
+        const existingStyle = document.getElementById('wpscb-dynamic-styles');
+        if(existingStyle) existingStyle.remove();
+
+        const style = document.createElement('style');
+        style.id = 'wpscb-dynamic-styles';
+        let css = ':root{';
+        css += '--wpscb-button-size:'+(advanced.button_size||56)+'px;';
+        css += '--wpscb-button-icon-size:'+(advanced.button_icon_size||24)+'px;';
+        css += '--wpscb-button-color:'+(advanced.button_color||'#6610f2')+';';
+        css += '--wpscb-button-text-color:'+(advanced.button_text_color||'#ffffff')+';';
+        css += '--wpscb-popup-width:'+(advanced.popup_width||340)+'px;';
+        css += '--wpscb-popup-bg:'+(advanced.popup_bg_color||'#ffffff')+';';
+        css += '--wpscb-popup-header-start:'+(advanced.popup_header_color||'#6610f2')+';';
+        css += '--wpscb-popup-header-end:'+(advanced.popup_header_color_end||'#d63384')+';';
+        css += '--wpscb-popup-text:'+(advanced.popup_text_color||'#212529')+';';
+        css += '--wpscb-popup-label:'+(advanced.popup_label_color||'#6c757d')+';';
+        css += '--wpscb-popup-header-text:'+(advanced.popup_label_color||'#ffffff')+';';
+        css += '--wpscb-contact-bg:'+(advanced.contact_bg_color||'#f8f9fa')+';';
+        css += '--wpscb-contact-hover:'+(advanced.contact_hover_color||'#e2e8f0')+';';
+        css += '}';
+
+        // Auto Dark Mode (8 PM - 7 AM based on WordPress timezone)
+        if(advanced.auto_dark_mode){
+            const wpNow = getWordPressTime();
+            const hour = wpNow.getHours();
+            const isDarkTime = hour >= 20 || hour < 7; // 8 PM to 7 AM
+            if(isDarkTime){
+                css += '.wpscb-widget-root{';
+                css += '--wpscb-popup-bg:#1e293b;';
+                css += '--wpscb-popup-text:#f1f5f9;';
+                css += '--wpscb-popup-label:#94a3b8;';
+                css += '--wpscb-popup-header-text:#f1f5f9;';
+                css += '--wpscb-contact-bg:#2d3748;';
+                css += '--wpscb-contact-hover:#4a5568;';
+                css += '}';
+            }
+        }
+
+        // Hide on mobile
+        if(advanced.hide_mobile){
+            css += '@media (max-width:480px){#wpscb-widget-root{display:none!important;}}';
+        }
+
+        // Hide copyright
+        if(advanced.hide_copyright){
+            css += '.wpscb-popup-footer{display:none!important;}';
+        }
+
+        // Responsive scale
+        if(advanced.responsive_scale){
+            css += '@media (max-width:480px){:root{--wpscb-button-size:'+(Math.max(40,(advanced.button_size||56)*0.8))+'px;--wpscb-popup-width:calc(100vw - 40px);}}';
+        }
+
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        // Debug CSS variables
+        console.log('WPSCB Frontend CSS Applied:', css);
+        console.log('Advanced settings values:', {
+            popup_bg_color: advanced.popup_bg_color,
+            popup_text_color: advanced.popup_text_color,
+            popup_label_color: advanced.popup_label_color,
+            auto_dark_mode: advanced.auto_dark_mode,
+            contact_bg_color: advanced.contact_bg_color,
+            contact_hover_color: advanced.contact_hover_color
+        });
+    }
+
     function render(){
+        console.log('WPSCB Frontend render() function called');
         const available = contacts.filter(c => isContactAvailable(c.availability));
+
+        // Clear existing content
+        root.innerHTML = '';
+
+        // Create main widget container (same structure as Live Preview)
+        const widgetContainer = document.createElement('div');
+        widgetContainer.className = 'wpscb-widget-root ' + (settings.position === 'left' ? 'wpscb-left' : 'wpscb-right');
+
         const fab = document.createElement('button');
         fab.className = 'wpscb-fab';
         fab.setAttribute('aria-label', i18n.chat || 'Chat');
-        fab.innerHTML = chatIcon;
+
+        // Button mode: icon, text, or image
+        const mode = advanced.button_mode || 'icon';
+        if(mode === 'text'){
+            fab.textContent = advanced.button_text || i18n.chat || 'Chat';
+            fab.style.fontSize = 'var(--wpscb-button-icon-size)';
+            fab.style.padding = '0 20px';
+            fab.style.width = 'auto';
+        } else if(mode === 'image' && advanced.button_image_url){
+            fab.innerHTML = '<img src="'+esc(advanced.button_image_url)+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" />';
+        } else {
+            fab.innerHTML = chatIcon;
+        }
+
         fab.onclick = togglePopup;
 
         const popup = document.createElement('div');
@@ -67,27 +207,48 @@
             <div class="wpscb-popup-body">
                 ${available.map(c => {
                     const url = buildURL(c.network, c.value);
-                    const photo = c.photo_url ? '<img src="'+esc(c.photo_url)+'" alt="" class="wpscb-contact-avatar" />' : '<span class="wpscb-contact-avatar-icon">'+getNetworkIcon(c.network)+'</span>';
-                    const avail = c.availability && c.availability.days && c.availability.days.length < 7 ? 
-                        '<div class="wpscb-contact-time">'+c.availability.hours.start+' - '+c.availability.hours.end+'</div>' : '';
+
+                    // Use photo if available, otherwise network icon
+                    const avatar = c.photo_url ?
+                        `<img src="${esc(c.photo_url)}" alt="" class="wpscb-contact-avatar" />` :
+                        `<span class="wpscb-contact-avatar-icon">${getNetworkIcon(c.network)}</span>`;
+
+                    // Show availability info if available (based on WordPress timezone)
+                    let avail = '';
+                    if(c.availability){
+                        const wpNow = getWordPressTime();
+                        const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
+                        const currentDay = dayNames[wpNow.getDay()];
+                        const todaySlots = c.availability[currentDay] || [];
+                        if(todaySlots.length > 0){
+                            const firstSlot = todaySlots[0];
+                            const lastSlot = todaySlots[todaySlots.length - 1];
+                            avail = '<div class="wpscb-contact-time" style="color:var(--wpscb-popup-label);">'+firstSlot.start+' - '+lastSlot.end+'</div>';
+                        }
+                    }
+
                     return `<a href="${esc(url)}" target="_blank" rel="noopener" class="wpscb-contact-item">
-                        ${photo}
+                        ${avatar}
                         <div class="wpscb-contact-info">
                             <div class="wpscb-contact-name">${esc(c.name || c.network)}</div>
                             ${avail}
                         </div>
-                        ${getNetworkIcon(c.network)}
                     </a>`;
                 }).join('')}
             </div>
-            <div class="wpscb-popup-footer">
-                <div style="font-size:11px;color:#64748b;">${esc(i18n.poweredBy||'')}</div>
-                <div style="font-size:11px;color:#64748b;">${esc(i18n.sponsoredBy||'')}</div>
-            </div>
+            ${advanced.hide_copyright ? '' : `
+                <div class="wpscb-popup-footer">
+                    <div style="font-size:11px;color:var(--wpscb-popup-label);">Developed by WP Chat Button</div>
+                </div>
+            `}
         `;
 
-        root.appendChild(fab);
-        root.appendChild(popup);
+        // Add elements to widget container (same structure as Live Preview)
+        widgetContainer.appendChild(fab);
+        widgetContainer.appendChild(popup);
+
+        // Add widget container to root
+        root.appendChild(widgetContainer);
 
         popup.querySelector('.wpscb-popup-close').onclick = closePopup;
         document.addEventListener('click', (e) => {
@@ -109,5 +270,10 @@
         if(popup){ popup.style.display = 'none'; isOpen = false; }
     }
 
+    // Apply advanced settings as CSS variables first
+    console.log('About to apply advanced styles and render...');
+    applyAdvancedStyles();
+
+    console.log('About to render widget...');
     render();
 })();

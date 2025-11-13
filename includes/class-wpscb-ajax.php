@@ -8,8 +8,9 @@ class WPSCB_Ajax {
         $this->core = $core;
         add_action( 'wp_ajax_wpscb_save_contact', array( $this, 'save_contact' ) );
         add_action( 'wp_ajax_wpscb_delete_contact', array( $this, 'delete_contact' ) );
-    add_action( 'wp_ajax_wpscb_save_settings', array( $this, 'save_settings' ) );
-    add_action( 'wp_ajax_wpscb_update_contact', array( $this, 'update_contact' ) );
+        add_action( 'wp_ajax_wpscb_save_settings', array( $this, 'save_settings' ) );
+        add_action( 'wp_ajax_wpscb_update_contact', array( $this, 'update_contact' ) );
+        add_action( 'wp_ajax_wpscb_save_advanced_settings', array( $this, 'save_advanced_settings' ) );
     }
 
     public function save_contact() {
@@ -22,7 +23,31 @@ class WPSCB_Ajax {
         $availability_raw = isset( $_POST['availability'] ) ? wp_unslash( $_POST['availability'] ) : '';
         $availability = json_decode( $availability_raw, true );
         if ( ! $availability || ! is_array( $availability ) ) {
-            $availability = array( 'days' => array('mon','tue','wed','thu','fri','sat','sun'), 'hours' => array('start' => '00:00', 'end' => '23:59') );
+            $availability = array();
+        }
+        // Normalize to per-day slots schema on backend as well
+        $dayKeys = array('mon','tue','wed','thu','fri','sat','sun');
+        if ( isset( $availability['days'] ) && isset( $availability['hours'] ) && is_array( $availability['days'] ) ) {
+            $hours = isset( $availability['hours'] ) && is_array( $availability['hours'] ) ? $availability['hours'] : array( 'start' => '00:00', 'end' => '23:59' );
+            $converted = array();
+            foreach ( $dayKeys as $d ) {
+                $converted[ $d ] = in_array( $d, $availability['days'], true ) ? array( array( 'start' => $hours['start'], 'end' => $hours['end'] ) ) : array();
+            }
+            $availability = $converted;
+        } else {
+            // Ensure all day keys exist and are arrays of ranges
+            $normalized = array();
+            foreach ( $dayKeys as $d ) {
+                $normalized[$d] = array();
+                if ( isset( $availability[$d] ) && is_array( $availability[$d] ) ) {
+                    foreach ( $availability[$d] as $slot ) {
+                        $start = isset( $slot['start'] ) ? sanitize_text_field( $slot['start'] ) : '00:00';
+                        $end   = isset( $slot['end'] ) ? sanitize_text_field( $slot['end'] ) : '23:59';
+                        $normalized[$d][] = array( 'start' => $start, 'end' => $end );
+                    }
+                }
+            }
+            $availability = $normalized;
         }
 
         $networks = $this->core->get_supported_networks();
@@ -82,7 +107,30 @@ class WPSCB_Ajax {
         $availability_raw = isset( $_POST['availability'] ) ? wp_unslash( $_POST['availability'] ) : '';
         $availability = json_decode( $availability_raw, true );
         if ( ! $availability || ! is_array( $availability ) ) {
-            $availability = array( 'days' => array('mon','tue','wed','thu','fri','sat','sun'), 'hours' => array('start' => '00:00', 'end' => '23:59') );
+            $availability = array();
+        }
+        // Normalize to per-day slots
+        $dayKeys = array('mon','tue','wed','thu','fri','sat','sun');
+        if ( isset( $availability['days'] ) && isset( $availability['hours'] ) && is_array( $availability['days'] ) ) {
+            $hours = isset( $availability['hours'] ) && is_array( $availability['hours'] ) ? $availability['hours'] : array( 'start' => '00:00', 'end' => '23:59' );
+            $converted = array();
+            foreach ( $dayKeys as $d ) {
+                $converted[ $d ] = in_array( $d, $availability['days'], true ) ? array( array( 'start' => $hours['start'], 'end' => $hours['end'] ) ) : array();
+            }
+            $availability = $converted;
+        } else {
+            $normalized = array();
+            foreach ( $dayKeys as $d ) {
+                $normalized[$d] = array();
+                if ( isset( $availability[$d] ) && is_array( $availability[$d] ) ) {
+                    foreach ( $availability[$d] as $slot ) {
+                        $start = isset( $slot['start'] ) ? sanitize_text_field( $slot['start'] ) : '00:00';
+                        $end   = isset( $slot['end'] ) ? sanitize_text_field( $slot['end'] ) : '23:59';
+                        $normalized[$d][] = array( 'start' => $start, 'end' => $end );
+                    }
+                }
+            }
+            $availability = $normalized;
         }
 
         $contacts = $this->core->get_contacts();
@@ -111,5 +159,30 @@ class WPSCB_Ajax {
         }
         unset( $c );
         wp_send_json_success( array( 'contacts' => $contacts_enriched ) );
+    }
+
+    public function save_advanced_settings() {
+        WPSCB::verify_request();
+        $adv = array(
+            'button_mode'            => isset( $_POST['button_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['button_mode'] ) ) : 'icon',
+            'button_text'            => isset( $_POST['button_text'] ) ? sanitize_text_field( wp_unslash( $_POST['button_text'] ) ) : '',
+            'button_image'           => isset( $_POST['button_image'] ) ? absint( $_POST['button_image'] ) : 0,
+            'button_size'            => isset( $_POST['button_size'] ) ? absint( $_POST['button_size'] ) : 56,
+            'button_icon_size'       => isset( $_POST['button_icon_size'] ) ? absint( $_POST['button_icon_size'] ) : 24,
+            'button_color'           => isset( $_POST['button_color'] ) ? sanitize_text_field( wp_unslash( $_POST['button_color'] ) ) : '#6610f2',
+            'button_text_color'      => isset( $_POST['button_text_color'] ) ? sanitize_text_field( wp_unslash( $_POST['button_text_color'] ) ) : '#ffffff',
+            'popup_width'            => isset( $_POST['popup_width'] ) ? absint( $_POST['popup_width'] ) : 340,
+            'popup_bg_color'         => isset( $_POST['popup_bg_color'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_bg_color'] ) ) : '#ffffff',
+            'popup_header_color'     => isset( $_POST['popup_header_color'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_header_color'] ) ) : '#6610f2',
+            'popup_header_color_end' => isset( $_POST['popup_header_color_end'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_header_color_end'] ) ) : '#d63384',
+            'popup_text_color'       => isset( $_POST['popup_text_color'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_text_color'] ) ) : '#212529',
+            'popup_label_color'      => isset( $_POST['popup_label_color'] ) ? sanitize_text_field( wp_unslash( $_POST['popup_label_color'] ) ) : '#6c757d',
+            'dark_mode'              => isset( $_POST['dark_mode'] ) ? 1 : 0,
+            'hide_mobile'            => isset( $_POST['hide_mobile'] ) ? 1 : 0,
+            'hide_copyright'         => isset( $_POST['hide_copyright'] ) ? 1 : 0,
+            'responsive_scale'       => isset( $_POST['responsive_scale'] ) ? 1 : 0,
+        );
+        $saved = $this->core->set_advanced_settings( $adv );
+        wp_send_json_success( array( 'settings' => $saved ) );
     }
 }

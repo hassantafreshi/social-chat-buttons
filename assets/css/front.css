@@ -1,38 +1,61 @@
 /* MD3 Frontend Floating Chat Widget */
+:root {
+  --wpscb-button-size:56px;
+  --wpscb-button-icon-size:24px;
+  --wpscb-button-color:#6610f2;
+  --wpscb-button-text-color:#ffffff;
+  --wpscb-popup-width:340px;
+  --wpscb-popup-bg:#ffffff;
+  --wpscb-popup-header-start:#6610f2;
+  --wpscb-popup-header-end:#d63384;
+  --wpscb-popup-text:#212529;
+  --wpscb-popup-label:#6c757d;
+  --wpscb-popup-header-text:#ffffff;
+  --wpscb-contact-bg:#f8f9fa;
+  --wpscb-contact-hover:#e2e8f0;
+}
+
 #wpscb-widget-root { position:fixed; bottom:24px; z-index:99999; }
 #wpscb-widget-root.wpscb-right { right:24px; }
 #wpscb-widget-root.wpscb-left { left:24px; }
 
 .wpscb-fab {
-  width:56px; height:56px; border-radius:16px; background:#6610f2; color:#fff; border:none; cursor:pointer;
+  width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:16px;
+  background:var(--wpscb-button-color); color:var(--wpscb-button-text-color); border:none; cursor:pointer;
   box-shadow:0 6px 16px rgba(102,16,242,.4), 0 2px 6px rgba(0,0,0,.15);
   display:flex; align-items:center; justify-content:center; transition:transform .2s, box-shadow .2s;
+  font-weight:600; overflow:hidden;
 }
+.wpscb-fab svg { width:var(--wpscb-button-icon-size); height:var(--wpscb-button-icon-size); }
 .wpscb-fab:hover { transform:scale(1.05); box-shadow:0 8px 20px rgba(102,16,242,.5), 0 4px 8px rgba(0,0,0,.2); }
 .wpscb-fab:active { transform:scale(0.95); }
 
 .wpscb-popup {
-  position:absolute; bottom:70px; right:0; width:340px; max-height:480px;
-  background:#fff; border-radius:20px; box-shadow:0 12px 40px rgba(0,0,0,.2), 0 4px 16px rgba(0,0,0,.1);
+  position:absolute; bottom:calc(var(--wpscb-button-size) + 14px); right:0; width:var(--wpscb-popup-width); max-height:480px;
+  background:var(--wpscb-popup-bg); border-radius:20px; box-shadow:0 12px 40px rgba(0,0,0,.2), 0 4px 16px rgba(0,0,0,.1);
   display:flex; flex-direction:column; overflow:hidden;
 }
 #wpscb-widget-root.wpscb-left .wpscb-popup { right:auto; left:0; }
 
 .wpscb-popup-header {
-  padding:16px 20px; background:linear-gradient(135deg, #6610f2, #d63384); color:#fff;
-  display:flex; align-items:center; justify-content:space-between; font-weight:600; font-size:16px;
+  padding:16px 20px; background:linear-gradient(135deg, var(--wpscb-popup-header-start), var(--wpscb-popup-header-end));
+  color:var(--wpscb-popup-header-text, #fff); display:flex; align-items:center; justify-content:space-between; font-weight:600; font-size:16px;
 }
-.wpscb-popup-close { background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:0; }
+.wpscb-popup-close { background:none; border:none; color:var(--wpscb-popup-header-text, #fff); font-size:20px; cursor:pointer; padding:0; }
 
 .wpscb-popup-body {
   flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px;
 }
 
 .wpscb-contact-item {
-  display:flex; align-items:center; gap:12px; padding:12px; background:#f8f9fa; border-radius:12px;
-  text-decoration:none; color:#1e293b; transition:background .15s, transform .15s;
+  display:flex; align-items:center; gap:12px; padding:12px;
+  background:var(--wpscb-contact-bg, #f8f9fa); border-radius:12px;
+  text-decoration:none; color:var(--wpscb-popup-text); transition:background .15s, transform .15s;
 }
-.wpscb-contact-item:hover { background:#e2e8f0; transform:translateY(-2px); }
+.wpscb-contact-item:hover {
+  background:var(--wpscb-contact-hover, #e2e8f0);
+  transform:translateY(-2px);
+}
 
 .wpscb-contact-avatar, .wpscb-contact-avatar-icon {
   width:40px; height:40px; border-radius:50%; object-fit:cover; flex-shrink:0;
@@ -40,13 +63,13 @@
 .wpscb-contact-avatar-icon { display:flex; align-items:center; justify-content:center; background:#e2e8f0; }
 
 .wpscb-contact-info { flex:1; }
-.wpscb-contact-name { font-weight:500; font-size:14px; color:#1e293b; }
-.wpscb-contact-time { font-size:11px; color:#64748b; margin-top:2px; }
+.wpscb-contact-name { font-weight:500; font-size:14px; color:var(--wpscb-popup-text); }
+.wpscb-contact-time { font-size:11px; color:var(--wpscb-popup-label); margin-top:2px; }
 
 .wpscb-popup-footer {
   padding:12px 20px; border-top:1px solid #e2e8f0; background:#f8f9fa; text-align:center;
 }
 
 @media (max-width: 480px) {
-  .wpscb-popup { width:calc(100vw - 48px); max-width:340px; }
+  .wpscb-popup { width:calc(100vw - 48px); max-width:var(--wpscb-popup-width); }
 }

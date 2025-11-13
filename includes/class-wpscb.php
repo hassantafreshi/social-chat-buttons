@@ -117,6 +117,66 @@ class WPSCB {
         return $settings;
     }
 
+    public function get_advanced_settings() {
+        $defaults = array(
+            // Button
+            'button_mode'            => 'icon',          // 'icon', 'text', 'image'
+            'button_text'            => __( 'Chat', 'wp-social-chat-button' ),
+            'button_image'           => 0,               // attachment ID
+            'button_size'            => 56,              // px
+            'button_icon_size'       => 24,              // px for icon/text size
+            'button_color'           => '#6610f2',       // primary purple
+            'button_text_color'      => '#ffffff',
+            // Popup
+            'popup_width'            => 340,             // px
+            'popup_bg_color'         => '#ffffff',
+            'popup_header_color'     => '#6610f2',       // gradient start
+            'popup_header_color_end' => '#d63384',       // gradient end
+            'popup_text_color'       => '#212529',
+            'popup_label_color'      => '#6c757d',
+            'contact_bg_color'       => '#f8f9fa',       // contact item background
+            'contact_hover_color'    => '#e2e8f0',       // contact item hover
+            // Advanced
+            'auto_dark_mode'         => 0,               // 0=off, 1=auto dark mode (8 PM - 7 AM)
+            'hide_mobile'            => 0,               // 0=show on mobile, 1=hide
+            'hide_copyright'         => 0,               // 0=show, 1=hide (premium)
+            'responsive_scale'       => 1,               // 0=fixed, 1=responsive
+        );
+        $adv = get_option( 'wpscb_advanced_settings', array() );
+        $adv = wp_parse_args( is_array( $adv ) ? $adv : array(), $defaults );
+        return apply_filters( 'wpscb_advanced_settings', $adv );
+    }
+
+    public function set_advanced_settings( $adv ) {
+        if ( ! is_array( $adv ) ) { $adv = array(); }
+        $defaults = $this->get_advanced_settings();
+        $adv = wp_parse_args( $adv, $defaults );
+        // sanitize
+        $adv['button_mode']            = in_array( $adv['button_mode'], array( 'icon', 'text', 'image' ), true ) ? $adv['button_mode'] : 'icon';
+        $adv['button_text']            = sanitize_text_field( $adv['button_text'] );
+        $adv['button_image']           = absint( $adv['button_image'] );
+        $adv['button_size']            = max( 40, min( 80, absint( $adv['button_size'] ) ) );
+        $adv['button_icon_size']       = max( 16, min( 48, absint( $adv['button_icon_size'] ) ) );
+        $adv['button_color']           = sanitize_hex_color( $adv['button_color'] );
+        $adv['button_text_color']      = sanitize_hex_color( $adv['button_text_color'] );
+        $adv['popup_width']            = max( 280, min( 480, absint( $adv['popup_width'] ) ) );
+        $adv['popup_bg_color']         = sanitize_hex_color( $adv['popup_bg_color'] );
+        $adv['popup_header_color']     = sanitize_hex_color( $adv['popup_header_color'] );
+        $adv['popup_header_color_end'] = sanitize_hex_color( $adv['popup_header_color_end'] );
+        $adv['popup_text_color']       = sanitize_hex_color( $adv['popup_text_color'] );
+        $adv['popup_label_color']      = sanitize_hex_color( $adv['popup_label_color'] );
+        $adv['contact_bg_color']       = sanitize_hex_color( $adv['contact_bg_color'] );
+        $adv['contact_hover_color']    = sanitize_hex_color( $adv['contact_hover_color'] );
+        $adv['auto_dark_mode']         = ! empty( $adv['auto_dark_mode'] ) ? 1 : 0;
+        $adv['hide_mobile']            = ! empty( $adv['hide_mobile'] ) ? 1 : 0;
+        $adv['hide_copyright']         = ! empty( $adv['hide_copyright'] ) ? 1 : 0;
+        $adv['responsive_scale']       = ! empty( $adv['responsive_scale'] ) ? 1 : 0;
+
+        $adv = apply_filters( 'wpscb_set_advanced_settings', $adv );
+        update_option( 'wpscb_advanced_settings', $adv );
+        return $adv;
+    }
+
     public function build_network_url( $network, $value ) {
         switch ( $network ) {
             case 'whatsapp':

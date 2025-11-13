@@ -4,9 +4,10 @@ WP SOCIAL CHAT BUTTON - DEVELOPMENT ROADMAP
 Plugin: WP Social Chat Button
 Version: 1.0.0
 Date: November 11, 2025
+Status: Phase 1-3 COMPLETED | Phase 4 PENDING | Phase 5 POST-RELEASE
 
 =================================================================
-PHASE 1: AVAILABILITY SETTINGS (COMPLETED)
+PHASE 1: AVAILABILITY SETTINGS (✓ COMPLETED)
 =================================================================
 
 Feature: Contact Availability (Days & Hours)
@@ -107,29 +108,276 @@ Testing Steps:
   10. Test on mobile (button should be visible)
 
 =================================================================
-PHASE 3: ADVANCED SETTINGS PAGE (PENDING)
+PHASE 3: ADVANCED SETTINGS PAGE (✓ COMPLETED)
 =================================================================
 
 Feature: Comprehensive Widget Customization
 --------------------------------------------
 Description:
-  - Color pickers for button, popup background, labels
-  - Widget size controls (button size, popup width/height)
-  - Day/Night mode toggle
-  - Mobile visibility toggle
-  - Icon/Text toggle for button
-  - Copyright footer show/hide (premium feature flag)
-  - Live preview pane
+  - Color pickers for button, popup background, header gradient, labels
+  - Widget size controls (button size, icon size, popup width)
+  - Dark mode toggle (applies dark theme to popup)
+  - Mobile visibility toggle (hide widget on mobile)
+  - Responsive scaling (auto-adjust sizes on mobile)
+  - Button mode: Icon / Text / Custom Image
+  - Copyright footer show/hide option (premium flag)
+  - Live preview pane with auto-refresh iframe
+  - Auto-save (debounced 800ms) with visual indicator
 
-Planned Files:
-  - includes/class-wpscb-admin.php (add settings fields)
-  - assets/js/admin.js (color pickers, preview logic)
-  - assets/css/admin.css (settings page layout)
-  - includes/class-wpscb-ajax.php (save advanced settings)
-  - assets/js/front.js (read settings, apply colors/sizes)
-  - assets/css/front.css (dynamic CSS variables)
+Files Modified:
+  ✓ includes/class-wpscb.php
+    - Added get_advanced_settings() with 15+ customization fields
+    - Added set_advanced_settings() with sanitization & validation
+    - Default values: button_size=56, popup_width=340, colors matching MD3 palette
 
-Status: NOT STARTED
+  ✓ includes/class-wpscb-admin.php
+    - Completely redesigned render_settings_page()
+    - Split layout: Controls (left) + Live Preview (right)
+    - Sections: Basic Settings, Button Appearance, Popup Appearance, Advanced Options
+    - MD3 UI components: switches, sliders, color pickers, radio groups
+    - Conditional visibility for button text/image based on mode selection
+
+  ✓ includes/class-wpscb-ajax.php
+    - Added wpscb_save_advanced_settings action handler
+    - Collects 15 settings fields from POST
+    - Validates and saves via core->set_advanced_settings()
+
+  ✓ assets/css/admin.css
+    - Added .wpscb-settings-page grid layout (2-column: controls + preview)
+    - Added .wpscb-settings-section card styling
+    - Added MD3 switch component (.wpscb-switch-slider with animation)
+    - Added .wpscb-range slider with custom thumb styling
+    - Added .wpscb-color-row for color picker alignment
+    - Added .wpscb-radio-group with selected state highlighting
+    - Added .wpscb-settings-save-indicator (green banner with checkmark)
+    - Added .wpscb-preview-container with 600px iframe
+    - Responsive: stacks vertically on screens < 1280px
+
+  ✓ assets/js/admin.js
+    - Added initSettingsPage() function
+    - Debounced auto-save (800ms timeout)
+    - Collects all basic + advanced settings on change
+    - Sends dual AJAX requests (basic first, then advanced)
+    - Shows save indicator for 1.5s after successful save
+    - Updates preview iframe by reloading contentWindow
+    - Handles conditional visibility for button_mode (text/image fields)
+    - Range slider live value display
+    - Media library integration for button custom image
+
+  ✓ includes/class-wpscb-frontend.php
+    - Extended enqueue_front_assets() to load advanced settings
+    - Added button_image_url enrichment (convert attachment ID to URL)
+    - Pass advanced settings to frontend via WPSCB_FRONT.advanced
+    - Detect preview mode (?wpscb_preview=1) and set isPreview flag
+
+  ✓ assets/js/front.js
+    - Added applyAdvancedStyles() function
+    - Injects <style> tag with CSS variables at runtime
+    - Reads 15 settings fields from WPSCB_FRONT.advanced
+    - CSS vars: --wpscb-button-size, --wpscb-button-color, --wpscb-popup-width, etc.
+    - Dark mode: overrides popup background/text colors
+    - Hide mobile: @media CSS to hide widget on screens < 480px
+    - Hide copyright: CSS to hide footer
+    - Responsive scale: auto-reduces button size and popup width on mobile
+    - Button mode handling in render():
+      * Icon: default chat SVG
+      * Text: displays custom text with fontSize from --wpscb-button-icon-size
+      * Image: displays custom image from button_image_url with object-fit cover
+
+  ✓ assets/css/front.css
+    - Added :root CSS variables for all customizable properties
+    - Refactored all hardcoded values to use var(--wpscb-*)
+    - .wpscb-fab: uses --wpscb-button-size, --wpscb-button-color, --wpscb-button-text-color
+    - .wpscb-popup: uses --wpscb-popup-width, --wpscb-popup-bg
+    - .wpscb-popup-header: gradient from --wpscb-popup-header-start to --wpscb-popup-header-end
+    - .wpscb-contact-name, .wpscb-contact-time: use --wpscb-popup-text, --wpscb-popup-label
+    - SVG icon size: uses --wpscb-button-icon-size
+
+Settings Fields (15 total):
+  1. button_mode: 'icon' | 'text' | 'image'
+  2. button_text: custom text for text mode
+  3. button_image: attachment ID for image mode
+  4. button_size: 40-80px (default 56)
+  5. button_icon_size: 16-48px (default 24)
+  6. button_color: hex color (default #6610f2)
+  7. button_text_color: hex color (default #ffffff)
+  8. popup_width: 280-480px (default 340)
+  9. popup_bg_color: hex color (default #ffffff)
+  10. popup_header_color: gradient start (default #6610f2)
+  11. popup_header_color_end: gradient end (default #d63384)
+  12. popup_text_color: hex color (default #212529)
+  13. popup_label_color: hex color (default #6c757d)
+  14. dark_mode: 0 | 1
+  15. hide_mobile: 0 | 1
+  16. hide_copyright: 0 | 1 (premium flag)
+  17. responsive_scale: 0 | 1
+
+Testing Steps:
+  1. Go to WP Admin → WP Social Chat Button → Settings
+  2. Verify two-column layout: controls (left) + preview (right)
+  3. Change button color → verify auto-save indicator appears → verify preview updates
+  4. Change button size slider → verify value display updates → verify preview button resizes
+  5. Change button mode to "Text" → verify text input appears → enter custom text → verify preview
+  6. Change button mode to "Image" → click Choose Image → select image → verify preview shows image
+  7. Change popup width slider → verify preview popup resizes
+  8. Change popup header gradient colors → verify preview header gradient updates
+  9. Toggle dark mode → verify preview popup switches to dark theme
+  10. Toggle hide mobile → verify @media rule applies (can test by resizing browser)
+  11. Toggle responsive scale → verify mobile breakpoint logic (resize to < 480px)
+  12. Toggle hide copyright → verify preview footer disappears
+  13. Visit frontend (logged out user) → verify all settings applied
+  14. Test on actual mobile device → verify hide_mobile and responsive_scale work
+
+Known Behaviors:
+  - Preview iframe reloads on every save (800ms debounce)
+  - Dark mode overrides popup_bg_color, popup_text_color, popup_label_color
+  - Button text mode auto-adjusts width (no longer fixed 56px circle)
+  - Image mode applies border-radius:16px for visual consistency
+  - Responsive scale reduces button size to 80% on mobile (min 40px)
+  - All hex colors validated via sanitize_hex_color()
+  - Preview URL: home_url('?wpscb_preview=1')
+
+Status: ✓ COMPLETED
+
+=================================================================
+PHASE 5: FIRST-RUN SETUP & GDPR COMPLIANCE (POST-RELEASE)
+=================================================================
+
+⚠️ IMPORTANT: This feature will be added AFTER WordPress.org approval
+              to avoid legal/policy issues during review process
+
+Feature: Welcome Screen & Terms Acceptance
+-------------------------------------------
+Description:
+  - One-time welcome modal on plugin activation/first access
+  - Display plugin introduction and features overview
+  - Terms & Conditions acceptance checkbox (GDPR compliant)
+  - Privacy Policy link and data usage explanation
+  - Admin email collection as primary contact
+  - Optional newsletter subscription checkbox (opt-in)
+  - Send collected data to central API for support/updates
+  - Store acceptance timestamp in wp_options
+  - Skip showing modal if already accepted
+
+Legal Compliance:
+  - Clear explanation of data collection
+  - Explicit consent required (checkbox, not pre-checked)
+  - Link to privacy policy (whitestudio.team/privacy)
+  - Right to opt-out of communications
+  - GDPR Article 6(1)(a) - Consent for processing
+  - WordPress.org plugin guidelines compliant
+
+Data Collected:
+  1. Admin Email (primary communication channel)
+  2. Site URL (for license verification)
+  3. WordPress Version
+  4. PHP Version
+  5. Plugin Version
+  6. Acceptance Timestamp
+  7. Locale (language)
+
+API Endpoint:
+  - POST https://api.whitestudio.team/wpscb/v1/register
+  - Headers: Content-Type: application/json
+  - Payload: { email, site_url, wp_version, php_version, plugin_version, locale, timestamp }
+  - Response: { success: true, message: "Registered successfully" }
+
+Planned Implementation:
+
+  Files to Create/Modify:
+    ✓ includes/class-wpscb-welcome.php
+      - Check if 'wpscb_setup_completed' option exists
+      - If not → show welcome modal overlay
+      - Handle form submission (AJAX)
+      - Validate email, checkbox consent
+      - Send data to API (wp_remote_post)
+      - Store acceptance: update_option('wpscb_setup_completed', time())
+      - Store email: update_option('wpscb_admin_email', $email)
+
+    ✓ assets/css/admin-welcome.css
+      - Full-screen overlay (z-index: 100000)
+      - Centered modal card (max-width: 600px)
+      - MD3 styling (consistent with plugin design)
+      - Gradient header matching brand colors
+      - Checkbox styling, button styling
+      - Mobile responsive
+
+    ✓ assets/js/admin-welcome.js
+      - Handle form submission via AJAX
+      - Validate email format
+      - Ensure terms checkbox is checked
+      - Show loading spinner during API call
+      - Handle success/error responses
+      - Redirect to panel page after success
+
+    ✓ includes/class-wpscb-admin.php
+      - Enqueue welcome assets if setup not completed
+      - Add AJAX action: wpscb_complete_setup
+      - Inject welcome modal HTML into admin_footer
+
+    ✓ includes/class-wpscb-ajax.php
+      - complete_setup() method
+      - Verify nonce
+      - Sanitize email
+      - Check consent checkbox
+      - wp_remote_post to API
+      - Handle API errors gracefully
+      - Update options on success
+
+  Welcome Modal Content:
+    - Title: "Welcome to WP Social Chat Button!"
+    - Subtitle: "Thank you for installing our plugin"
+    - Features list (bullet points):
+      * 25+ Social Networks Support
+      * Availability Scheduling (Days & Hours)
+      * Material Design 3 Interface
+      * Advanced Customization Options
+      * Live Preview & Auto-Save
+      * Mobile Responsive
+    - Terms section:
+      □ Checkbox: "I agree to the Terms & Conditions and Privacy Policy"
+      □ Links: Terms | Privacy Policy
+    - Data collection notice:
+      "We collect your email and basic site info to provide support,
+       updates, and occasional feature announcements. You can unsubscribe
+       anytime. We never share your data with third parties."
+    - Email input: [admin@example.com]
+    - Optional: □ Subscribe to newsletter for tips & updates
+    - Buttons: [Skip for Now] [Complete Setup]
+
+  Database Schema:
+    wp_options:
+      - wpscb_setup_completed: timestamp (e.g., 1699660800)
+      - wpscb_admin_email: email address
+      - wpscb_newsletter_consent: 1 or 0
+
+  Testing Checklist:
+    □ Delete wpscb_setup_completed option → reload admin
+    □ Verify modal appears on any admin page
+    □ Try submitting without checking checkbox → validation error
+    □ Try invalid email → validation error
+    □ Submit valid form → verify API call sent
+    □ Verify success message and modal closes
+    □ Verify redirect to plugin panel
+    □ Reload admin → modal should NOT appear again
+    □ Check wp_options table for stored values
+    □ Test "Skip for Now" button (doesn't send data, just closes)
+
+  Privacy Considerations:
+    - No data sent without explicit consent
+    - Email only used for support/updates
+    - No tracking cookies or analytics added
+    - User can request data deletion anytime
+    - Fully compliant with WordPress.org guidelines
+    - API secured with HTTPS only
+
+  Timeline:
+    - Implementation: After WordPress.org approval
+    - Estimated: 1-2 days development
+    - Testing: 1 day
+    - API endpoint setup: whitestudio.team team
+
+Status: PENDING (Post-Release Feature)
 
 =================================================================
 PHASE 4: DRAG-AND-DROP CONTACT REORDERING (PENDING)
@@ -242,15 +490,15 @@ Immediate:
   3. Prepare for Phase 3 implementation
 
 Phase 3 Implementation Plan:
-  1. Add settings fields for colors (button, popup bg, text)
-  2. Add size controls (button diameter, popup dimensions)
-  3. Add dark mode toggle
-  4. Add mobile visibility toggle
-  5. Add icon/text/custom image for button
-  6. Add copyright hide option
-  7. Build live preview iframe/simulation
-  8. Save settings to options table
-  9. Frontend reads settings and applies styles dynamically
+  1. Add settings fields for colors (button, popup bg, text) ✓
+  2. Add size controls (button diameter, popup dimensions) ✓
+  3. Add dark mode toggle ✓
+  4. Add mobile visibility toggle ✓
+  5. Add icon/text/custom image for button ✓
+  6. Add copyright hide option ✓
+  7. Build live preview iframe/simulation ✓
+  8. Save settings to options table ✓
+  9. Frontend reads settings and applies styles dynamically ✓
 
 Phase 4 Implementation Plan:
   1. Enqueue SortableJS library
@@ -258,6 +506,18 @@ Phase 4 Implementation Plan:
   3. On drag end → send new order to AJAX
   4. Backend saves order array
   5. Frontend respects order when rendering
+
+Phase 5 Implementation Plan (POST-RELEASE):
+  1. Create welcome modal overlay component
+  2. Add terms acceptance checkbox with validation
+  3. Collect admin email (primary contact)
+  4. Optional newsletter opt-in checkbox
+  5. Build API endpoint (https://api.whitestudio.team/wpscb/v1/register)
+  6. Send data via wp_remote_post (site_url, email, versions, locale)
+  7. Store wpscb_setup_completed timestamp in wp_options
+  8. Add "Skip for Now" option (dismisses without sending data)
+  9. Ensure GDPR compliance (clear consent, privacy policy link)
+  10. Test with WordPress.org guidelines post-approval
 
 =================================================================
 FILE STRUCTURE REFERENCE

@@ -3,7 +3,7 @@
  * Plugin Name: WP Social Chat Button
  * Plugin URI:  https://example.com/wp-social-chat-button
  * Description: مدیریت راه‌های ارتباطی شبکه‌های اجتماعی (WhatsApp, Telegram, Signal و ...) با دکمه شناور در فرانت و پنل مدرن در ادمین.
- * Version:     0.1.1
+ * Version:     0.1.9
  * Author:      hassantafreshi
  * Author URI:  https://example.com
  * License:     GPLv2 or later
@@ -14,7 +14,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'WPSCB_VERSION', '0.1.1' );
+define( 'WPSCB_VERSION', '0.1.9' );
 define( 'WPSCB_PLUGIN_FILE', __FILE__ );
 define( 'WPSCB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPSCB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
