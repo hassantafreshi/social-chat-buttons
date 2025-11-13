@@ -209,6 +209,10 @@ class WPSCB_Admin {
                             <input type="range" name="popup_width" min="280" max="480" value="<?php echo esc_attr( $adv['popup_width'] ); ?>" class="wpscb-range">
                             <span class="wpscb-range-value"><?php echo esc_html( $adv['popup_width'] ); ?></span>
                         </div>
+                        <div class="wpscb-setting-row">
+                            <label><?php esc_html_e( 'Popup Title', 'wp-social-chat-button' ); ?></label>
+                            <input type="text" name="popup_title" value="<?php echo esc_attr( $adv['popup_title'] ); ?>" class="wpscb-input" placeholder="<?php esc_attr_e( 'Chat', 'wp-social-chat-button' ); ?>">
+                        </div>
                         <div class="wpscb-setting-row wpscb-color-row">
                             <label><?php esc_html_e( 'Background Color', 'wp-social-chat-button' ); ?></label>
                             <input type="color" name="popup_bg_color" value="<?php echo esc_attr( $adv['popup_bg_color'] ); ?>" class="wpscb-color">

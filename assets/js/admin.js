@@ -582,12 +582,15 @@
                 button_color: $page.find('input[name="button_color"]').val(),
                 button_text_color: $page.find('input[name="button_text_color"]').val(),
                 popup_width: $page.find('input[name="popup_width"]').val(),
+                popup_title: $page.find('input[name="popup_title"]').val(),
                 popup_bg_color: $page.find('input[name="popup_bg_color"]').val(),
                 popup_header_color: $page.find('input[name="popup_header_color"]').val(),
                 popup_header_color_end: $page.find('input[name="popup_header_color_end"]').val(),
                 popup_text_color: $page.find('input[name="popup_text_color"]').val(),
                 popup_label_color: $page.find('input[name="popup_label_color"]').val(),
-                dark_mode: $page.find('input[name="dark_mode"]').is(':checked') ? 1 : 0,
+                contact_bg_color: $page.find('input[name="contact_bg_color"]').val(),
+                contact_hover_color: $page.find('input[name="contact_hover_color"]').val(),
+                auto_dark_mode: $page.find('input[name="auto_dark_mode"]').is(':checked') ? 1 : 0,
                 hide_mobile: $page.find('input[name="hide_mobile"]').is(':checked') ? 1 : 0,
                 hide_copyright: $page.find('input[name="hide_copyright"]').is(':checked') ? 1 : 0,
                 responsive_scale: $page.find('input[name="responsive_scale"]').is(':checked') ? 1 : 0
@@ -643,6 +646,7 @@
             const buttonColor = $page.find('input[name="button_color"]').val() || '#6610f2';
             const buttonTextColor = $page.find('input[name="button_text_color"]').val() || '#ffffff';
             const popupWidth = parseInt($page.find('input[name="popup_width"]').val()) || 340;
+            const popupTitle = $page.find('input[name="popup_title"]').val() || 'Chat';
             const popupBgColor = $page.find('input[name="popup_bg_color"]').val() || '#ffffff';
             const headerColorStart = $page.find('input[name="popup_header_color"]').val() || '#6610f2';
             const headerColorEnd = $page.find('input[name="popup_header_color_end"]').val() || '#d63384';
@@ -812,7 +816,7 @@
                     <button class="wpscb-fab" onclick="togglePreviewPopup()" aria-label="Chat">${buttonContent}</button>
                     <div class="wpscb-popup" id="wpscb-preview-popup" style="display:none;">
                         <div class="wpscb-popup-header">
-                            <span>Chat</span>
+                            <span>${popupTitle}</span>
                             <button class="wpscb-popup-close" onclick="togglePreviewPopup()">✕</button>
                         </div>
                         <div class="wpscb-popup-body">

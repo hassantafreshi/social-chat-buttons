@@ -129,6 +129,7 @@ class WPSCB {
             'button_text_color'      => '#ffffff',
             // Popup
             'popup_width'            => 340,             // px
+            'popup_title'            => __( 'Chat', 'wp-social-chat-button' ), // popup header title
             'popup_bg_color'         => '#ffffff',
             'popup_header_color'     => '#6610f2',       // gradient start
             'popup_header_color_end' => '#d63384',       // gradient end
@@ -160,6 +161,7 @@ class WPSCB {
         $adv['button_color']           = sanitize_hex_color( $adv['button_color'] );
         $adv['button_text_color']      = sanitize_hex_color( $adv['button_text_color'] );
         $adv['popup_width']            = max( 280, min( 480, absint( $adv['popup_width'] ) ) );
+        $adv['popup_title']            = sanitize_text_field( $adv['popup_title'] );
         $adv['popup_bg_color']         = sanitize_hex_color( $adv['popup_bg_color'] );
         $adv['popup_header_color']     = sanitize_hex_color( $adv['popup_header_color'] );
         $adv['popup_header_color_end'] = sanitize_hex_color( $adv['popup_header_color_end'] );

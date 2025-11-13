@@ -201,7 +201,7 @@
         popup.style.display = 'none';
         popup.innerHTML = `
             <div class="wpscb-popup-header">
-                <span>${esc(i18n.chat || 'Chat')}</span>
+                <span>${esc(advanced.popup_title || i18n.chat || 'Chat')}</span>
                 <button class="wpscb-popup-close" aria-label="Close">✕</button>
             </div>
             <div class="wpscb-popup-body">
