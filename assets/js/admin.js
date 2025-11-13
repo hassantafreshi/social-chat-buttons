@@ -1,7 +1,7 @@
 /* global jQuery, WPSCB */
 (function($){
-    const state = {
-        contacts: (WPSCB.contacts || []).map(c => normalizeContact(c)),
+    const wpscb_state = {
+        contacts: (WPSCB.contacts || []).map(c => wpscb_normalizeContact(c)),
         networks: WPSCB.networks || {},
         settings: WPSCB.settings || {},
         modalOpen: false,
@@ -9,7 +9,7 @@
         editIndex: null
     };
 
-    function normalizeContact(c){
+    function wpscb_normalizeContact(c){
         const defSlots = () => [{start:'00:00', end:'23:59'}];
         // Backward compatibility: convert old schema {days:[], hours:{}} to per-day slots
         let availability = c.availability;
@@ -42,22 +42,22 @@
         };
     }
 
-    function render(){
+    function wpscb_render(){
         const $app = $('#wpscb-app');
         if(!$app.length) return;
         let html = '';
         html += '<div class="wpscb-header">';
         html += '<button type="button" class="wpscb-btn" id="wpscb-add">'+WPSCB.i18n.addContact+'</button>';
         html += '</div>';
-        if(state.contacts.length){
+        if(wpscb_state.contacts.length){
             html += '<div class="wpscb-table-wrapper"><table class="wpscb-table"><thead><tr>'+
-                '<th>'+escapeHtml(WPSCB.i18n.tableHeaderName)+'</th>'+
-                '<th>'+escapeHtml(WPSCB.i18n.tableHeaderValue)+'</th>'+
-                '<th>'+escapeHtml(WPSCB.i18n.tableHeaderNetwork)+'</th>'+
-                '<th>'+escapeHtml(WPSCB.i18n.tableHeaderPhoto)+'</th>'+
-                '<th>'+escapeHtml(WPSCB.i18n.tableHeaderActions)+'</th>'+
+                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderName)+'</th>'+
+                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderValue)+'</th>'+
+                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderNetwork)+'</th>'+
+                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderPhoto)+'</th>'+
+                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderActions)+'</th>'+
             '</tr></thead><tbody>';
-            state.contacts.forEach((c,i)=>{
+            wpscb_state.contacts.forEach((c,i)=>{
                 html += '<tr data-index="'+i+'">';
                 html += '<td>'+escapeHtml(c.name || '-')+'</td>';
                 html += '<td>'+escapeHtml(c.value)+'</td>';
@@ -73,7 +73,7 @@
         $app.html(html);
     }
 
-    function renderPhotoCell(photo){
+    function wpscb_renderPhotoCell(photo){
         const c = typeof photo === 'object' ? photo : null;
         const id = c ? (c.photo||0) : (photo||0);
         const url = c ? c.photo_url : '';
@@ -85,7 +85,7 @@
         return '<span class="wpscb-avatar wpscb-avatar-icon" aria-hidden="true">'+networkIconSvg(net)+'</span>';
     }
 
-    function getAttachmentUrl(id){
+    function wpscb_getAttachmentUrl(id){
         // We'll resolve via AJAX on demand if not localized; fallback to WP generic.
         return WPSCB.mediaBase ? (WPSCB.mediaBase + id) : (WPSCB.uploadsBase ? (WPSCB.uploadsBase + '/' + id) : '');
     }
@@ -460,7 +460,7 @@
         });
     }
 
-    function bindEvents(){
+    function wpscb_bindEvents(){
         $('#wpscb-app').on('click','#wpscb-add', function(){ openModal(); });
         $('#wpscb-app').on('click','.wpscb-delete', function(){
             const idx = $(this).closest('tr').data('index');
@@ -515,7 +515,7 @@
         mediaFrame.open();
     }
 
-    function escapeHtml(str){
+    function wpscb_escapeHtml(str){
         if(!str) return '';
         return String(str).replace(/[&<>"]/g, function(c){
             return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c];
@@ -538,13 +538,13 @@
     }
 
     $(document).ready(function(){
-        render();
-        bindEvents();
-        initSettingsPage();
+        wpscb_render();
+        wpscb_bindEvents();
+        wpscb_initSettingsPage();
     });
 
     // Settings page auto-save and preview
-    function initSettingsPage(){
+    function wpscb_initSettingsPage(){
         const $page = $('.wpscb-settings-page');
         console.log('Settings page found:', $page.length);
         if(!$page.length) return;
@@ -813,11 +813,11 @@
                     }
                 </style>
                 <div class="wpscb-widget-root ${position === 'left' ? 'wpscb-left' : 'wpscb-right'}">
-                    <button class="wpscb-fab" onclick="togglePreviewPopup()" aria-label="Chat">${buttonContent}</button>
+                    <button class="wpscb-fab" onclick="wpscb_togglePreviewPopup()" aria-label="Chat">${buttonContent}</button>
                     <div class="wpscb-popup" id="wpscb-preview-popup" style="display:none;">
                         <div class="wpscb-popup-header">
                             <span>${popupTitle}</span>
-                            <button class="wpscb-popup-close" onclick="togglePreviewPopup()">✕</button>
+                            <button class="wpscb-popup-close" onclick="wpscb_togglePreviewPopup()">✕</button>
                         </div>
                         <div class="wpscb-popup-body">
                             ${contactsHtml}
@@ -826,7 +826,7 @@
                     </div>
                 </div>
                 <script>
-                    window.togglePreviewPopup = function(){
+                    window.wpscb_togglePreviewPopup = function(){
                         const popup = document.getElementById('wpscb-preview-popup');
                         if(popup) popup.classList.toggle('show');
                     };

@@ -12,7 +12,7 @@ class WPSCB {
     }
 
     private function __construct() {
-        add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+        add_action( 'plugins_loaded', array( $this, 'wpscb_load_textdomain' ) );
 
         // Initialize modules.
         if ( is_admin() ) {
@@ -27,12 +27,12 @@ class WPSCB {
         new WPSCB_Ajax( $this );
     }
 
-    public function load_textdomain() {
+    public function wpscb_load_textdomain() {
         load_plugin_textdomain( 'wp-social-chat-button', false, dirname( plugin_basename( WPSCB_PLUGIN_FILE ) ) . '/languages' );
     }
 
     // Data helpers
-    public function get_supported_networks() {
+    public function wpscb_get_supported_networks() {
         $urlPattern = '/^https?:\/\/[^\s]+$/i';
         $networks = array(
             // Core asked list
@@ -65,7 +65,7 @@ class WPSCB {
         return apply_filters( 'wpscb_supported_networks', $networks );
     }
 
-    public function get_contacts() {
+    public function wpscb_get_contacts() {
         $contacts = get_option( WPSCB_OPTION_CONTACTS, array() );
         $contacts = is_array( $contacts ) ? $contacts : array();
         /**
@@ -76,7 +76,7 @@ class WPSCB {
         return apply_filters( 'wpscb_contacts', $contacts );
     }
 
-    public function set_contacts( $contacts ) {
+    public function wpscb_set_contacts( $contacts ) {
         if ( ! is_array( $contacts ) ) { $contacts = array(); }
         $contacts = array_values( $contacts );
         /**
@@ -88,7 +88,7 @@ class WPSCB {
         update_option( WPSCB_OPTION_CONTACTS, $contacts );
     }
 
-    public function get_settings() {
+    public function wpscb_get_settings() {
         $defaults = array( 'enabled' => 1, 'position' => 'right' );
         $settings = get_option( WPSCB_OPTION_SETTINGS, array() );
         $settings = wp_parse_args( is_array( $settings ) ? $settings : array(), $defaults );
@@ -100,7 +100,7 @@ class WPSCB {
         return apply_filters( 'wpscb_settings', $settings );
     }
 
-    public function set_settings( $settings ) {
+    public function wpscb_set_settings( $settings ) {
         if ( ! is_array( $settings ) ) { $settings = array(); }
         $settings = wp_parse_args( $settings, array( 'enabled' => 1, 'position' => 'right' ) );
         if ( ! in_array( $settings['position'], array( 'right', 'left' ), true ) ) {
@@ -117,7 +117,7 @@ class WPSCB {
         return $settings;
     }
 
-    public function get_advanced_settings() {
+    public function wpscb_get_advanced_settings() {
         $defaults = array(
             // Button
             'button_mode'            => 'icon',          // 'icon', 'text', 'image'
@@ -148,7 +148,7 @@ class WPSCB {
         return apply_filters( 'wpscb_advanced_settings', $adv );
     }
 
-    public function set_advanced_settings( $adv ) {
+    public function wpscb_set_advanced_settings( $adv ) {
         if ( ! is_array( $adv ) ) { $adv = array(); }
         $defaults = $this->get_advanced_settings();
         $adv = wp_parse_args( $adv, $defaults );
@@ -179,7 +179,7 @@ class WPSCB {
         return $adv;
     }
 
-    public function build_network_url( $network, $value ) {
+    public function wpscb_build_network_url( $network, $value ) {
         switch ( $network ) {
             case 'whatsapp':
                 $digits = preg_replace( '/[^0-9]/', '', $value );
@@ -261,7 +261,7 @@ class WPSCB {
         return apply_filters( 'wpscb_network_url', $url, $network, $value );
     }
 
-    public static function verify_request() {
+    public static function wpscb_verify_request() {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-social-chat-button' ) ), 403 );
         }

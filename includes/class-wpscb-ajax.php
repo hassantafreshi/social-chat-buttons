@@ -6,15 +6,15 @@ class WPSCB_Ajax {
 
     public function __construct( $core ) {
         $this->core = $core;
-        add_action( 'wp_ajax_wpscb_save_contact', array( $this, 'save_contact' ) );
-        add_action( 'wp_ajax_wpscb_delete_contact', array( $this, 'delete_contact' ) );
-        add_action( 'wp_ajax_wpscb_save_settings', array( $this, 'save_settings' ) );
-        add_action( 'wp_ajax_wpscb_update_contact', array( $this, 'update_contact' ) );
-        add_action( 'wp_ajax_wpscb_save_advanced_settings', array( $this, 'save_advanced_settings' ) );
+        add_action( 'wp_ajax_wpscb_save_contact', array( $this, 'wpscb_save_contact' ) );
+        add_action( 'wp_ajax_wpscb_delete_contact', array( $this, 'wpscb_delete_contact' ) );
+        add_action( 'wp_ajax_wpscb_save_settings', array( $this, 'wpscb_save_settings' ) );
+        add_action( 'wp_ajax_wpscb_update_contact', array( $this, 'wpscb_update_contact' ) );
+        add_action( 'wp_ajax_wpscb_save_advanced_settings', array( $this, 'wpscb_save_advanced_settings' ) );
     }
 
-    public function save_contact() {
-        WPSCB::verify_request();
+    public function wpscb_save_contact() {
+        WPSCB::wpscb_verify_request();
         $network = isset( $_POST['network'] ) ? sanitize_key( wp_unslash( $_POST['network'] ) ) : '';
         $value   = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
     $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
@@ -50,7 +50,7 @@ class WPSCB_Ajax {
             $availability = $normalized;
         }
 
-        $networks = $this->core->get_supported_networks();
+        $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid network.', 'wp-social-chat-button' ) ) );
         }
@@ -60,9 +60,9 @@ class WPSCB_Ajax {
             wp_send_json_error( array( 'message' => __( 'Invalid value format.', 'wp-social-chat-button' ) ) );
         }
 
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         $contacts[] = array( 'network' => $network, 'value' => $value, 'name' => $name, 'message' => $message, 'photo' => $photo, 'availability' => $availability );
-        $this->core->set_contacts( $contacts );
+        $this->core->wpscb_set_contacts( $contacts );
         // Enrich with photo URLs for immediate UI update
         $contacts_enriched = $contacts;
         foreach ( $contacts_enriched as &$c ) {
@@ -75,16 +75,16 @@ class WPSCB_Ajax {
         wp_send_json_success( array( 'contacts' => $contacts_enriched ) );
     }
 
-    public function delete_contact() {
-        WPSCB::verify_request();
+    public function wpscb_delete_contact() {
+        WPSCB::wpscb_verify_request();
         $index = isset( $_POST['index'] ) ? absint( $_POST['index'] ) : -1;
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid index.', 'wp-social-chat-button' ) ) );
         }
         unset( $contacts[ $index ] );
         $contacts = array_values( $contacts );
-        $this->core->set_contacts( $contacts );
+        $this->core->wpscb_set_contacts( $contacts );
         wp_send_json_success( array( 'contacts' => $contacts ) );
     }
 
@@ -92,12 +92,12 @@ class WPSCB_Ajax {
         WPSCB::verify_request();
         $enabled  = isset( $_POST['enabled'] ) ? 1 : 0;
         $position = isset( $_POST['position'] ) ? sanitize_key( wp_unslash( $_POST['position'] ) ) : 'right';
-        $settings = $this->core->set_settings( array( 'enabled' => $enabled, 'position' => $position ) );
+        $settings = $this->core->wpscb_set_settings( array( 'enabled' => $enabled, 'position' => $position ) );
         wp_send_json_success( array( 'settings' => $settings ) );
     }
 
-    public function update_contact() {
-        WPSCB::verify_request();
+    public function wpscb_update_contact() {
+        WPSCB::wpscb_verify_request();
         $index   = isset( $_POST['index'] ) ? absint( $_POST['index'] ) : -1;
         $network = isset( $_POST['network'] ) ? sanitize_key( wp_unslash( $_POST['network'] ) ) : '';
         $value   = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
@@ -133,12 +133,12 @@ class WPSCB_Ajax {
             $availability = $normalized;
         }
 
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid index.', 'wp-social-chat-button' ) ) );
         }
 
-        $networks = $this->core->get_supported_networks();
+        $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid network.', 'wp-social-chat-button' ) ) );
         }
@@ -148,7 +148,7 @@ class WPSCB_Ajax {
         }
 
         $contacts[ $index ] = array( 'network' => $network, 'value' => $value, 'name' => $name, 'message' => $message, 'photo' => $photo, 'availability' => $availability );
-        $this->core->set_contacts( $contacts );
+        $this->core->wpscb_set_contacts( $contacts );
         // Enrich with photo URLs for immediate UI update
         $contacts_enriched = $contacts;
         foreach ( $contacts_enriched as &$c ) {
@@ -161,8 +161,8 @@ class WPSCB_Ajax {
         wp_send_json_success( array( 'contacts' => $contacts_enriched ) );
     }
 
-    public function save_advanced_settings() {
-        WPSCB::verify_request();
+    public function wpscb_save_advanced_settings() {
+        WPSCB::wpscb_verify_request();
         $adv = array(
             'button_mode'            => isset( $_POST['button_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['button_mode'] ) ) : 'icon',
             'button_text'            => isset( $_POST['button_text'] ) ? sanitize_text_field( wp_unslash( $_POST['button_text'] ) ) : '',
@@ -185,7 +185,7 @@ class WPSCB_Ajax {
             'hide_copyright'         => isset( $_POST['hide_copyright'] ) ? 1 : 0,
             'responsive_scale'       => isset( $_POST['responsive_scale'] ) ? 1 : 0,
         );
-        $saved = $this->core->set_advanced_settings( $adv );
+        $saved = $this->core->wpscb_set_advanced_settings( $adv );
         wp_send_json_success( array( 'settings' => $saved ) );
     }
 }

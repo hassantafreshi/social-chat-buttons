@@ -6,26 +6,26 @@ class WPSCB_Admin {
 
     public function __construct( $core ) {
         $this->core = $core;
-        add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+        add_action( 'admin_menu', array( $this, 'wpscb_register_admin_menu' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'wpscb_enqueue_admin_assets' ) );
     }
 
-    public function register_admin_menu() {
+    public function wpscb_register_admin_menu() {
         $cap = 'manage_options';
         add_menu_page(
             __( 'WP Social Chat Button', 'wp-social-chat-button' ),
             __( 'WP Social Chat Button', 'wp-social-chat-button' ),
             $cap,
             'wpscb_panel',
-            array( $this, 'render_panel_page' ),
+            array( $this, 'wpscb_render_panel_page' ),
             'dashicons-format-chat',
             56
         );
-        add_submenu_page( 'wpscb_panel', __( 'Panel', 'wp-social-chat-button' ), __( 'Panel', 'wp-social-chat-button' ), $cap, 'wpscb_panel', array( $this, 'render_panel_page' ) );
-        add_submenu_page( 'wpscb_panel', __( 'Settings', 'wp-social-chat-button' ), __( 'Settings', 'wp-social-chat-button' ), $cap, 'wpscb_settings', array( $this, 'render_settings_page' ) );
+        add_submenu_page( 'wpscb_panel', __( 'Panel', 'wp-social-chat-button' ), __( 'Panel', 'wp-social-chat-button' ), $cap, 'wpscb_panel', array( $this, 'wpscb_render_panel_page' ) );
+        add_submenu_page( 'wpscb_panel', __( 'Settings', 'wp-social-chat-button' ), __( 'Settings', 'wp-social-chat-button' ), $cap, 'wpscb_settings', array( $this, 'wpscb_render_settings_page' ) );
     }
 
-    public function enqueue_admin_assets( $hook ) {
+    public function wpscb_enqueue_admin_assets( $hook ) {
         if ( strpos( $hook, 'wpscb' ) === false ) {
             return;
         }
@@ -120,7 +120,7 @@ class WPSCB_Admin {
         ) );
     }
 
-    public function render_panel_page() {
+    public function wpscb_render_panel_page() {
         if ( ! current_user_can( 'manage_options' ) ) { return; }
         echo '<div class="wrap wpscb-wrap"><h1>' . esc_html__( 'Social Chat Panel', 'wp-social-chat-button' ) . '</h1>';
         echo '<p>' . esc_html__( 'Manage your social support contact methods below.', 'wp-social-chat-button' ) . '</p>';
@@ -128,10 +128,10 @@ class WPSCB_Admin {
         echo '</div>';
     }
 
-    public function render_settings_page() {
+    public function wpscb_render_settings_page() {
         if ( ! current_user_can( 'manage_options' ) ) { return; }
-        $settings = $this->core->get_settings();
-        $adv = $this->core->get_advanced_settings();
+        $settings = $this->core->wpscb_get_settings();
+        $adv = $this->core->wpscb_get_advanced_settings();
         ?>
         <div class="wrap wpscb-wrap wpscb-settings-page">
             <h1><?php esc_html_e( 'Settings', 'wp-social-chat-button' ); ?></h1>

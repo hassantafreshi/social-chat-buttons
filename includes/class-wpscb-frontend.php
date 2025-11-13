@@ -6,8 +6,8 @@ class WPSCB_Frontend {
 
     public function __construct( $core ) {
         $this->core = $core;
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front_assets' ) );
-        add_action( 'wp_footer', array( $this, 'render_frontend_widget' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'wpscb_enqueue_front_assets' ) );
+        add_action( 'wp_footer', array( $this, 'wpscb_render_frontend_widget' ) );
 
         // Disable canonical redirect for preview mode
         if ( isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1' ) {
@@ -15,8 +15,8 @@ class WPSCB_Frontend {
         }
     }
 
-    public function enqueue_front_assets() {
-        $settings = $this->core->get_settings();
+    public function wpscb_enqueue_front_assets() {
+        $settings = $this->core->wpscb_get_settings();
 
         // Check for preview mode
         $is_preview = isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1';
@@ -27,7 +27,7 @@ class WPSCB_Frontend {
         wp_enqueue_style( 'wpscb-front', WPSCB_PLUGIN_URL . 'assets/css/front.css', array(), WPSCB_VERSION );
         wp_enqueue_script( 'wpscb-front', WPSCB_PLUGIN_URL . 'assets/js/front.js', array(), WPSCB_VERSION, true );
         // Localize frontend settings & contacts with availability
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         foreach ( $contacts as &$c ) {
             if ( ! empty( $c['photo'] ) ) {
                 $src = wp_get_attachment_image_src( absint( $c['photo'] ), 'thumbnail' );
@@ -36,7 +36,7 @@ class WPSCB_Frontend {
         }
         unset($c);
 
-        $advanced = $this->core->get_advanced_settings();
+        $advanced = $this->core->wpscb_get_advanced_settings();
         // Add button_image_url if exists
         if ( ! empty( $advanced['button_image'] ) ) {
             $img_src = wp_get_attachment_image_src( absint( $advanced['button_image'] ), 'thumbnail' );
@@ -62,15 +62,15 @@ class WPSCB_Frontend {
         ) );
     }
 
-    public function render_frontend_widget() {
-        $settings = $this->core->get_settings();
+    public function wpscb_render_frontend_widget() {
+        $settings = $this->core->wpscb_get_settings();
 
         // Check for preview mode
         $is_preview = isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1';
 
         // Skip enabled and contacts check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         if ( empty( $contacts ) && ! $is_preview ) { return; }
 
         $position_class = $settings['position'] === 'left' ? 'wpscb-left' : 'wpscb-right';
