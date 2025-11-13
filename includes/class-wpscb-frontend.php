@@ -55,9 +55,9 @@ class WPSCB_Frontend {
                 'string' => wp_timezone_string(), // WordPress timezone string
             ),
             'i18n' => array(
-                'chat' => __( 'Chat', 'wp-social-chat-button' ),
-                'poweredBy' => __( 'Developed by WP Chat Button', 'wp-social-chat-button' ),
-                'sponsoredBy' => __( 'Sponsored by whitestudio.team', 'wp-social-chat-button' ),
+                'chat' => esc_html__( 'Chat', 'wp-social-chat-button' ),
+                'poweredBy' => esc_html__( 'Developed by WP Chat Button', 'wp-social-chat-button' ),
+                'sponsoredBy' => esc_html__( 'Sponsored by whitestudio.team', 'wp-social-chat-button' ),
             ),
         ) );
     }

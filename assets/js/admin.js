@@ -59,16 +59,16 @@
             '</tr></thead><tbody>';
             wpscb_state.contacts.forEach((c,i)=>{
                 html += '<tr data-index="'+i+'">';
-                html += '<td>'+escapeHtml(c.name || '-')+'</td>';
-                html += '<td>'+escapeHtml(c.value)+'</td>';
-                html += '<td><span class="wpscb-network-tag">'+networkIconSvg(c.network)+escapeHtml(capitalize(c.network))+'</span></td>';
-                html += '<td>'+renderPhotoCell(c)+'</td>';
+                html += '<td>'+wpscb_escapeHtml(c.name || '-')+'</td>';
+                html += '<td>'+wpscb_escapeHtml(c.value)+'</td>';
+                html += '<td><span class="wpscb-network-tag">'+wpscb_networkIconSvg(c.network)+wpscb_escapeHtml(wpscb_capitalize(c.network))+'</span></td>';
+                html += '<td>'+wpscb_renderPhotoCell(c)+'</td>';
                 html += '<td><div class="wpscb-actions"><button type="button" class="wpscb-btn secondary wpscb-edit" aria-label="Edit">✎</button><button type="button" class="wpscb-btn danger wpscb-delete" aria-label="Delete">🗑</button></div></td>';
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
         } else {
-            html += '<div class="wpscb-empty">'+escapeHtml(WPSCB.i18n.emptyMessage)+'</div>';
+            html += '<div class="wpscb-empty">'+wpscb_escapeHtml(WPSCB.i18n.emptyMessage)+'</div>';
         }
         $app.html(html);
     }
@@ -78,11 +78,11 @@
         const id = c ? (c.photo||0) : (photo||0);
         const url = c ? c.photo_url : '';
         if((id && parseInt(id,10) > 0) || url){
-            const src = url || getAttachmentUrl(id);
-            return '<img class="wpscb-avatar" src="'+escapeHtml(src)+'" alt="" />';
+            const src = url || wpscb_getAttachmentUrl(id);
+            return '<img class="wpscb-avatar" src="'+wpscb_escapeHtml(src)+'" alt="" />';
         }
         const net = c ? c.network : '';
-        return '<span class="wpscb-avatar wpscb-avatar-icon" aria-hidden="true">'+networkIconSvg(net)+'</span>';
+        return '<span class="wpscb-avatar wpscb-avatar-icon" aria-hidden="true">'+wpscb_networkIconSvg(net)+'</span>';
     }
 
     function wpscb_getAttachmentUrl(id){
@@ -90,48 +90,48 @@
         return WPSCB.mediaBase ? (WPSCB.mediaBase + id) : (WPSCB.uploadsBase ? (WPSCB.uploadsBase + '/' + id) : '');
     }
 
-        function openModal(editIndex){
-        if(state.modalOpen) return;
-        state.modalOpen = true;
-                state.editIndex = (typeof editIndex === 'number') ? editIndex : null;
-                const editing = state.editIndex !== null;
-                const existing = editing ? state.contacts[state.editIndex] : normalizeContact({ network:'whatsapp', value:'', name:'', photo:0, message:'', availability:null });
-                    const dropdown = buildNetworkDropdown(existing.network);
+        function wpscb_openModal(editIndex){
+        if(wpscb_state.modalOpen) return;
+        wpscb_state.modalOpen = true;
+                wpscb_state.editIndex = (typeof editIndex === 'number') ? editIndex : null;
+                const editing = wpscb_state.editIndex !== null;
+                const existing = editing ? wpscb_state.contacts[wpscb_state.editIndex] : wpscb_normalizeContact({ network:'whatsapp', value:'', name:'', photo:0, message:'', availability:null });
+                    const dropdown = wpscb_buildNetworkDropdown(existing.network);
                 const titleText = editing ? WPSCB.i18n.editContact : WPSCB.i18n.addContact;
                 const markup = `
         <div class="wpscb-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="wpscb-modal-title" aria-describedby="wpscb-modal-desc">
           <div class="wpscb-modal">
                         <header>
-                            <span id="wpscb-modal-title">${escapeHtml(titleText)}</span>
+                            <span id="wpscb-modal-title">${titleText}</span>
                         </header>
             <div class="body">
                 <div class="notice notice-error wpscb-alert" id="wpscb-top-alert" style="display:none"><p></p></div>
-                <p id="wpscb-modal-desc" style="margin-top:0;color:#475569;font-size:13px">${escapeHtml(WPSCB.i18n.selectNetwork)} ${escapeHtml(WPSCB.i18n.searchPlaceholder)}</p>
+                <p id="wpscb-modal-desc" style="margin-top:0;color:#475569;font-size:13px">${WPSCB.i18n.selectNetwork} ${WPSCB.i18n.searchPlaceholder}</p>
                             <div class="wpscb-field">
-                                <label>${escapeHtml(WPSCB.i18n.name)}</label>
-                                <input type="text" id="wpscb-name" value="${escapeHtml(existing.name)}" />
+                                <label>${WPSCB.i18n.name}</label>
+                                <input type="text" id="wpscb-name" value="${existing.name}" />
                             </div>
               <div class="wpscb-field">
-                     <label>${escapeHtml(WPSCB.i18n.network)}</label>
+                     <label>${WPSCB.i18n.network}</label>
                      ${dropdown}
               </div>
                             <div class="wpscb-field">
                                 <label id="wpscb-value-label"></label>
-                                                                <input type="text" id="wpscb-value" value="${escapeHtml(existing.value)}" />
+                                                                <input type="text" id="wpscb-value" value="${existing.value}" />
                             </div>
                                                         <div class="wpscb-field">
-                                                                <label>${escapeHtml(WPSCB.i18n.message)}</label>
-                                                                <input type="text" id="wpscb-message" value="${escapeHtml(existing.message || WPSCB.i18n.defaultMessage)}" />
+                                                                <label>${WPSCB.i18n.message}</label>
+                                                                <input type="text" id="wpscb-message" value="${existing.message || WPSCB.i18n.defaultMessage}" />
                                                         </div>
                             <div class="wpscb-field">
-                                <label>${escapeHtml(WPSCB.i18n.photo)}</label>
-                                <div><button type="button" class="wpscb-btn secondary" id="wpscb-pick-media">${escapeHtml(WPSCB.i18n.chooseUpload)}</button></div>
-                                                <div class="wpscb-media-preview" id="wpscb-media-preview">${(existing.photo_url||existing.photo)?('<img src="'+escapeHtml(existing.photo_url||getAttachmentUrl(existing.photo))+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+escapeHtml(WPSCB.i18n.remove)+'</button>'):('<span style="font-size:12px;color:#64748b">'+escapeHtml(WPSCB.i18n.noImageSelected)+'</span>')}</div>
+                                <label>${WPSCB.i18n.photo}</label>
+                                <div><button type="button" class="wpscb-btn secondary" id="wpscb-pick-media">${WPSCB.i18n.chooseUpload}</button></div>
+                                                <div class="wpscb-media-preview" id="wpscb-media-preview">${(existing.photo_url||existing.photo)?('<img src="'+wpscb_escapeHtml(existing.photo_url||wpscb_getAttachmentUrl(existing.photo))+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+WPSCB.i18n.remove+'</button>'):('<span style="font-size:12px;color:#64748b">'+WPSCB.i18n.noImageSelected+'</span>')}</div>
                                 <input type="hidden" id="wpscb-photo" value="${existing.photo}" />
                             </div>
                             <div class="wpscb-field">
                                 <button type="button" class="wpscb-btn outline wpscb-accordion-toggle" id="wpscb-availability-toggle">
-                                    <span>${escapeHtml(WPSCB.i18n.availability)}</span>
+                                    <span>${WPSCB.i18n.availability}</span>
                                     <span class="wpscb-accordion-arrow">▾</span>
                                 </button>
                                 <div class="wpscb-availability-panel" id="wpscb-availability-panel" style="display:none;margin-top:12px;">
@@ -140,55 +140,55 @@
                                         return `
                                         <div class="wpscb-day-row" data-day="${d}">
                                             <div class="wpscb-day-header">
-                                                <span class="wpscb-day-label">${escapeHtml(WPSCB.i18n['day_'+d])}</span>
+                                                <span class="wpscb-day-label">${wpscb_escapeHtml(WPSCB.i18n['day_'+d])}</span>
                                                 <div class="wpscb-day-actions">
-                                                    <button type="button" class="button button-small wpscb-add-slot" data-day="${d}">${escapeHtml(WPSCB.i18n.addTimeRange)}</button>
-                                                    <button type="button" class="button button-link-delete wpscb-clear-day" data-day="${d}">${escapeHtml(WPSCB.i18n.clearDay)}</button>
+                                                    <button type="button" class="button button-small wpscb-add-slot" data-day="${d}">${wpscb_escapeHtml(WPSCB.i18n.addTimeRange)}</button>
+                                                    <button type="button" class="button button-link-delete wpscb-clear-day" data-day="${d}">${wpscb_escapeHtml(WPSCB.i18n.clearDay)}</button>
                                                 </div>
                                             </div>
                                             <div class="wpscb-slots" data-day="${d}">
-                                                ${slots.length ? slots.map((r,i)=>slotRowTpl(d,i,r.start,r.end)).join('') : ''}
+                                                ${slots.length ? slots.map((r,i)=>wpscb_slotRowTpl(d,i,r.start,r.end)).join('') : ''}
                                             </div>
                                         </div>`;
                                     }).join('')}
                                     <div class="wpscb-copyall-row">
-                                        <button type="button" class="button wpscb-copy-to-all" id="wpscb-copy-to-all">${escapeHtml(WPSCB.i18n.copyToAll)}</button>
+                                        <button type="button" class="button wpscb-copy-to-all" id="wpscb-copy-to-all">${wpscb_escapeHtml(WPSCB.i18n.copyToAll)}</button>
                                     </div>
                                 </div>
                             </div>
               <div class="wpscb-field" id="wpscb-error" style="display:none;color:#dc2626;font-size:13px"></div>
             </div>
             <footer>
-                            <button type="button" class="wpscb-btn" id="wpscb-save">${escapeHtml(editing ? WPSCB.i18n.update : WPSCB.i18n.save)}</button>
-              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel">${escapeHtml(WPSCB.i18n.cancel)}</button>
+                            <button type="button" class="wpscb-btn" id="wpscb-save">${wpscb_escapeHtml(editing ? WPSCB.i18n.update : WPSCB.i18n.save)}</button>
+              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
             </footer>
           </div>
         </div>`;
-        state.modal = $(markup).appendTo('body');
-        updateValueLabel();
-        state.modal.on('change','#wpscb-network', updateValueLabel);
-        initNetworkDropdown(existing.network);
-        state.modal.on('click','#wpscb-cancel', closeModal);
-                state.modal.on('click','#wpscb-save', saveContact);
-                state.modal.on('click','#wpscb-pick-media', openMediaFrame);
-                state.modal.on('click','#wpscb-remove-media', function(){ $('#wpscb-photo').val('0'); $('#wpscb-media-preview').html('<span style="font-size:12px;color:#64748b">'+escapeHtml(WPSCB.i18n.noImageSelected)+'</span>'); });
+        wpscb_state.modal = $(markup).appendTo('body');
+        wpscb_updateValueLabel();
+        wpscb_state.modal.on('change','#wpscb-network', wpscb_updateValueLabel);
+        wpscb_initNetworkDropdown(existing.network);
+        wpscb_state.modal.on('click','#wpscb-cancel', wpscb_closeModal);
+                wpscb_state.modal.on('click','#wpscb-save', wpscb_saveContact);
+                wpscb_state.modal.on('click','#wpscb-pick-media', wpscb_openMediaFrame);
+                wpscb_state.modal.on('click','#wpscb-remove-media', function(){ $('#wpscb-photo').val('0'); $('#wpscb-media-preview').html('<span style="font-size:12px;color:#64748b">'+wpscb_escapeHtml(WPSCB.i18n.noImageSelected)+'</span>'); });
         // Accordion toggle
-        state.modal.on('click','#wpscb-availability-toggle', function(){
+        wpscb_state.modal.on('click','#wpscb-availability-toggle', function(){
             const $panel = $('#wpscb-availability-panel');
             const $arrow = $(this).find('.wpscb-accordion-arrow');
             $panel.slideToggle(200);
             $arrow.toggleClass('open');
         });
         // Add slot handler
-        state.modal.on('click','.wpscb-add-slot', function(){
+        wpscb_state.modal.on('click','.wpscb-add-slot', function(){
             const day = $(this).data('day');
             const $slotsWrap = $('.wpscb-slots[data-day="'+day+'"]');
             const index = $slotsWrap.children('.wpscb-slot-row').length;
-            const rowHtml = slotRowTpl(day,index,'09:00','17:00');
+            const rowHtml = wpscb_slotRowTpl(day,index,'09:00','17:00');
             $slotsWrap.append(rowHtml);
         });
         // Remove slot
-        state.modal.on('click','.wpscb-remove-slot', function(){
+        wpscb_state.modal.on('click','.wpscb-remove-slot', function(){
             $(this).closest('.wpscb-slot-row').remove();
             // reindex
             $('.wpscb-slots').each(function(){
@@ -198,12 +198,12 @@
             });
         });
         // Clear day slots
-        state.modal.on('click','.wpscb-clear-day', function(){
+        wpscb_state.modal.on('click','.wpscb-clear-day', function(){
             const day = $(this).data('day');
             $('.wpscb-slots[data-day="'+day+'"]').empty();
         });
         // Copy first non-empty day to all empty days
-        state.modal.on('click','#wpscb-copy-to-all', function(){
+        wpscb_state.modal.on('click','#wpscb-copy-to-all', function(){
             let sourceSlots = null;
             $('.wpscb-slots').each(function(){
                 const rows = $(this).children('.wpscb-slot-row');
@@ -222,7 +222,7 @@
                 if(!rows.length){
                     const day = $(this).data('day');
                     sourceSlots.forEach((r,i)=>{
-                        $(this).append(slotRowTpl(day,i,r.start,r.end));
+                        $(this).append(wpscb_slotRowTpl(day,i,r.start,r.end));
                     });
                 }
             });
@@ -230,12 +230,12 @@
         // Focus first input for accessibility
         setTimeout(function(){ $('#wpscb-name').trigger('focus'); }, 0);
         // Close on Escape
-        $(document).on('keydown.wpscb-modal', function(e){ if(e.key === 'Escape'){ closeModal(); } });
+        $(document).on('keydown.wpscb-modal', function(e){ if(e.key === 'Escape'){ wpscb_closeModal(); } });
     }
 
-    function updateValueLabel(){
+    function wpscb_updateValueLabel(){
         const network = $('#wpscb-network').val();
-        const data = state.networks[network];
+        const data = wpscb_state.networks[network];
         if(!data) return;
         const map = {
             phone: WPSCB.i18n.phone,
@@ -250,18 +250,18 @@
         $('#wpscb-value').attr('placeholder', label);
     }
 
-    function buildNetworkDropdown(selected){
-        return '<div class="wpscb-select-wrapper"><div class="wpscb-md-select" tabindex="0" id="wpscb-select-trigger"><span class="current-label">'+networkIconSvg(selected)+'<span>'+escapeHtml(networkLabel(selected))+'</span></span><span class="dropdown-arrow">▾</span></div><input type="hidden" id="wpscb-network" value="'+escapeHtml(selected)+'" /><div class="wpscb-dropdown" style="display:none" id="wpscb-dropdown"><input type="text" placeholder="'+escapeHtml(WPSCB.i18n.searchPlaceholder)+'" class="wpscb-dropdown-search" id="wpscb-search" />'+buildNetworkItems(selected)+'</div></div>';
+    function wpscb_buildNetworkDropdown(selected){
+        return '<div class="wpscb-select-wrapper"><div class="wpscb-md-select" tabindex="0" id="wpscb-select-trigger"><span class="current-label">'+wpscb_networkIconSvg(selected)+'<span>'+wpscb_escapeHtml(wpscb_networkLabel(selected))+'</span></span><span class="dropdown-arrow">▾</span></div><input type="hidden" id="wpscb-network" value="'+wpscb_escapeHtml(selected)+'" /><div class="wpscb-dropdown" style="display:none" id="wpscb-dropdown"><input type="text" placeholder="'+wpscb_escapeHtml(WPSCB.i18n.searchPlaceholder)+'" class="wpscb-dropdown-search" id="wpscb-search" />'+buildNetworkItems(selected)+'</div></div>';
     }
     function buildNetworkItems(selected){
-        const items = Object.keys(state.networks).map(key=>{
-            const data = state.networks[key];
+        const items = Object.keys(wpscb_state.networks).map(key=>{
+            const data = wpscb_state.networks[key];
             const active = key===selected ? ' style="background:#e0f2fe"' : '';
-            return '<div class="wpscb-dropdown-item" data-value="'+key+'">'+networkIconSvg(key)+'<span>'+escapeHtml(data.label)+'</span></div>';
+            return '<div class="wpscb-dropdown-item" data-value="'+key+'">'+wpscb_networkIconSvg(key)+'<span>'+wpscb_escapeHtml(data.label)+'</span></div>';
         });
         return items.join('');
     }
-    function initNetworkDropdown(selected){
+    function wpscb_initNetworkDropdown(selected){
         const $wrap = $('.wpscb-select-wrapper');
         const $trigger = $('#wpscb-select-trigger');
         const $dropdown = $('#wpscb-dropdown');
@@ -288,7 +288,7 @@
         $dropdown.on('click','.wpscb-dropdown-item', function(){
             const val = $(this).data('value');
             $('#wpscb-network').val(val).trigger('change');
-            $('.current-label').html(networkIconSvg(val)+'<span>'+escapeHtml(networkLabel(val))+'</span>');
+            $('.current-label').html(wpscb_networkIconSvg(val)+'<span>'+wpscb_escapeHtml(wpscb_networkLabel(val))+'</span>');
             $dropdown.hide();
             $trigger.removeClass('open');
         });
@@ -301,7 +301,7 @@
             });
             if(!$dropdown.find('.wpscb-dropdown-item:visible').length){
                 if(!$dropdown.find('.wpscb-dropdown-empty').length){
-                    $dropdown.append('<div class="wpscb-dropdown-empty">'+escapeHtml(WPSCB.i18n.noResults)+'</div>');
+                    $dropdown.append('<div class="wpscb-dropdown-empty">'+wpscb_escapeHtml(WPSCB.i18n.noResults)+'</div>');
                 }
             } else { $dropdown.find('.wpscb-dropdown-empty').remove(); }
         });
@@ -313,11 +313,11 @@
             }
         });
     }
-    function networkLabel(key){
-        const d = state.networks[key];
+    function wpscb_networkLabel(key){
+        const d = wpscb_state.networks[key];
         return d ? d.label : WPSCB.i18n.selectNetwork;
     }
-    function networkIconSvg(key){
+    function wpscb_networkIconSvg(key){
         // Brand-style (approximate) inline SVG icons (non-official) sized 18x18
         const svg = {
             whatsapp: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.66 15.06L2 22l4.94-1.3A10 10 0 1 0 12 2Z"/><path fill="#fff" d="M9.5 7.9c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.4 0-.6.3-.2.3-.8.7-.8 1.8s.8 2.1 1 2.2c.1.1 1.6 2.6 4 3.5 2 .8 2.4.7 2.8.6.4-.1 1.4-.6 1.6-1.3.2-.6.2-1.2.1-1.3-.1-.1-.2-.2-.5-.3s-1.4-.7-1.6-.7-.4-.1-.6.2c-.2.3-.7.8-.8.9-.1.1-.3.1-.5 0s-1-.4-1.9-1.2c-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5s.3-.3.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.5-1.3-.7-1.7Z"/></svg>',
@@ -339,27 +339,31 @@
             reddit_chat: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#FF4500"/><circle cx="8.5" cy="12" r="1.5" fill="#fff"/><circle cx="15.5" cy="12" r="1.5" fill="#fff"/><path fill="#fff" d="M7.5 14c.9 1 2.6 1.7 4.5 1.7S15.6 15 16.5 14c.3-.3-.1-.8-.5-.6-.8.4-2 1-3.5 1s-2.7-.6-3.5-1c-.4-.2-.8.3-.5.6Z"/></svg>',
             youtube_chat: '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="6" width="18" height="12" rx="3" fill="#FF0000"/><path fill="#fff" d="M10 9.5v5l5-2.5-5-2.5Z"/></svg>',
             slack: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4A154B" d="M3 10a2 2 0 1 1 4 0v1H5a2 2 0 0 1-2-2Zm4 0V8a2 2 0 1 1 4 0v2H7Zm0 4H5a2 2 0 1 0 2 2v-2Zm4 0v2a2 2 0 1 0 2-2h-2Zm6-3a2 2 0 1 1 0-4h2a2 2 0 1 1 0 4h-2Zm0 2h2a2 2 0 1 1-2 2v-2Zm-4-6h2a2 2 0 1 1-2-2v2Zm0 6h2v2a2 2 0 1 1-2-2Z"/></svg>',
-            teams: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" rx="5" fill="#464EB8"/><path fill="#fff" d="M6 8h12v2h-5v8H11v-8H6V8Z"/></svg>'
+            teams: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" rx="5" fill="#464EB8"/><path fill="#fff" d="M6 8h12v2h-5v8H11v-8H6V8Z"/></svg>',
+            VK: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4C75A3" d="M12 2C6.48 2 2 6.2 2 11c0 4.8 3.9 8.7 8.8 8.9v3.1l3.2-1.7c.9.1 1.8.2 2.7.2 5.5 0 10-3.6 10-8.1S17.5 2 12 2Z"/></svg>',
+            eitaa: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" rx="3" fill="#E37600"/><path d="M6.1 21.5c-.8-.3-1.5-1-1.9-1.8-.2-.7-.2-1.5-.1-6.8.1-5.7.1-5.4.3-6.3.1-.5.5-1.3.8-1.7 1-1.5 2.5-2.4 4.3-2.8.4-.1.9-.1 5.7-.1 5.9 0 5.7 0 6.7.3 1.7.5 3.1 1.5 4.1 2.9.3.9.3 1 .3 3.4v2.1l-.4.3c-.5.4-1.2 1-2.2 2-1.1 1.2-2.3 2.3-2.8 2.7-1.2 1-2.4 1.6-3.5 1.8-.6.1-1.6.1-2.2-.1-.5-.1-.5-.2-.7.4-.2.5-.3 1-.3 1.5v.4l-.1 0c-1.1-.2-2.3-1.2-2.7-2.4-.1-.5-.2-.9-.2-1.2v-.3l-.3-.3c-.6-.6-1-1.2-1.1-2-.2-1.1.3-2.4 1.4-3.5 1.2-1.2 3-2.2 4.7-2.5.6-.1 1.7-.2 2.3-.1 1.1.2 2 .7 2.5 1.5.2.3.2.3.2.5 0 .2-.1.4-.2.5-.4.6-1.7 1.3-3.2 1.6-2.5.6-4.1-.1-3.8-1.7 0-.2.1-.3.1-.3 0 0-.3.1-.5.3-.5.3-.9.9-1 1.5-.1.1-.1.4 0 .6 0 .3.1.4.2.7.1.2.3.4.4.5l.2.2-.1.1c-.2.3-.6.8-.6 1.1-.2.5-.2.8-.1 1.7.1.4.4 1 .7 1.4.2.3.8.7.8.7 0 0 .1-.1.1-.1 0-.2.2-.9.3-1.3.4-1 1.3-1.9 2.7-2.6.2-.1.9-.4 1.5-.7 1.3-.6 2-.9 2.4-1.2 1.1-.8 1.8-2 2-3.4.1-.5.1-1.5 0-2.1-.3-2.3-2.1-3.9-4.6-4.1-2.8-.3-6.3 1.8-8.5 5.1-1.1 1.6-1.8 3.4-2.1 5.1-.1.7-.2 2 0 2.6.2 1.6.8 2.9 1.8 3.9.6.7 1.2 1.1 1.8 1.2 2.3 1.1 4.8 1.1 7 .1.9-.4 1.9-1.1 2.9-2.1.9-1 1.6-1.8 3.4-4.2.9-1.3 1.8-2.2 2.1-2.5l.1-.1v2.9c0 2.8 0 2.9-.1 3.4-.6 2.5-2.4 4.4-4.9 4.9l-.4.1h-5.5c-4.5.1-5.6 0-5.9-.1z" fill="#FFF"/></svg>',
+            soroush: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" rx="3" fill="#0099CC"/><path d="M5.97 23.94c-.41-.07-.82-.23-1.33-.46-.9-.52-1.58-1.45-1.8-2.47-.09-.4-.1-.9-.08-4.02.02-3.33.01-3.22.16-3.77.08-.27.3-.75.46-.99.5-.75 1.12-1.33 1.8-1.68.22-.1.52-.15 3.38-.15 3.49 0 3.37 0 3.94.18 1.05.24 1.97.82 2.41 1.67.18.52.19.6.21 1.98l.01 1.24-.22.15c-.31.21-.72.59-1.29 1.2-.66.7-1.32 1.35-1.66 1.62-.73.59-1.4.92-2.08 1.04-.35.06-.94.04-1.28-.05-.31-.08-.29-.09-.41.26-.11.23-.18.49-.18.86l-.02.23-.08-.02c-.68-.13-1.35-.72-1.61-1.39-.06-.18-.14-.41-.14-.68l-.01-.19-.17-.16c-.36-.33-.59-.73-.67-1.15-.12-.67.19-1.42.86-2.1.71-.72 1.75-1.28 2.77-1.5.37-.08 1.02-.1 1.34-.04.64.11 1.15.43 1.48.91.1.15.11.17.1.31 0 .11-.05.21-.1.28-.26.36-1.03.75-1.86.94-1.47.33-2.4-.08-2.25-.98.01-.09.02-.17.02-.17-.02-.02-.16.06-.32.17-.27.19-.5.55-.59.9-.02.09-.03.23-.02.36.01.18.03.25.11.41.05.1.15.25.23.33l.13.14-.05.07c-.09.13-.21.34-.38.68-.11.28-.11.46-.06 1.01.06.26.23.61.41.82.13.16.44.43.49.43.01 0 .02-.03.02-.06 0-.13.1-.54.18-.74.24-.59.75-1.09 1.57-1.53.14-.07.53-.26.88-.42.76-.35 1.17-.57 1.4-.73.66-.46 1.06-1.15 1.19-2.02.05-.32.05-.91 0-1.23-.21-1.36-1.22-2.29-2.69-2.44-1.63-.17-3.71 1.09-4.99 2.86-.62.94-1.04 1.99-1.22 3.04-.07.41-.09 1.16-.05 1.53.11.95.46 1.72 1.06 2.32.23.22.48.4.64.52 1.32.63 2.78.64 4.07.04.56-.26 1.1-.67 1.69-1.26.57-.57.95-1.05 2.01-2.49.58-.79 1.04-1.32 1.27-1.45l.08-.05-.01 1.72c-.01 1.67-.01 1.73-.07 1.99-.33 1.49-1.42 2.59-2.9 2.93l-.26.06-3.22.01c-2.64 0-3.26-.01-3.46-.03z" fill="#FFF"/></svg>'
+
         };
         return svg[key] || '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#94a3b8"/></svg>';
     }
 
-    function closeModal(){
-        if(!state.modalOpen) return;
+    function wpscb_closeModal(){
+        if(!wpscb_state.modalOpen) return;
         $(document).off('click.wpscb-dropdown');
         $(document).off('keydown.wpscb-modal');
-        state.modal.remove();
-        state.modalOpen = false;
-        state.editIndex = null;
+        wpscb_state.modal.remove();
+        wpscb_state.modalOpen = false;
+        wpscb_state.editIndex = null;
     }
 
-    function saveContact(){
+    function wpscb_saveContact(){
         const network = $('#wpscb-network').val();
         const value = $('#wpscb-value').val().trim();
     const name = $('#wpscb-name').val().trim();
     const message = $('#wpscb-message').val() ? $('#wpscb-message').val().trim() : '';
         const photo = $('#wpscb-photo').val();
-        const data = state.networks[network];
+        const data = wpscb_state.networks[network];
         if(!data){ return; }
         const pattern = new RegExp(data.pattern.slice(1, -1));
         if(!value || (data.pattern && !pattern.test(value))){
@@ -371,13 +375,13 @@
         $('.wpscb-field-error').hide();
         let hasError = false;
         if(!network){
-            fieldError('#wpscb-network', WPSCB.i18n.selectNetworkFirst); hasError = true;
+            wpscb_fieldError('#wpscb-network', WPSCB.i18n.selectNetworkFirst); hasError = true;
         }
         if(!value){
-            fieldError('#wpscb-value', WPSCB.i18n.valueRequired); hasError = true;
+            wpscb_fieldError('#wpscb-value', WPSCB.i18n.valueRequired); hasError = true;
         }
         if(!name){
-            fieldError('#wpscb-name', WPSCB.i18n.fieldRequired); hasError = true;
+            wpscb_fieldError('#wpscb-name', WPSCB.i18n.fieldRequired); hasError = true;
         }
         if(hasError){ return; }
         // Collect availability (new multi-slot schema)
@@ -392,42 +396,42 @@
                 }
             });
         });
-        const payload = { action: state.editIndex!==null ? 'wpscb_update_contact' : 'wpscb_save_contact', nonce: WPSCB.nonce, network, value, name, message, photo, availability: JSON.stringify(availability), index: state.editIndex };
+        const payload = { action: wpscb_state.editIndex!==null ? 'wpscb_update_contact' : 'wpscb_save_contact', nonce: WPSCB.nonce, network, value, name, message, photo, availability: JSON.stringify(availability), index: wpscb_state.editIndex };
         $.post(WPSCB.ajaxUrl, payload, function(resp){
             if(!resp.success){
                 $('#wpscb-error').text(resp.data.message || WPSCB.i18n.errorSaving).show();
                 return;
             }
-            state.contacts = (resp.data.contacts || []).map(normalizeContact);
-            closeModal();
+            wpscb_state.contacts = (resp.data.contacts || []).map(wpscb_normalizeContact);
+            wpscb_closeModal();
             // Inject a WP-style success notice on panel
-            const noticeMsg = state.editIndex!==null ? WPSCB.i18n.updatedContact : WPSCB.i18n.savedContact;
+            const noticeMsg = wpscb_state.editIndex!==null ? WPSCB.i18n.updatedContact : WPSCB.i18n.savedContact;
             const $panel = $('#wpscb-app');
             if($panel.length){
-                $('<div class="notice notice-success is-dismissible wpscb-alert"><p>'+escapeHtml(noticeMsg)+'</p></div>').insertBefore($panel).delay(4000).fadeOut();
+                $('<div class="notice notice-success is-dismissible wpscb-alert"><p>'+wpscb_escapeHtml(noticeMsg)+'</p></div>').insertBefore($panel).delay(4000).fadeOut();
             }
-            render();
+            wpscb_render();
         });
     }
 
-    function deleteContact(index){
+    function wpscb_deleteContact(index){
         // Show MD3-style confirmation modal instead of native confirm
-        const contact = state.contacts[index];
+        const contact = wpscb_state.contacts[index];
         if(!contact) return;
         const contactName = contact.name || contact.value || WPSCB.i18n.selectNetwork;
         const markup = `
         <div class="wpscb-modal-backdrop wpscb-delete-modal" role="dialog" aria-modal="true" aria-labelledby="wpscb-delete-title">
           <div class="wpscb-modal">
             <header>
-              <span id="wpscb-delete-title">${escapeHtml(WPSCB.i18n.deleteContactTitle)}</span>
+              <span id="wpscb-delete-title">${wpscb_escapeHtml(WPSCB.i18n.deleteContactTitle)}</span>
             </header>
             <div class="body">
-              <p style="margin:0;font-size:14px;color:#475569">${escapeHtml(WPSCB.i18n.deleteContactMessage)}</p>
-              <p style="margin-top:12px;font-weight:500;font-size:14px;color:#1e293b">${escapeHtml(contactName)}</p>
+              <p style="margin:0;font-size:14px;color:#475569">${wpscb_escapeHtml(WPSCB.i18n.deleteContactMessage)}</p>
+              <p style="margin-top:12px;font-weight:500;font-size:14px;color:#1e293b">${wpscb_escapeHtml(contactName)}</p>
             </div>
             <footer>
-              <button type="button" class="wpscb-btn danger" id="wpscb-confirm-delete">${escapeHtml(WPSCB.i18n.deleteBtn)}</button>
-              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel-delete">${escapeHtml(WPSCB.i18n.cancel)}</button>
+              <button type="button" class="wpscb-btn danger" id="wpscb-confirm-delete">${wpscb_escapeHtml(WPSCB.i18n.deleteBtn)}</button>
+              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel-delete">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
             </footer>
           </div>
         </div>`;
@@ -437,12 +441,12 @@
             $(document).off('keydown.wpscb-delete-modal');
             $.post(WPSCB.ajaxUrl, { action: 'wpscb_delete_contact', nonce: WPSCB.nonce, index }, function(resp){
                 if(resp.success){
-                    state.contacts = (resp.data.contacts || []).map(normalizeContact);
+                    wpscb_state.contacts = (resp.data.contacts || []).map(wpscb_normalizeContact);
                     const $panel = $('#wpscb-app');
                     if($panel.length){
-                        $('<div class="notice notice-success is-dismissible wpscb-alert"><p>'+escapeHtml(WPSCB.i18n.deletedContact)+'</p></div>').insertBefore($panel).delay(4000).fadeOut();
+                        $('<div class="notice notice-success is-dismissible wpscb-alert"><p>'+wpscb_escapeHtml(WPSCB.i18n.deletedContact)+'</p></div>').insertBefore($panel).delay(4000).fadeOut();
                     }
-                    render();
+                    wpscb_render();
                 } else {
                     alert(resp.data.message || WPSCB.i18n.errorDeleting);
                 }
@@ -461,14 +465,14 @@
     }
 
     function wpscb_bindEvents(){
-        $('#wpscb-app').on('click','#wpscb-add', function(){ openModal(); });
+        $('#wpscb-app').on('click','#wpscb-add', function(){ wpscb_openModal(); });
         $('#wpscb-app').on('click','.wpscb-delete', function(){
             const idx = $(this).closest('tr').data('index');
-            deleteContact(idx);
+            wpscb_deleteContact(idx);
         });
         $('#wpscb-app').on('click','.wpscb-edit', function(){
             const idx = $(this).closest('tr').data('index');
-            openModal(idx);
+            wpscb_openModal(idx);
         });
         $('#wpscb-settings-form').on('submit', function(e){
             e.preventDefault();
@@ -476,7 +480,7 @@
             const position = $(this).find('select[name="position"]').val();
             $.post(WPSCB.ajaxUrl, { action: 'wpscb_save_settings', nonce: WPSCB.nonce, enabled, position }, function(resp){
                 if(resp.success){
-                    $('<div class="updated notice is-dismissible wpscb-notice"><p>'+escapeHtml(WPSCB.i18n.settingsSaved)+'</p></div>').insertAfter('#wpscb-settings-form h1').delay(3000).fadeOut();
+                    $('<div class="updated notice is-dismissible wpscb-notice"><p>'+wpscb_escapeHtml(WPSCB.i18n.settingsSaved)+'</p></div>').insertAfter('#wpscb-settings-form h1').delay(3000).fadeOut();
                 } else {
                     alert(resp.data.message || WPSCB.i18n.errorSavingSettings);
                 }
@@ -484,7 +488,7 @@
         });
     }
 
-    function fieldError(selector, message){
+    function wpscb_fieldError(selector, message){
         const $input = $(selector);
         if(!$input.length) return;
         let $wrap = $input.closest('.wpscb-field');
@@ -499,7 +503,7 @@
 
     // WP Media frame integration (top-level)
     let mediaFrame = null;
-    function openMediaFrame(){
+    function wpscb_openMediaFrame(){
         const wpMedia = window.wp && window.wp.media;
         if(!wpMedia){
             alert(WPSCB.i18n.mediaUnavailable);
@@ -510,29 +514,60 @@
         mediaFrame.on('select', function(){
             const attachment = mediaFrame.state().get('selection').first().toJSON();
             $('#wpscb-photo').val(attachment.id);
-            $('#wpscb-media-preview').html('<img src="'+escapeHtml(attachment.url)+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+escapeHtml(WPSCB.i18n.remove)+'</button>');
+            $('#wpscb-media-preview').html('<img src="'+wpscb_escapeHtml(attachment.url)+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+wpscb_escapeHtml(WPSCB.i18n.remove)+'</button>');
         });
         mediaFrame.open();
     }
 
     function wpscb_escapeHtml(str){
-        if(!str) return '';
-        return String(str).replace(/[&<>"]/g, function(c){
-            return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c];
+        // Handle null, undefined, numbers, booleans safely
+        if(str === null || str === undefined) return '';
+        if(typeof str === 'number' || typeof str === 'boolean') return String(str);
+
+        // Convert to string safely and handle objects
+        let safeStr;
+        try {
+            safeStr = String(str);
+        } catch(e) {
+            return '';
+        }
+
+        // Comprehensive HTML entity encoding including single quotes and forward slash
+        return safeStr.replace(/[&<>"'\/\x00-\x1f\x7f-\x9f]/g, function(c){
+            const entityMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#x27;',  // More secure than &apos; which is not supported in HTML4
+                '/': '&#x2F;',  // Prevent closing tags injection
+                '\x00': '',     // Remove null characters
+                '\x0A': '&#x0A;', // Line feed
+                '\x0D': '&#x0D;'  // Carriage return
+            };
+
+            // Handle control characters (0x00-0x1f) and extended ASCII (0x7f-0x9f)
+            const code = c.charCodeAt(0);
+            if(code <= 0x1f || (code >= 0x7f && code <= 0x9f)) {
+                if(entityMap[c]) return entityMap[c];
+                return '&#x' + code.toString(16).toUpperCase().padStart(2, '0') + ';';
+            }
+
+            return entityMap[c] || c;
         });
     }
-    function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+    function wpscb_capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
 
     // Template for a time range row
-    function slotRowTpl(day, index, start, end){
+    function wpscb_slotRowTpl(day, index, start, end){
         start = start || '09:00';
         end = end || '17:00';
         return '<div class="wpscb-slot-row" data-day="'+day+'" data-index="'+index+'">'
-            + '<span class="wpscb-slot-label">'+escapeHtml(WPSCB.i18n.from)+'</span>'
-            + '<input type="time" class="wpscb-slot-start" value="'+escapeHtml(start)+'" />'
+            + '<span class="wpscb-slot-label">'+wpscb_escapeHtml(WPSCB.i18n.from)+'</span>'
+            + '<input type="time" class="wpscb-slot-start" value="'+wpscb_escapeHtml(start)+'" />'
             + '<span class="wpscb-slot-sep">—</span>'
-            + '<span class="wpscb-slot-label">'+escapeHtml(WPSCB.i18n.to)+'</span>'
-            + '<input type="time" class="wpscb-slot-end" value="'+escapeHtml(end)+'" />'
+            + '<span class="wpscb-slot-label">'+wpscb_escapeHtml(WPSCB.i18n.to)+'</span>'
+            + '<input type="time" class="wpscb-slot-end" value="'+wpscb_escapeHtml(end)+'" />'
             + '<button type="button" class="button button-small button-link-delete wpscb-remove-slot" aria-label="Remove">×</button>'
             + '</div>';
     }
@@ -555,14 +590,14 @@
         console.log('Live preview element found:', $livePreview.length);
 
         // Debounced auto-save
-        function autoSave(){
+        function wpscb_autoSave(){
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(function(){
-                saveAllSettings();
+                wpscb_saveAllSettings();
             }, 800);
         }
 
-        function saveAllSettings(){
+        function wpscb_saveAllSettings(){
             // Gather basic settings
             const basicData = {
                 action: 'wpscb_save_settings',
@@ -596,14 +631,20 @@
                 responsive_scale: $page.find('input[name="responsive_scale"]').is(':checked') ? 1 : 0
             };
 
+            // Debug copyright setting
+            const copyrightCheckbox = $page.find('input[name="hide_copyright"]');
+            console.log('WPSCB Debug - Checkbox found:', copyrightCheckbox.length, 'Checked:', copyrightCheckbox.is(':checked'), 'Value to save:', advData.hide_copyright);
+
             // Save basic first, then advanced
+            console.log('WPSCB Debug - Advanced data being sent:', advData);
             $.post(WPSCB.ajaxUrl, basicData, function(res1){
                 console.log('Basic settings saved:', res1);
                 $.post(WPSCB.ajaxUrl, advData, function(res2){
                     console.log('Advanced settings saved:', res2);
+                    console.log('WPSCB Debug - Server returned hide_copyright:', res2.data && res2.data.settings ? res2.data.settings.hide_copyright : 'not found');
                     if(res2.success){
-                        showSaveIndicator();
-                        updatePreview();
+                        wpscb_showSaveIndicator();
+                        wpscb_updatePreview();
                     }
                 }).fail(function(xhr, status, error) {
                     console.error('Advanced settings save failed:', error, xhr.responseText);
@@ -613,26 +654,26 @@
             });
         }
 
-        function showSaveIndicator(){
+        function wpscb_showSaveIndicator(){
             $indicator.fadeIn(200).delay(1500).fadeOut(300);
         }
 
-        function updatePreview(){
-            console.log('updatePreview called, livePreview length:', $livePreview.length);
+        function wpscb_updatePreview(){
+            console.log('wpscb_updatePreview called, livePreview length:', $livePreview.length);
             if($livePreview.length){
-                renderLivePreview();
+                wpscb_renderLivePreview();
             } else {
                 console.error('Live preview element not found!');
             }
         }
 
         // Live Preview Renderer
-        function renderLivePreview(){
-            console.log('renderLivePreview called');
+        function wpscb_renderLivePreview(){
+            console.log('wpscb_renderLivePreview called');
 
             // Quick test to ensure preview element works
             if(!$livePreview.length){
-                console.error('Live preview element not found in renderLivePreview!');
+                console.error('Live preview element not found in wpscb_renderLivePreview!');
                 return;
             }
 
@@ -668,7 +709,7 @@
             }
 
             // Auto Dark Mode check (8 PM - 7 AM based on WordPress timezone)
-            function getWordPressTime(){
+            function wpscb_getWordPressTime(){
                 const timezone = WPSCB.timezone || {};
                 const offsetHours = timezone.offset || 0;
                 const now = new Date();
@@ -677,7 +718,7 @@
                 return wpTime;
             }
 
-            const wpNow = getWordPressTime();
+            const wpNow = wpscb_getWordPressTime();
             const hour = wpNow.getHours();
             const isDarkTime = hour >= 20 || hour < 7;
 
@@ -812,7 +853,7 @@
                         padding:12px 20px; border-top:1px solid #e2e8f0; background:#f8f9fa; text-align:center;
                     }
                 </style>
-                <div class="wpscb-widget-root ${position === 'left' ? 'wpscb-left' : 'wpscb-right'}">
+                <div class="wpscb-widget-wpscb_root ${position === 'left' ? 'wpscb-left' : 'wpscb-right'}">
                     <button class="wpscb-fab" onclick="wpscb_togglePreviewPopup()" aria-label="Chat">${buttonContent}</button>
                     <div class="wpscb-popup" id="wpscb-preview-popup" style="display:none;">
                         <div class="wpscb-popup-header">
@@ -838,7 +879,7 @@
         }
 
         // Conditional visibility for button_mode
-        function updateConditionals(){
+        function wpscb_updateConditionals(){
             const mode = $page.find('input[name="button_mode"]:checked').val();
             $page.find('.wpscb-conditional').removeClass('show');
             $page.find('.wpscb-conditional[data-show-if="button_mode='+mode+'"]').addClass('show');
@@ -847,18 +888,31 @@
         // Range value display
         $page.on('input', '.wpscb-range', function(){
             $(this).next('.wpscb-range-value').text($(this).val());
-            autoSave();
+            wpscb_autoSave();
         });
 
         // All inputs trigger auto-save
         $page.on('change input', 'input, select', function(){
-            autoSave();
+            if($(this).attr('name') === 'hide_copyright') {
+                console.log('WPSCB Debug - hide_copyright checkbox changed:', $(this).is(':checked'));
+            }
+            wpscb_autoSave();
+        });
+
+        // Handle switch clicks specifically (for hidden checkboxes)
+        $page.on('click', '.wpscb-switch', function(e){
+            const $input = $(this).find('input[type="checkbox"]');
+            if($input.length) {
+                // Toggle the checkbox
+                $input.prop('checked', !$input.prop('checked')).trigger('change');
+                e.preventDefault();
+            }
         });
 
         // Radio change triggers conditional visibility
         $page.on('change', 'input[name="button_mode"]', function(){
-            updateConditionals();
-            autoSave();
+            wpscb_updateConditionals();
+            wpscb_autoSave();
         });
 
         // Media library for button image
@@ -880,14 +934,37 @@
             frame.on('select', function(){
                 const attachment = frame.state().get('selection').first().toJSON();
                 $input.val(attachment.id);
-                $preview.html('<img src="'+escapeHtml(attachment.url)+'" alt="">');
-                autoSave();
+                $preview.html('<img src="'+wpscb_escapeHtml(attachment.url)+'" alt="">');
+                wpscb_autoSave();
             });
             frame.open();
         });
 
+        // Initialize field values from server data
+        function wpscb_initializeFieldValues() {
+            if (WPSCB.advanced) {
+                // Set checkbox values
+                if (typeof WPSCB.advanced.hide_copyright !== 'undefined') {
+                    $page.find('input[name="hide_copyright"]').prop('checked', WPSCB.advanced.hide_copyright == 1);
+                }
+                if (typeof WPSCB.advanced.hide_mobile !== 'undefined') {
+                    $page.find('input[name="hide_mobile"]').prop('checked', WPSCB.advanced.hide_mobile == 1);
+                }
+                if (typeof WPSCB.advanced.auto_dark_mode !== 'undefined') {
+                    $page.find('input[name="auto_dark_mode"]').prop('checked', WPSCB.advanced.auto_dark_mode == 1);
+                }
+                if (typeof WPSCB.advanced.responsive_scale !== 'undefined') {
+                    $page.find('input[name="responsive_scale"]').prop('checked', WPSCB.advanced.responsive_scale == 1);
+                }
+                console.log('WPSCB Debug - Field values initialized from server data');
+            }
+        }
+
+        // Initialize field values
+        wpscb_initializeFieldValues();
+
         // Initialize conditionals
-        updateConditionals();
+        wpscb_updateConditionals();
 
         // Initialize live preview
         if($livePreview.length){
@@ -895,7 +972,7 @@
             // Test content first
             $livePreview.html('<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ffffff;font-size:16px;">🚀 Live Preview Loading...</div>');
             setTimeout(function(){
-                updatePreview();
+                wpscb_updatePreview();
             }, 100);
         }
     }

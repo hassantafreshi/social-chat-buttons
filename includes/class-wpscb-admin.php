@@ -13,16 +13,16 @@ class WPSCB_Admin {
     public function wpscb_register_admin_menu() {
         $cap = 'manage_options';
         add_menu_page(
-            __( 'WP Social Chat Button', 'wp-social-chat-button' ),
-            __( 'WP Social Chat Button', 'wp-social-chat-button' ),
+            esc_html__( 'WP Social Chat Button', 'wp-social-chat-button' ),
+            esc_html__( 'WP Social Chat Button', 'wp-social-chat-button' ),
             $cap,
             'wpscb_panel',
             array( $this, 'wpscb_render_panel_page' ),
             'dashicons-format-chat',
             56
         );
-        add_submenu_page( 'wpscb_panel', __( 'Panel', 'wp-social-chat-button' ), __( 'Panel', 'wp-social-chat-button' ), $cap, 'wpscb_panel', array( $this, 'wpscb_render_panel_page' ) );
-        add_submenu_page( 'wpscb_panel', __( 'Settings', 'wp-social-chat-button' ), __( 'Settings', 'wp-social-chat-button' ), $cap, 'wpscb_settings', array( $this, 'wpscb_render_settings_page' ) );
+        add_submenu_page( 'wpscb_panel', esc_html__( 'Panel', 'wp-social-chat-button' ), esc_html__( 'Panel', 'wp-social-chat-button' ), $cap, 'wpscb_panel', array( $this, 'wpscb_render_panel_page' ) );
+        add_submenu_page( 'wpscb_panel', esc_html__( 'Settings', 'wp-social-chat-button' ), esc_html__( 'Settings', 'wp-social-chat-button' ), $cap, 'wpscb_settings', array( $this, 'wpscb_render_settings_page' ) );
     }
 
     public function wpscb_enqueue_admin_assets( $hook ) {
@@ -33,7 +33,7 @@ class WPSCB_Admin {
         wp_enqueue_media();
         wp_enqueue_style( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/css/admin.css', array(), WPSCB_VERSION );
         wp_enqueue_script( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), WPSCB_VERSION, true );
-        $contacts = $this->core->get_contacts();
+        $contacts = $this->core->wpscb_get_contacts();
         // enrich contacts with photo url (best-effort)
         foreach ( $contacts as &$c ) {
             if ( ! empty( $c['photo'] ) ) {
@@ -51,72 +51,73 @@ class WPSCB_Admin {
                 'string' => wp_timezone_string(), // WordPress timezone string
             ),
             'i18n'    => array(
-                'addContact'      => __( 'Add Contact', 'wp-social-chat-button' ),
-                'editContact'     => __( 'Edit Contact', 'wp-social-chat-button' ),
-                'network'         => __( 'Network', 'wp-social-chat-button' ),
-                'username'        => __( 'Username', 'wp-social-chat-button' ),
-                'phone'           => __( 'Phone Number', 'wp-social-chat-button' ),
-                'save'            => __( 'Save', 'wp-social-chat-button' ),
-                'update'          => __( 'Update', 'wp-social-chat-button' ),
-                'cancel'          => __( 'Cancel', 'wp-social-chat-button' ),
-                'delete'          => __( 'Delete', 'wp-social-chat-button' ),
-                'name'            => __( 'Name', 'wp-social-chat-button' ),
-                'photo'           => __( 'Photo', 'wp-social-chat-button' ),
-                'chooseUpload'    => __( 'Choose / Upload', 'wp-social-chat-button' ),
-                'remove'          => __( 'Remove', 'wp-social-chat-button' ),
-                'noImageSelected' => __( 'No image selected', 'wp-social-chat-button' ),
-                'noImage'         => __( 'No image', 'wp-social-chat-button' ),
-                'selectNetwork'   => __( 'Select network', 'wp-social-chat-button' ),
-                'searchPlaceholder' => __( 'Search...', 'wp-social-chat-button' ),
-                'noResults'       => __( 'No results found', 'wp-social-chat-button' ),
-                'confirmDelete'   => __( 'Delete this item?', 'wp-social-chat-button' ),
-                'invalidFormat'   => __( 'Invalid input format.', 'wp-social-chat-button' ),
-                'errorSaving'     => __( 'Error saving', 'wp-social-chat-button' ),
-                'errorDeleting'   => __( 'Error deleting', 'wp-social-chat-button' ),
-                'settingsSaved'   => __( 'Settings saved.', 'wp-social-chat-button' ),
-                'errorSavingSettings' => __( 'Error saving settings', 'wp-social-chat-button' ),
-                'emptyMessage'    => __( 'No contacts added. Click the add button.', 'wp-social-chat-button' ),
-                'tableHeaderName' => __( 'Name', 'wp-social-chat-button' ),
-                'tableHeaderValue' => __( 'Username / Number / Value', 'wp-social-chat-button' ),
-                'tableHeaderNetwork' => __( 'Network', 'wp-social-chat-button' ),
-                'tableHeaderPhoto' => __( 'Photo', 'wp-social-chat-button' ),
-                'tableHeaderActions' => __( 'Actions', 'wp-social-chat-button' ),
-                'labelEmail'      => __( 'Email', 'wp-social-chat-button' ),
-                'labelID'         => __( 'ID', 'wp-social-chat-button' ),
-                'labelCode'       => __( 'Code', 'wp-social-chat-button' ),
-                'labelURL'        => __( 'URL', 'wp-social-chat-button' ),
-                'labelValue'      => __( 'Value', 'wp-social-chat-button' ),
-                'mediaUnavailable' => __( 'Media library unavailable.', 'wp-social-chat-button' ),
-                'message'          => __( 'Message', 'wp-social-chat-button' ),
-                'defaultMessage'   => __( 'Hello from WP Social Chat Button — how can we help?', 'wp-social-chat-button' ),
-                'savedContact'     => __( 'Contact added successfully.', 'wp-social-chat-button' ),
-                'updatedContact'   => __( 'Contact updated successfully.', 'wp-social-chat-button' ),
-                'fieldRequired'    => __( 'This field is required.', 'wp-social-chat-button' ),
-                'selectNetworkFirst' => __( 'Please select a network.', 'wp-social-chat-button' ),
-                'valueRequired'    => __( 'Please enter a value.', 'wp-social-chat-button' ),
-                'deleteContactTitle' => __( 'Delete Contact', 'wp-social-chat-button' ),
-                'deleteContactMessage' => __( 'Are you sure you want to delete this contact? This action cannot be undone.', 'wp-social-chat-button' ),
-                'deleteBtn'        => __( 'Delete', 'wp-social-chat-button' ),
-                'deletedContact'   => __( 'Contact deleted successfully.', 'wp-social-chat-button' ),
-                'availability'     => __( 'Schedule & Availability', 'wp-social-chat-button' ),
-                'availableDays'    => __( 'Days', 'wp-social-chat-button' ),
-                'availableHours'   => __( 'Hours', 'wp-social-chat-button' ),
-                'addTimeRange'     => __( 'Add time range', 'wp-social-chat-button' ),
-                'from'             => __( 'From', 'wp-social-chat-button' ),
-                'to'               => __( 'To', 'wp-social-chat-button' ),
-                'clearDay'         => __( 'Clear day', 'wp-social-chat-button' ),
-                'copyToAll'        => __( 'Copy to all days', 'wp-social-chat-button' ),
-                'day_mon'          => __( 'Mon', 'wp-social-chat-button' ),
-                'day_tue'          => __( 'Tue', 'wp-social-chat-button' ),
-                'day_wed'          => __( 'Wed', 'wp-social-chat-button' ),
-                'day_thu'          => __( 'Thu', 'wp-social-chat-button' ),
-                'day_fri'          => __( 'Fri', 'wp-social-chat-button' ),
-                'day_sat'          => __( 'Sat', 'wp-social-chat-button' ),
-                'day_sun'          => __( 'Sun', 'wp-social-chat-button' ),
+                'addContact'      => esc_html__( 'Add Contact', 'wp-social-chat-button' ),
+                'editContact'     => esc_html__( 'Edit Contact', 'wp-social-chat-button' ),
+                'network'         => esc_html__( 'Network', 'wp-social-chat-button' ),
+                'username'        => esc_html__( 'Username', 'wp-social-chat-button' ),
+                'phone'           => esc_html__( 'Phone Number', 'wp-social-chat-button' ),
+                'save'            => esc_html__( 'Save', 'wp-social-chat-button' ),
+                'update'          => esc_html__( 'Update', 'wp-social-chat-button' ),
+                'cancel'          => esc_html__( 'Cancel', 'wp-social-chat-button' ),
+                'delete'          => esc_html__( 'Delete', 'wp-social-chat-button' ),
+                'name'            => esc_html__( 'Name', 'wp-social-chat-button' ),
+                'photo'           => esc_html__( 'Photo', 'wp-social-chat-button' ),
+                'chooseUpload'    => esc_html__( 'Choose / Upload', 'wp-social-chat-button' ),
+                'remove'          => esc_html__( 'Remove', 'wp-social-chat-button' ),
+                'noImageSelected' => esc_html__( 'No image selected', 'wp-social-chat-button' ),
+                'noImage'         => esc_html__( 'No image', 'wp-social-chat-button' ),
+                'selectNetwork'   => esc_html__( 'Select network', 'wp-social-chat-button' ),
+                'searchPlaceholder' => esc_html__( 'Search...', 'wp-social-chat-button' ),
+                'noResults'       => esc_html__( 'No results found', 'wp-social-chat-button' ),
+                'confirmDelete'   => esc_html__( 'Delete this item?', 'wp-social-chat-button' ),
+                'invalidFormat'   => esc_html__( 'Invalid input format.', 'wp-social-chat-button' ),
+                'errorSaving'     => esc_html__( 'Error saving', 'wp-social-chat-button' ),
+                'errorDeleting'   => esc_html__( 'Error deleting', 'wp-social-chat-button' ),
+                'settingsSaved'   => esc_html__( 'Settings saved.', 'wp-social-chat-button' ),
+                'errorSavingSettings' => esc_html__( 'Error saving settings', 'wp-social-chat-button' ),
+                'emptyMessage'    => esc_html__( 'No contacts added. Click the add button.', 'wp-social-chat-button' ),
+                'tableHeaderName' => esc_html__( 'Name', 'wp-social-chat-button' ),
+                'tableHeaderValue' => esc_html__( 'Username / Number / Value', 'wp-social-chat-button' ),
+                'tableHeaderNetwork' => esc_html__( 'Network', 'wp-social-chat-button' ),
+                'tableHeaderPhoto' => esc_html__( 'Photo', 'wp-social-chat-button' ),
+                'tableHeaderActions' => esc_html__( 'Actions', 'wp-social-chat-button' ),
+                'labelEmail'      => esc_html__( 'Email', 'wp-social-chat-button' ),
+                'labelID'         => esc_html__( 'ID', 'wp-social-chat-button' ),
+                'labelCode'       => esc_html__( 'Code', 'wp-social-chat-button' ),
+                'labelURL'        => esc_html__( 'URL', 'wp-social-chat-button' ),
+                'labelValue'      => esc_html__( 'Value', 'wp-social-chat-button' ),
+                'mediaUnavailable' => esc_html__( 'Media library unavailable.', 'wp-social-chat-button' ),
+                'message'          => esc_html__( 'Message', 'wp-social-chat-button' ),
+                'defaultMessage'   => esc_html__( 'Hello from WP Social Chat Button — how can we help?', 'wp-social-chat-button' ),
+                'savedContact'     => esc_html__( 'Contact added successfully.', 'wp-social-chat-button' ),
+                'updatedContact'   => esc_html__( 'Contact updated successfully.', 'wp-social-chat-button' ),
+                'fieldRequired'    => esc_html__( 'This field is required.', 'wp-social-chat-button' ),
+                'selectNetworkFirst' => esc_html__( 'Please select a network.', 'wp-social-chat-button' ),
+                'valueRequired'    => esc_html__( 'Please enter a value.', 'wp-social-chat-button' ),
+                'deleteContactTitle' => esc_html__( 'Delete Contact', 'wp-social-chat-button' ),
+                'deleteContactMessage' => esc_html__( 'Are you sure you want to delete this contact? This action cannot be undone.', 'wp-social-chat-button' ),
+                'deleteBtn'        => esc_html__( 'Delete', 'wp-social-chat-button' ),
+                'deletedContact'   => esc_html__( 'Contact deleted successfully.', 'wp-social-chat-button' ),
+                'availability'     => esc_html__( 'Schedule & Availability', 'wp-social-chat-button' ),
+                'availableDays'    => esc_html__( 'Days', 'wp-social-chat-button' ),
+                'availableHours'   => esc_html__( 'Hours', 'wp-social-chat-button' ),
+                'addTimeRange'     => esc_html__( 'Add time range', 'wp-social-chat-button' ),
+                'from'             => esc_html__( 'From', 'wp-social-chat-button' ),
+                'to'               => esc_html__( 'To', 'wp-social-chat-button' ),
+                'clearDay'         => esc_html__( 'Clear day', 'wp-social-chat-button' ),
+                'copyToAll'        => esc_html__( 'Copy to all days', 'wp-social-chat-button' ),
+                'day_mon'          => esc_html__( 'Mon', 'wp-social-chat-button' ),
+                'day_tue'          => esc_html__( 'Tue', 'wp-social-chat-button' ),
+                'day_wed'          => esc_html__( 'Wed', 'wp-social-chat-button' ),
+                'day_thu'          => esc_html__( 'Thu', 'wp-social-chat-button' ),
+                'day_fri'          => esc_html__( 'Fri', 'wp-social-chat-button' ),
+                'day_sat'          => esc_html__( 'Sat', 'wp-social-chat-button' ),
+                'day_sun'          => esc_html__( 'Sun', 'wp-social-chat-button' ),
             ),
-            'networks' => $this->core->get_supported_networks(),
+            'networks' => $this->core->wpscb_get_supported_networks(),
             'contacts' => $contacts,
-            'settings' => $this->core->get_settings(),
+            'settings' => $this->core->wpscb_get_settings(),
+            'advanced' => $this->core->wpscb_get_advanced_settings(),
         ) );
     }
 
@@ -274,7 +275,7 @@ class WPSCB_Admin {
                             <label class="wpscb-switch">
                                 <input type="checkbox" name="hide_copyright" value="1" <?php checked( 1, (int) $adv['hide_copyright'] ); ?>>
                                 <span class="wpscb-switch-slider"></span>
-                                <span class="wpscb-switch-label"><?php esc_html_e( 'Hide Copyright Footer', 'wp-social-chat-button' ); ?></span>
+                                <span class="wpscb-switch-label"><?php esc_html_e( 'Hide Copyright Messages', 'wp-social-chat-button' ); ?></span>
                             </label>
                         </div>
                     </div>
