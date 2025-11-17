@@ -55,7 +55,7 @@ class WPSCB {
             'twitter_dm'    => array( 'label' => esc_html__( 'Twitter (X) DM', 'wp-social-chat-button' ),         'type' => 'id',       'pattern' => '/^[0-9]{1,20}$/' ),
             'discord'       => array( 'label' => esc_html__( 'Discord', 'wp-social-chat-button' ),                'type' => 'code',     'pattern' => '/^([A-Za-z0-9]{4,10}|https?:\/\/discord\.gg\/[^\s]+)$/i' ),
             'signal'        => array( 'label' => esc_html__( 'Signal', 'wp-social-chat-button' ),                 'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
-            'skype'         => array( 'label' => esc_html__( 'Skype', 'wp-social-chat-button' ),                  'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,32}$/' ),
+         //   'skype'         => array( 'label' => esc_html__( 'Skype', 'wp-social-chat-button' ),                  'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,32}$/' ),
             'snapchat'      => array( 'label' => esc_html__( 'Snapchat', 'wp-social-chat-button' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.-]{3,39}$/' ),
             'kakaotalk'     => array( 'label' => esc_html__( 'KakaoTalk', 'wp-social-chat-button' ),              'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,50}$/' ),
             'linkedin_msg'  => array( 'label' => esc_html__( 'LinkedIn Messaging', 'wp-social-chat-button' ),     'type' => 'url',      'pattern' => $urlPattern ),

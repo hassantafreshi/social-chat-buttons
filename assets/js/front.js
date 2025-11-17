@@ -1,26 +1,29 @@
 /* global WPSCB_FRONT */
-(function(){
-    if(typeof WPSCB_FRONT === 'undefined') return;
+document.addEventListener( 'DOMContentLoaded', function() {
+    if ( 'undefined' === typeof WPSCB_FRONT ) {
+        return;
+    }
     let wpscb_contacts = WPSCB_FRONT.contacts || [];
     const wpscb_settings = WPSCB_FRONT.settings || {};
     const wpscb_advanced = WPSCB_FRONT.advanced || {};
     const wpscb_i18n = WPSCB_FRONT.i18n || {};
     const wpscb_isPreview = WPSCB_FRONT.isPreview || false;
 
-    // Debug copyright setting
-    console.log('WPSCB Debug - hide_copyright value:', wpscb_advanced.hide_copyright, typeof wpscb_advanced.hide_copyright);
+
     const wpscb_root = document.getElementById('wpscb-widget-root');
 
-    if(!wpscb_isPreview && !wpscb_settings.enabled) return;
+    if ( ! wpscb_isPreview && ! wpscb_settings.enabled ) {
+        return;
+    }
 
     // In preview mode, show sample contacts if none exist
-    if(wpscb_isPreview && !wpscb_contacts.length){
+    if ( wpscb_isPreview && ! wpscb_contacts.length ) {
         wpscb_contacts = [
             {
                 network: 'whatsapp',
                 name: 'WhatsApp Support',
                 value: '1234567890',
-                availability: {mon: [{start:'09:00', end:'17:00'}], tue: [{start:'09:00', end:'17:00'}], wed: [{start:'09:00', end:'17:00'}], thu: [{start:'09:00', end:'17:00'}], fri: [{start:'09:00', end:'17:00'}], sat: [], sun: []}
+                availability: { mon: [ { start: '09:00', end: '17:00' } ], tue: [ { start: '09:00', end: '17:00' } ], wed: [ { start: '09:00', end: '17:00' } ], thu: [ { start: '09:00', end: '17:00' } ], fri: [ { start: '09:00', end: '17:00' } ], sat: [], sun: [] }
             },
             {
                 network: 'telegram',
@@ -31,11 +34,13 @@
         ];
     }
 
-    if(!wpscb_root || !wpscb_contacts.length) return;
+    if ( ! wpscb_root || ! wpscb_contacts.length ) {
+        return;
+    }
 
     let wpscb_isOpen = false;
 
-    function wpscb_getWordPressTime(){
+    function wpscb_getWordPressTime() {
         const timezone = WPSCB_FRONT.timezone || {};
         const offsetHours = timezone.offset || 0;
         const now = new Date();
@@ -44,9 +49,9 @@
         return wpTime;
     }
 
-    function wpscb_isContactAvailable(availability){
+    function wpscb_isContactAvailable( availability ) {
         // If no availability set, contact is always available
-        if(!availability || typeof availability !== 'object') {
+        if ( ! availability || 'object' !== typeof availability ) {
             return true;
         }
 
@@ -134,7 +139,7 @@
             twitter_dm: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#1DA1F2" d="M12 2C6.48 2 2 6.2 2 11c0 3.9 3 7.3 7.1 8.6.4.1.6-.1.7-.4l.2-1c.1-.4.3-.9.4-1.2.1-.3 0-.5-.4-.6-3.3-.7-4.6-2.5-4.9-3.9-.2-.5 0-.6.5-.5 1.3.3 2.1.4 2.5.3.2-.1.3-.2.2-.5-.1-.3-.3-.6-.5-.9-.9-1.3-1.4-3.3-.5-4.5.9-1.3 3.2-1.5 4.5-.3 1.1 1 1.5 2.7 1 4.1-.5 1.5-.1 2.2.9 2.9.8.5 1.7 1.1 2.5 2 .2.3.5.3.7.3.2-.1.3-.2.4-.4.3-.7.8-2.1.8-2.3.1-.3.2-.5.5-.4.3.1.7.3 1 .5.3.3.5.4.8.2.3-.2.5-.5.3-.9-.4-.7-.9-1.2-1.4-1.5-.4-.3-.3-.5-.2-.8.5-1.2.5-2.8-.4-4-.9-1.3-2.3-2-4-2.1H13c-.4 0-.8 0-1.2.1-.2.1-.4 0-.5-.2-.4-.5-1-1.2-1.5-1.6-.2-.2-.5-.2-.7-.2Z"/></svg>',
             discord: '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="5" width="18" height="12" rx="6" fill="#5865F2"/><circle cx="9" cy="11" r="1.6" fill="#fff"/><circle cx="15" cy="11" r="1.6" fill="#fff"/></svg>',
             signal: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="8" fill="#3A76F0"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#fff" stroke-dasharray="4 3"/></svg>',
-            skype: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#00AFF0"/><path fill="#fff" d="M8 12c0 2 2 3.5 4.5 3.5 1.8 0 3.5-.7 3.5-2 0-1.4-1.3-1.8-2.9-2.1-1.2-.2-2.5-.4-2.5-1.1 0-.6.9-.9 1.8-.9 1 0 1.9.3 2.5.7l.7-1.3c-.8-.5-1.9-.8-3.1-.8C10 8 8 9 8 10.5c0 1.5 1.4 2 3 2.3 1.2.2 2.4.4 2.4 1 0 .6-.8 1-1.9 1-1 0-2-.4-2.6-.9L8 12Z"/></svg>',
+        //    skype: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#00AFF0"/><path fill="#fff" d="M8 12c0 2 2 3.5 4.5 3.5 1.8 0 3.5-.7 3.5-2 0-1.4-1.3-1.8-2.9-2.1-1.2-.2-2.5-.4-2.5-1.1 0-.6.9-.9 1.8-.9 1 0 1.9.3 2.5.7l.7-1.3c-.8-.5-1.9-.8-3.1-.8C10 8 8 9 8 10.5c0 1.5 1.4 2 3 2.3 1.2.2 2.4.4 2.4 1 0 .6-.8 1-1.9 1-1 0-2-.4-2.6-.9L8 12Z"/></svg>',
             snapchat: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#FFFC00" d="M12 2c-2.8 0-5 2.2-5 5v2.5c0 1-.8 1.8-1.8 1.8H5c.2.7.9 1.2 1.6 1.3 1.2.3 1.5.8 1.5 1.2 0 .6-.8 1-2 .9-1 0-1.6.6-1.6 1.3 0 .7 1.3 1.3 3.1 1.5.5.1.9.4 1.1.9C9.1 20.8 10.4 22 12 22s2.9-1.2 3.3-3.3c.1-.5.5-.8 1-.9 1.8-.2 3.1-.8 3.1-1.5s-.6-1.3-1.6-1.3c-1.2 0-2-.3-2-.9 0-.4.3-1 1.5-1.2.8-.2 1.5-.7 1.6-1.3h-.2c-1 0-1.8-.8-1.8-1.8V7c0-2.8-2.2-5-5-5Z"/></svg>',
             kakaotalk: '<svg viewBox="0 0 24 24" width="18" height="18"><ellipse cx="12" cy="11" rx="9" ry="7" fill="#FFE812"/><path d="M12 18l-3 3 1-3H12Z" fill="#6e4b00"/></svg>',
             linkedin_msg: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" fill="#0A66C2" rx="4"/><path fill="#fff" d="M7 17V9h2v8H7Zm1-9.5c-.7 0-1.2-.5-1.2-1.2S7.3 5 8 5s1.2.5 1.2 1.2S8.7 7.5 8 7.5ZM18 17h-2v-4c0-1-.8-1.8-1.8-1.8S12.4 12 12.4 13v4h-2V9h2v1c.4-.6 1.2-1.1 2.2-1.1 1.9 0 3.4 1.5 3.4 3.4V17Z"/></svg>',
@@ -166,7 +171,7 @@
             twitter_dm: (v, m) => 'https://twitter.com/messages/compose?recipient_id=' + v + (m ? '&text=' + m : ''),
             discord: (v, m) => 'https://discord.gg/' + v,
             signal: (v, m) => 'sgnl://chat?number=' + v.replace(/[^0-9]/g,'') + (m ? '&text=' + m : ''),
-            skype: (v, m) => 'skype:' + v + '?chat' + (m ? '&topic=' + m : ''),
+         //   skype: (v, m) => 'skype:' + v + '?chat' + (m ? '&topic=' + m : ''),
             snapchat: (v, m) => 'https://www.snapchat.com/add/' + v,
             kakaotalk: (v, m) => 'kakaotalk://openchat?chatId=' + v + (m ? '&text=' + m : ''),
             linkedin_msg: (v, m) => 'https://www.linkedin.com/messaging/compose/?recipient=' + v + (m ? '&message=' + m : ''),
@@ -391,4 +396,4 @@
     // Apply advanced settings as CSS variables first
     wpscb_applyAdvancedStyles();
     wpscb_render();
-})();
+});

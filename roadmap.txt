@@ -1,7 +1,7 @@
 =================================================================
 WP SOCIAL CHAT BUTTON - DEVELOPMENT ROADMAP
 =================================================================
-Plugin: WP Social Chat Button
+Plugin: Social Chat Buttons
 Version: 1.0.0
 Date: November 11, 2025
 Status: Phase 1-3 COMPLETED | Phase 4 PENDING | Phase 5 POST-RELEASE
@@ -46,7 +46,7 @@ Files Modified:
     - Validate and default to 24/7 if missing
 
 Testing Steps:
-  1. Go to WP Admin → WP Social Chat Button → Panel
+  1. Go to WP Admin → Social Chat Buttons → Panel
   2. Click "Add Contact"
   3. Scroll down and click "Availability Settings" button
   4. Select specific days (e.g., Mon-Fri)
@@ -213,7 +213,7 @@ Settings Fields (15 total):
   17. responsive_scale: 0 | 1
 
 Testing Steps:
-  1. Go to WP Admin → WP Social Chat Button → Settings
+  1. Go to WP Admin → Social Chat Buttons → Settings
   2. Verify two-column layout: controls (left) + preview (right)
   3. Change button color → verify auto-save indicator appears → verify preview updates
   4. Change button size slider → verify value display updates → verify preview button resizes
@@ -325,7 +325,7 @@ Planned Implementation:
       - Update options on success
 
   Welcome Modal Content:
-    - Title: "Welcome to WP Social Chat Button!"
+    - Title: "Welcome to Social Chat Buttons!"
     - Subtitle: "Thank you for installing our plugin"
     - Features list (bullet points):
       * 25+ Social Networks Support
@@ -414,7 +414,7 @@ EARLIER PHASES (PREVIOUSLY COMPLETED)
 
 ✓ Message Field
   - Added message field to contacts
-  - Default message: "Hello from WP Social Chat Button — how can we help?"
+  - Default message: "Hello from Social Chat Buttons — how can we help?"
   - Persisted in database and AJAX
 
 ✓ Photo Upload & Preview
@@ -552,7 +552,7 @@ SUPPORT & DEVELOPMENT
 =================================================================
 
 Developer: Hassan Tafreshi
-Repository: hassantafreshi/WP-Social-Chat-Button
+Repository: hassantafreshi/social-chat-button
 License: GPL-2.0+
 Requires PHP: 5.4+
 Requires WordPress: 5.0+

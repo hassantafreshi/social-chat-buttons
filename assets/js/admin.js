@@ -1,5 +1,5 @@
 /* global jQuery, WPSCB */
-(function($){
+( function( $ ) {
     const wpscb_state = {
         contacts: (WPSCB.contacts || []).map(c => wpscb_normalizeContact(c)),
         networks: WPSCB.networks || {},
@@ -9,26 +9,28 @@
         editIndex: null
     };
 
-    function wpscb_normalizeContact(c){
-        const defSlots = () => [{start:'00:00', end:'23:59'}];
+    function wpscb_normalizeContact( c ) {
+        const defSlots = () => [ { start: '00:00', end: '23:59' } ];
         // Backward compatibility: convert old schema {days:[], hours:{}} to per-day slots
         let availability = c.availability;
-        const dayKeys = ['mon','tue','wed','thu','fri','sat','sun'];
-        if(!availability){
+        const dayKeys = [ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ];
+        if ( ! availability ) {
             availability = {};
-            dayKeys.forEach(d=>availability[d]=defSlots());
-        } else if(Array.isArray(availability.days) && availability.hours){
-            const hours = availability.hours || {start:'00:00', end:'23:59'};
+            dayKeys.forEach( d => availability[ d ] = defSlots() );
+        } else if ( Array.isArray( availability.days ) && availability.hours ) {
+            const hours = availability.hours || { start: '00:00', end: '23:59' };
             const days = availability.days || [];
             const obj = {};
-            dayKeys.forEach(d=>{ obj[d] = days.includes(d) ? [{start:hours.start, end:hours.end}] : []; });
+            dayKeys.forEach( d => { obj[ d ] = days.includes( d ) ? [ { start: hours.start, end: hours.end } ] : []; } );
             availability = obj;
         } else {
             // Ensure shape: object with day arrays
-            dayKeys.forEach(d=>{
-                if(!Array.isArray(availability[d])) availability[d] = [];
+            dayKeys.forEach( d => {
+                if ( ! Array.isArray( availability[ d ] ) ) {
+                    availability[ d ] = [];
+                }
                 // sanitize times
-                availability[d] = availability[d].map(r=>({ start: (r&&r.start)||'00:00', end: (r&&r.end)||'23:59' }));
+                availability[ d ] = availability[ d ].map( r => ( { start: ( r && r.start ) || '00:00', end: ( r && r.end ) || '23:59' } ) );
             });
         }
         return {
@@ -42,9 +44,11 @@
         };
     }
 
-    function wpscb_render(){
-        const $app = $('#wpscb-app');
-        if(!$app.length) return;
+    function wpscb_render() {
+        const $app = $( '#wpscb-app' );
+        if ( ! $app.length ) {
+            return;
+        }
         let html = '';
         html += '<div class="wpscb-header">';
         html += '<button type="button" class="wpscb-btn" id="wpscb-add">'+WPSCB.i18n.addContact+'</button>';
@@ -330,7 +334,7 @@
             twitter_dm: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#1DA1F2" d="M12 2C6.48 2 2 6.2 2 11c0 3.9 3 7.3 7.1 8.6.4.1.6-.1.7-.4l.2-1c.1-.4.3-.9.4-1.2.1-.3 0-.5-.4-.6-3.3-.7-4.6-2.5-4.9-3.9-.2-.5 0-.6.5-.5 1.3.3 2.1.4 2.5.3.2-.1.3-.2.2-.5-.1-.3-.3-.6-.5-.9-.9-1.3-1.4-3.3-.5-4.5.9-1.3 3.2-1.5 4.5-.3 1.1 1 1.5 2.7 1 4.1-.5 1.5-.1 2.2.9 2.9.8.5 1.7 1.1 2.5 2 .2.3.5.3.7.3.2-.1.3-.2.4-.4.3-.7.8-2.1.8-2.3.1-.3.2-.5.5-.4.3.1.7.3 1 .5.3.3.5.4.8.2.3-.2.5-.5.3-.9-.4-.7-.9-1.2-1.4-1.5-.4-.3-.3-.5-.2-.8.5-1.2.5-2.8-.4-4-.9-1.3-2.3-2-4-2.1H13c-.4 0-.8 0-1.2.1-.2.1-.4 0-.5-.2-.4-.5-1-1.2-1.5-1.6-.2-.2-.5-.2-.7-.2Z"/></svg>',
             discord: '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="5" width="18" height="12" rx="6" fill="#5865F2"/><circle cx="9" cy="11" r="1.6" fill="#fff"/><circle cx="15" cy="11" r="1.6" fill="#fff"/></svg>',
             signal: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="8" fill="#3A76F0"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#fff" stroke-dasharray="4 3"/></svg>',
-            skype: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#00AFF0"/><path fill="#fff" d="M8 12c0 2 2 3.5 4.5 3.5 1.8 0 3.5-.7 3.5-2 0-1.4-1.3-1.8-2.9-2.1-1.2-.2-2.5-.4-2.5-1.1 0-.6.9-.9 1.8-.9 1 0 1.9.3 2.5.7l.7-1.3c-.8-.5-1.9-.8-3.1-.8C10 8 8 9 8 10.5c0 1.5 1.4 2 3 2.3 1.2.2 2.4.4 2.4 1 0 .6-.8 1-1.9 1-1 0-2-.4-2.6-.9L8 12Z"/></svg>',
+          //  skype: '<svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="#00AFF0"/><path fill="#fff" d="M8 12c0 2 2 3.5 4.5 3.5 1.8 0 3.5-.7 3.5-2 0-1.4-1.3-1.8-2.9-2.1-1.2-.2-2.5-.4-2.5-1.1 0-.6.9-.9 1.8-.9 1 0 1.9.3 2.5.7l.7-1.3c-.8-.5-1.9-.8-3.1-.8C10 8 8 9 8 10.5c0 1.5 1.4 2 3 2.3 1.2.2 2.4.4 2.4 1 0 .6-.8 1-1.9 1-1 0-2-.4-2.6-.9L8 12Z"/></svg>',
             snapchat: '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#FFFC00" d="M12 2c-2.8 0-5 2.2-5 5v2.5c0 1-.8 1.8-1.8 1.8H5c.2.7.9 1.2 1.6 1.3 1.2.3 1.5.8 1.5 1.2 0 .6-.8 1-2 .9-1 0-1.6.6-1.6 1.3 0 .7 1.3 1.3 3.1 1.5.5.1.9.4 1.1.9C9.1 20.8 10.4 22 12 22s2.9-1.2 3.3-3.3c.1-.5.5-.8 1-.9 1.8-.2 3.1-.8 3.1-1.5s-.6-1.3-1.6-1.3c-1.2 0-2-.3-2-.9 0-.4.3-1 1.5-1.2.8-.2 1.5-.7 1.6-1.3h-.2c-1 0-1.8-.8-1.8-1.8V7c0-2.8-2.2-5-5-5Z"/></svg>',
             kakaotalk: '<svg viewBox="0 0 24 24" width="18" height="18"><ellipse cx="12" cy="11" rx="9" ry="7" fill="#FFE812"/><path d="M12 18l-3 3 1-3H12Z" fill="#6e4b00"/></svg>',
             linkedin_msg: '<svg viewBox="0 0 24 24" width="18" height="18"><rect width="24" height="24" fill="#0A66C2" rx="4"/><path fill="#fff" d="M7 17V9h2v8H7Zm1-9.5c-.7 0-1.2-.5-1.2-1.2S7.3 5 8 5s1.2.5 1.2 1.2S8.7 7.5 8 7.5ZM18 17h-2v-4c0-1-.8-1.8-1.8-1.8S12.4 12 12.4 13v4h-2V9h2v1c.4-.6 1.2-1.1 2.2-1.1 1.9 0 3.4 1.5 3.4 3.4V17Z"/></svg>',
@@ -575,11 +579,15 @@
     $(document).ready(function(){
         wpscb_render();
         wpscb_bindEvents();
-        wpscb_initSettingsPage();
+
+        // Initialize settings page if present
+        if ( $( '.wpscb-settings-page' ).length ) {
+            wpscb_initSettingsPage();
+        }
     });
 
     // Settings page auto-save and preview
-    function wpscb_initSettingsPage(){
+    function wpscb_initSettingsPage() {
         const $page = $('.wpscb-settings-page');
         console.log('Settings page found:', $page.length);
         if(!$page.length) return;
@@ -632,48 +640,33 @@
             };
 
             // Debug copyright setting
-            const copyrightCheckbox = $page.find('input[name="hide_copyright"]');
-            console.log('WPSCB Debug - Checkbox found:', copyrightCheckbox.length, 'Checked:', copyrightCheckbox.is(':checked'), 'Value to save:', advData.hide_copyright);
-
             // Save basic first, then advanced
-            console.log('WPSCB Debug - Advanced data being sent:', advData);
-            $.post(WPSCB.ajaxUrl, basicData, function(res1){
-                console.log('Basic settings saved:', res1);
-                $.post(WPSCB.ajaxUrl, advData, function(res2){
-                    console.log('Advanced settings saved:', res2);
-                    console.log('WPSCB Debug - Server returned hide_copyright:', res2.data && res2.data.settings ? res2.data.settings.hide_copyright : 'not found');
-                    if(res2.success){
+            $.post( WPSCB.ajaxUrl, basicData, function( res1 ) {
+                $.post( WPSCB.ajaxUrl, advData, function( res2 ) {
+                    if ( res2.success ) {
                         wpscb_showSaveIndicator();
                         wpscb_updatePreview();
                     }
-                }).fail(function(xhr, status, error) {
-                    console.error('Advanced settings save failed:', error, xhr.responseText);
-                });
-            }).fail(function(xhr, status, error) {
-                console.error('Basic settings save failed:', error, xhr.responseText);
-            });
+                } );
+            } ).fail( function( xhr, status, error ) {
+                console.error( 'Basic settings save failed:', error, xhr.responseText );
+            } );
         }
 
-        function wpscb_showSaveIndicator(){
-            $indicator.fadeIn(200).delay(1500).fadeOut(300);
+        function wpscb_showSaveIndicator() {
+            $indicator.fadeIn( 200 ).delay( 1500 ).fadeOut( 300 );
         }
 
-        function wpscb_updatePreview(){
-            console.log('wpscb_updatePreview called, livePreview length:', $livePreview.length);
-            if($livePreview.length){
+        function wpscb_updatePreview() {
+            if ( $livePreview.length ) {
                 wpscb_renderLivePreview();
-            } else {
-                console.error('Live preview element not found!');
             }
         }
 
         // Live Preview Renderer
-        function wpscb_renderLivePreview(){
-            console.log('wpscb_renderLivePreview called');
-
+        function wpscb_renderLivePreview() {
             // Quick test to ensure preview element works
-            if(!$livePreview.length){
-                console.error('Live preview element not found in wpscb_renderLivePreview!');
+            if ( ! $livePreview.length ) {
                 return;
             }
 
@@ -700,10 +693,8 @@
             const hideCopyright = $page.find('input[name="hide_copyright"]').is(':checked');
             const responsiveScale = $page.find('input[name="responsive_scale"]').is(':checked');
 
-            console.log('Settings:', {enabled, position, buttonMode, buttonSize, buttonColor, popupBgColor, textColor, labelColor});
-
             // Always show preview, even if disabled (with message)
-            if(!enabled){
+            if ( ! enabled ) {
                 $livePreview.html('<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ffffff;font-size:16px;text-align:center;"><div><div style="font-size:48px;margin-bottom:16px;">💬</div><div>Widget is disabled</div><div style="font-size:12px;opacity:0.8;margin-top:8px;">Enable widget to see preview</div></div></div>');
                 return;
             }
@@ -874,46 +865,40 @@
                 </script>
             `;
 
-            $livePreview.html(widgetHtml);
-            console.log('Live preview HTML set');
+            $livePreview.html( widgetHtml );
         }
 
         // Conditional visibility for button_mode
-        function wpscb_updateConditionals(){
-            const mode = $page.find('input[name="button_mode"]:checked').val();
-            $page.find('.wpscb-conditional').removeClass('show');
-            $page.find('.wpscb-conditional[data-show-if="button_mode='+mode+'"]').addClass('show');
+        function wpscb_updateConditionals() {
+            const mode = $page.find( 'input[name="button_mode"]:checked' ).val();
+            $page.find( '.wpscb-conditional' ).removeClass( 'show' );
+            $page.find( '.wpscb-conditional[data-show-if="button_mode=' + mode + '"]' ).addClass( 'show' );
         }
 
         // Range value display
-        $page.on('input', '.wpscb-range', function(){
-            $(this).next('.wpscb-range-value').text($(this).val());
+        $page.on( 'input', '.wpscb-range', function() {
+            $( this ).next( '.wpscb-range-value' ).text( $( this ).val() );
             wpscb_autoSave();
-        });
+        } );
 
         // All inputs trigger auto-save
-        $page.on('change input', 'input, select', function(){
-            if($(this).attr('name') === 'hide_copyright') {
-                console.log('WPSCB Debug - hide_copyright checkbox changed:', $(this).is(':checked'));
-            }
+        $page.on( 'change input', 'input, select', function() {
             wpscb_autoSave();
-        });
-
-        // Handle switch clicks specifically (for hidden checkboxes)
-        $page.on('click', '.wpscb-switch', function(e){
-            const $input = $(this).find('input[type="checkbox"]');
-            if($input.length) {
+        } );        // Handle switch clicks specifically (for hidden checkboxes)
+        $page.on( 'click', '.wpscb-switch', function( e ) {
+            const $input = $( this ).find( 'input[type="checkbox"]' );
+            if ( $input.length ) {
                 // Toggle the checkbox
-                $input.prop('checked', !$input.prop('checked')).trigger('change');
+                $input.prop( 'checked', ! $input.prop( 'checked' ) ).trigger( 'change' );
                 e.preventDefault();
             }
-        });
+        } );
 
         // Radio change triggers conditional visibility
-        $page.on('change', 'input[name="button_mode"]', function(){
+        $page.on( 'change', 'input[name="button_mode"]', function() {
             wpscb_updateConditionals();
             wpscb_autoSave();
-        });
+        } );
 
         // Media library for button image
         $page.on('click', '.wpscb-upload-btn', function(e){
@@ -956,7 +941,7 @@
                 if (typeof WPSCB.advanced.responsive_scale !== 'undefined') {
                     $page.find('input[name="responsive_scale"]').prop('checked', WPSCB.advanced.responsive_scale == 1);
                 }
-                console.log('WPSCB Debug - Field values initialized from server data');
+
             }
         }
 
@@ -967,8 +952,7 @@
         wpscb_updateConditionals();
 
         // Initialize live preview
-        if($livePreview.length){
-            console.log('Initializing live preview...');
+        if ( $livePreview.length ) {
             // Test content first
             $livePreview.html('<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ffffff;font-size:16px;">🚀 Live Preview Loading...</div>');
             setTimeout(function(){
@@ -976,4 +960,5 @@
             }, 100);
         }
     }
-})(jQuery);
+
+}( jQuery ) );

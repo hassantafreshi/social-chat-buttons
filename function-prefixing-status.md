@@ -1,4 +1,4 @@
-## WP Social Chat Button - Function Name Prefixing Status
+## Social Chat Buttons - Function Name Prefixing Status
 
 ### ✅ JavaScript Files - Completed Changes
 
