@@ -1,10 +1,10 @@
 === Social Chat Buttons ===
 Contributors: hassantafreshi,whitestudio
-Tags: social, chat, whatsapp, telegram, support, contact, social media, customer service, communication
-Stable tag: 0.1.9
+Tags: social, chat, whatsapp, telegram, customer service
+Stable tag: 0.1.0
 Requires at least: 5.0
 Tested up to: 6.8
-Requires PHP: 7.4 or higher
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 
 == Description ==
 
-**Social Chat Buttons** is a **100% FREE** WordPress plugin that adds a beautiful floating chat widget to your website. Connect with your visitors through multiple social media platforms including WhatsApp, Telegram, Signal, and Persian networks like Eitaa and Soroush.
+**Social Chat Buttons** is a **100% FREE** WordPress plugin that adds a beautiful floating chat widget to your website. Connect with your visitors through multiple social media platforms including WhatsApp, Telegram, Signal.
 
 ### 🌟 **Key Features (All FREE!)**
 
@@ -63,6 +63,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Data sanitization & validation
 * Lightweight and fast loading
 * Clean uninstall option
+* GDPR compliant - no personal data collection
 
 ### 💎 **Why Choose Social Chat Buttons?**
 
@@ -119,7 +120,7 @@ Absolutely! Customize colors, sizes, position, button mode (icon/text/image), an
 Yes! The plugin is optimized to work with all major caching plugins including WP Rocket, W3 Total Cache, and WP Super Cache.
 
 = Is it translation ready? =
-Yes! The plugin is fully internationalized and includes Persian language. You can easily translate it to any language.
+Yes! The plugin is fully internationalized. You can easily translate it to any language.
 
 = How many contacts can I add? =
 Unlimited! Add as many social media contacts as you need for different departments or purposes.
@@ -134,7 +135,6 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 3. **Frontend Widget** - Beautiful floating chat button on your website
 4. **Contact Modal** - Clean popup showing all available contacts
 5. **Mobile View** - Responsive design works perfectly on mobile devices
-6. **Persian Networks** - Full support for Eitaa and Soroush with official logos
 
 == Changelog ==
 
@@ -163,9 +163,73 @@ Need help? We provide free community support through:
 
 Social Chat Buttons is open source! Contribute on [GitHub](https://github.com/hassantafreshi/social-chat-button)
 
+== External Services ==
+
+This plugin creates direct links to third-party social media and messaging platforms when users click on chat buttons. **The plugin itself does not send any data to these services** - it simply generates URLs that users can choose to visit.
+
+When a visitor clicks on a chat button, they will be redirected to the respective external service based on the contact information you've configured. This happens client-side in the user's browser.
+
+**Services Used:**
+
+The plugin generates links to the following third-party services (based on which platforms you choose to enable):
+
+* **Pinterest** - For Pinterest messaging functionality
+  - URL format: `https://pinterest.com/send/{username}/`
+  - Data sent: Pinterest username (configured by site admin)
+  - When: Only when user clicks the Pinterest chat button
+  - Privacy Policy: https://policy.pinterest.com/privacy-policy
+  - Terms of Service: https://policy.pinterest.com/terms-of-service
+
+* **Microsoft Teams** - For Microsoft Teams chat functionality
+  - URL format: `https://teams.microsoft.com/l/chat/0/0?users={email}`
+  - Data sent: Email address or Teams ID (configured by site admin)
+  - When: Only when user clicks the Teams chat button
+  - Privacy Policy: https://privacy.microsoft.com/privacystatement
+  - Terms of Service: https://www.microsoft.com/servicesagreement
+
+* **Other Platforms** - The plugin also creates links to these services (only if you configure them):
+  - WhatsApp (https://www.whatsapp.com/legal/privacy-policy)
+  - Telegram (https://telegram.org/privacy)
+  - Facebook Messenger (https://www.facebook.com/privacy/policy/)
+  - Instagram (https://privacycenter.instagram.com/policy/)
+  - Signal (https://signal.org/legal/)
+  - Discord (https://discord.com/privacy)
+  - Viber (https://www.viber.com/terms/viber-privacy-policy/)
+  - Twitter/X (https://twitter.com/privacy)
+  - LinkedIn (https://www.linkedin.com/legal/privacy-policy)
+  - Snapchat (https://values.snap.com/privacy/privacy-policy)
+  - KakaoTalk (https://www.kakao.com/policy/privacy)
+  - Threads (https://help.instagram.com/515230437301944)
+  - Reddit (https://www.reddit.com/policies/privacy-policy)
+  - VK (https://vk.com/privacy)
+
+**Important Notes:**
+
+1. **No automatic data transmission**: This plugin does not automatically send any data to these services. Links are only activated when users voluntarily click on them.
+
+2. **You control what's shared**: As the site administrator, you configure which platforms to use and what contact information (username, phone number, email) to include in the links.
+
+3. **User consent**: When users click a chat button, they are consciously choosing to open that platform and are subject to that platform's privacy policy and terms of service.
+
+4. **Local storage only**: All plugin settings and contact information are stored only in your WordPress database. Nothing is transmitted to external servers except when users click the chat buttons.
+
 == Privacy Policy ==
 
-This plugin does not collect, store, or transmit any personal data. All contact information is stored locally in your WordPress database and never shared with third parties.
+This plugin does not collect, store, or transmit any personal data from your website visitors. All contact information is stored locally in your WordPress database and never shared with third parties by the plugin itself.
+
+**GDPR Compliance:**
+
+This plugin is fully GDPR compliant:
+
+* **No cookies**: The plugin does not set any cookies or use browser storage to track users
+* **No personal data collection**: We don't collect, process, or store any personal information from your visitors
+* **No tracking**: No analytics, tracking pixels, or third-party scripts are loaded by this plugin
+* **Local data only**: All settings and configurations are stored locally in your WordPress database
+* **User control**: Visitors have full control - they choose whether to click chat buttons and share information with external platforms
+* **Transparent**: All external service connections are documented above and happen only with explicit user action
+* **Right to erasure**: Uninstalling the plugin removes all data from your database (if clean uninstall option is enabled)
+
+When visitors click on chat buttons, they are redirected to the respective social media platforms based on your configured contact information. Any data sharing at that point is governed by the privacy policies of those external platforms, and users are making an informed choice to use those services.
 
 == Credits ==
 

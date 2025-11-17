@@ -9,17 +9,11 @@ class WPSCB_Frontend {
         add_action( 'wp_enqueue_scripts', array( $this, 'wpscb_enqueue_front_assets' ) );
         add_action( 'wp_footer', array( $this, 'wpscb_render_frontend_widget' ) );
 
-        // Disable canonical redirect for preview mode
-        if ( isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1' ) {
-            remove_action( 'template_redirect', 'redirect_canonical' );
-        }
+
     }
 
     public function wpscb_enqueue_front_assets() {
         $settings = $this->core->wpscb_get_settings();
-
-        // Check for preview mode
-        $is_preview = isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1';
 
         // Skip enabled check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
@@ -55,18 +49,15 @@ class WPSCB_Frontend {
                 'string' => wp_timezone_string(), // WordPress timezone string
             ),
             'i18n' => array(
-                'chat' => esc_html__( 'Chat', 'wp-social-chat-button' ),
-                'poweredBy' => esc_html__( 'Developed by WP Chat Button', 'wp-social-chat-button' ),
-                'sponsoredBy' => esc_html__( 'Sponsored by whitestudio.team', 'wp-social-chat-button' ),
+                'chat' => esc_html__( 'Chat', 'social-chat-buttons' ),
+                'poweredBy' => esc_html__( 'Developed by WP Chat Button', 'social-chat-buttons' ),
+                'sponsoredBy' => esc_html__( 'Sponsored by whitestudio.team', 'social-chat-buttons' ),
             ),
         ) );
     }
 
     public function wpscb_render_frontend_widget() {
         $settings = $this->core->wpscb_get_settings();
-
-        // Check for preview mode
-        $is_preview = isset( $_GET['wpscb_preview'] ) && $_GET['wpscb_preview'] === '1';
 
         // Skip enabled and contacts check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }

@@ -17,12 +17,13 @@ class WPSCB_Ajax {
         WPSCB::wpscb_verify_request();
         $network = isset( $_POST['network'] ) ? sanitize_key( wp_unslash( $_POST['network'] ) ) : '';
         $value   = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
-    $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-    $message = isset( $_POST['message'] ) ? sanitize_text_field( wp_unslash( $_POST['message'] ) ) : '';
+        $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+        $message = isset( $_POST['message'] ) ? sanitize_text_field( wp_unslash( $_POST['message'] ) ) : '';
         $photo   = isset( $_POST['photo'] ) ? absint( $_POST['photo'] ) : 0;
-        $availability_raw = isset( $_POST['availability'] ) ? wp_unslash( $_POST['availability'] ) : '';
+        // Sanitize JSON availability data
+        $availability_raw = isset( $_POST['availability'] ) ? sanitize_text_field( wp_unslash( $_POST['availability'] ) ) : '';
         $availability = json_decode( $availability_raw, true );
-        if ( ! $availability || ! is_array( $availability ) ) {
+        if ( json_last_error() !== JSON_ERROR_NONE || ! is_array( $availability ) ) {
             $availability = array();
         }
         // Normalize to per-day slots schema on backend as well
@@ -52,12 +53,12 @@ class WPSCB_Ajax {
 
         $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'social-chat-buttons' ) ) );
         }
 
         $pattern = $networks[ $network ]['pattern'];
         if ( $value === '' || ( $pattern && ! preg_match( $pattern, $value ) ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'social-chat-buttons' ) ) );
         }
 
         $contacts = $this->core->wpscb_get_contacts();
@@ -80,7 +81,7 @@ class WPSCB_Ajax {
         $index = isset( $_POST['index'] ) ? absint( $_POST['index'] ) : -1;
         $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'social-chat-buttons' ) ) );
         }
         unset( $contacts[ $index ] );
         $contacts = array_values( $contacts );
@@ -93,9 +94,6 @@ class WPSCB_Ajax {
         $enabled  = isset( $_POST['enabled'] ) && $_POST['enabled'] == '1' ? 1 : 0;
         $position = isset( $_POST['position'] ) ? sanitize_key( wp_unslash( $_POST['position'] ) ) : 'right';
         // Debug enabled setting
-        error_log('WPSCB Debug - POST enabled isset: ' . (isset($_POST['enabled']) ? 'true' : 'false'));
-        error_log('WPSCB Debug - POST enabled value: ' . (isset($_POST['enabled']) ? $_POST['enabled'] : 'not set'));
-        error_log('WPSCB Debug - Saving enabled: ' . ($enabled ? '1' : '0'));
         $settings = $this->core->wpscb_set_settings( array( 'enabled' => $enabled, 'position' => $position ) );
         wp_send_json_success( array( 'settings' => $settings ) );
     }
@@ -108,9 +106,10 @@ class WPSCB_Ajax {
     $name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
     $message = isset( $_POST['message'] ) ? sanitize_text_field( wp_unslash( $_POST['message'] ) ) : '';
         $photo   = isset( $_POST['photo'] ) ? absint( $_POST['photo'] ) : 0;
-        $availability_raw = isset( $_POST['availability'] ) ? wp_unslash( $_POST['availability'] ) : '';
+        // Sanitize JSON availability data
+        $availability_raw = isset( $_POST['availability'] ) ? sanitize_text_field( wp_unslash( $_POST['availability'] ) ) : '';
         $availability = json_decode( $availability_raw, true );
-        if ( ! $availability || ! is_array( $availability ) ) {
+        if ( json_last_error() !== JSON_ERROR_NONE || ! is_array( $availability ) ) {
             $availability = array();
         }
         // Normalize to per-day slots
@@ -139,16 +138,16 @@ class WPSCB_Ajax {
 
         $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'social-chat-buttons' ) ) );
         }
 
         $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'social-chat-buttons' ) ) );
         }
         $pattern = $networks[ $network ]['pattern'];
         if ( $value === '' || ( $pattern && ! preg_match( $pattern, $value ) ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'wp-social-chat-button' ) ) );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'social-chat-buttons' ) ) );
         }
 
         $contacts[ $index ] = array( 'network' => $network, 'value' => $value, 'name' => $name, 'message' => $message, 'photo' => $photo, 'availability' => $availability );
@@ -189,14 +188,10 @@ class WPSCB_Ajax {
             'hide_copyright'         => isset( $_POST['hide_copyright'] ) && $_POST['hide_copyright'] == '1' ? 1 : 0,
             'responsive_scale'       => isset( $_POST['responsive_scale'] ) && $_POST['responsive_scale'] == '1' ? 1 : 0,
         );
-        // Debug what we receive from POST
-        error_log('WPSCB Debug - POST hide_copyright isset: ' . (isset($_POST['hide_copyright']) ? 'true' : 'false'));
-        error_log('WPSCB Debug - POST hide_copyright value: ' . (isset($_POST['hide_copyright']) ? $_POST['hide_copyright'] : 'not set'));
+
         // Debug what we're trying to save
-        error_log('WPSCB Debug - Saving hide_copyright: ' . ($adv['hide_copyright'] ? '1' : '0'));
         $saved = $this->core->wpscb_set_advanced_settings( $adv );
         // Debug what was actually saved
-        error_log('WPSCB Debug - Saved hide_copyright: ' . ($saved['hide_copyright'] ? '1' : '0'));
         wp_send_json_success( array( 'settings' => $saved ) );
     }
 }

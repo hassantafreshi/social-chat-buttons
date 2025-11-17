@@ -12,8 +12,7 @@ class WPSCB {
     }
 
     private function __construct() {
-        // Load text domain for WordPress < 6.7 compatibility
-        add_action( 'plugins_loaded', array( $this, 'wpscb_load_textdomain' ) );
+
 
         // Initialize modules.
         if ( is_admin() ) {
@@ -28,44 +27,34 @@ class WPSCB {
         new WPSCB_Ajax( $this );
     }
 
-    /**
-     * Load plugin textdomain for WordPress < 6.7 compatibility.
-     * WordPress 6.7+ automatically loads from /languages/ directory.
-     */
-    public function wpscb_load_textdomain() {
-        // Only load if WordPress version is less than 6.7
-        global $wp_version;
-        if ( version_compare( $wp_version, '6.7', '<' ) ) {
-            load_plugin_textdomain( 'wp-social-chat-button', false, dirname( plugin_basename( WPSCB_PLUGIN_FILE ) ) . '/languages' );
-        }
-    }
+
 
     // Data helpers
     public function wpscb_get_supported_networks() {
         $urlPattern = '/^https?:\/\/[^\s]+$/i';
         $networks = array(
             // Core asked list
-            'whatsapp'      => array( 'label' => esc_html__( 'WhatsApp', 'wp-social-chat-button' ),               'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
-            'messenger'     => array( 'label' => esc_html__( 'Facebook Messenger', 'wp-social-chat-button' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9.]{5,50}$/' ),
-            'telegram'      => array( 'label' => esc_html__( 'Telegram', 'wp-social-chat-button' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{5,32}$/' ),
-            'instagram_dm'  => array( 'label' => esc_html__( 'Instagram Direct', 'wp-social-chat-button' ),       'type' => 'id',       'pattern' => '/^[0-9]{5,20}$/' ),
-            'viber'         => array( 'label' => esc_html__( 'Viber', 'wp-social-chat-button' ),                  'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
-            'line'          => array( 'label' => esc_html__( 'LINE', 'wp-social-chat-button' ),                   'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_\-.]{2,50}$/' ),
-            'wechat'        => array( 'label' => esc_html__( 'WeChat', 'wp-social-chat-button' ),                 'type' => 'url',      'pattern' => $urlPattern ), // expect QR/official URL
-            'twitter_dm'    => array( 'label' => esc_html__( 'Twitter (X) DM', 'wp-social-chat-button' ),         'type' => 'id',       'pattern' => '/^[0-9]{1,20}$/' ),
-            'discord'       => array( 'label' => esc_html__( 'Discord', 'wp-social-chat-button' ),                'type' => 'code',     'pattern' => '/^([A-Za-z0-9]{4,10}|https?:\/\/discord\.gg\/[^\s]+)$/i' ),
-            'signal'        => array( 'label' => esc_html__( 'Signal', 'wp-social-chat-button' ),                 'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
-         //   'skype'         => array( 'label' => esc_html__( 'Skype', 'wp-social-chat-button' ),                  'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,32}$/' ),
-            'snapchat'      => array( 'label' => esc_html__( 'Snapchat', 'wp-social-chat-button' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.-]{3,39}$/' ),
-            'kakaotalk'     => array( 'label' => esc_html__( 'KakaoTalk', 'wp-social-chat-button' ),              'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,50}$/' ),
-            'linkedin_msg'  => array( 'label' => esc_html__( 'LinkedIn Messaging', 'wp-social-chat-button' ),     'type' => 'url',      'pattern' => $urlPattern ),
-            'threads'       => array( 'label' => esc_html__( 'Threads (Meta)', 'wp-social-chat-button' ),         'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_.]{1,30}$/' ),
-            'pinterest_msg' => array( 'label' => esc_html__( 'Pinterest Messages', 'wp-social-chat-button' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{3,30}$/' ),
-            'reddit_chat'   => array( 'label' => esc_html__( 'Reddit Chat', 'wp-social-chat-button' ),            'type' => 'username', 'pattern' => '/^[A-Za-z0-9_\-]{3,20}$/' ),
-            'youtube_chat'  => array( 'label' => esc_html__( 'YouTube Chat', 'wp-social-chat-button' ),           'type' => 'url',      'pattern' => $urlPattern ),
-            'slack'         => array( 'label' => esc_html__( 'Slack Invite', 'wp-social-chat-button' ),           'type' => 'url',      'pattern' => $urlPattern ),
-            'teams'         => array( 'label' => esc_html__( 'Microsoft Teams', 'wp-social-chat-button' ),        'type' => 'email',    'pattern' => '/^[^\s@]+@[^\s@]+\.[^\s@]+$/' ),
-            'VK'            => array( 'label' => esc_html__( 'VK Messenger', 'wp-social-chat-button' ),           'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.]{5,50}$/' ),
+            'whatsapp'      => array( 'label' => esc_html__( 'WhatsApp', 'social-chat-buttons' ),               'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
+            'messenger'     => array( 'label' => esc_html__( 'Facebook Messenger', 'social-chat-buttons' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9.]{5,50}$/' ),
+            'telegram'      => array( 'label' => esc_html__( 'Telegram', 'social-chat-buttons' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{5,32}$/' ),
+            'instagram_dm'  => array( 'label' => esc_html__( 'Instagram Direct', 'social-chat-buttons' ),       'type' => 'id',       'pattern' => '/^[0-9]{5,20}$/' ),
+            'viber'         => array( 'label' => esc_html__( 'Viber', 'social-chat-buttons' ),                  'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
+            'line'          => array( 'label' => esc_html__( 'LINE', 'social-chat-buttons' ),                   'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_\-.]{2,50}$/' ),
+            'wechat'        => array( 'label' => esc_html__( 'WeChat', 'social-chat-buttons' ),                 'type' => 'url',      'pattern' => $urlPattern ), // expect QR/official URL
+            'twitter_dm'    => array( 'label' => esc_html__( 'Twitter (X) DM', 'social-chat-buttons' ),         'type' => 'id',       'pattern' => '/^[0-9]{1,20}$/' ),
+            'discord'       => array( 'label' => esc_html__( 'Discord', 'social-chat-buttons' ),                'type' => 'code',     'pattern' => '/^([A-Za-z0-9]{4,10}|https?:\/\/discord\.gg\/[^\s]+)$/i' ),
+            'signal'        => array( 'label' => esc_html__( 'Signal', 'social-chat-buttons' ),                 'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
+         //   'skype'         => array( 'label' => esc_html__( 'Skype', 'social-chat-buttons' ),                  'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,32}$/' ),
+            'snapchat'      => array( 'label' => esc_html__( 'Snapchat', 'social-chat-buttons' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.-]{3,39}$/' ),
+            'kakaotalk'     => array( 'label' => esc_html__( 'KakaoTalk', 'social-chat-buttons' ),              'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,50}$/' ),
+            'linkedin_msg'  => array( 'label' => esc_html__( 'LinkedIn Messaging', 'social-chat-buttons' ),     'type' => 'url',      'pattern' => $urlPattern ),
+            'threads'       => array( 'label' => esc_html__( 'Threads (Meta)', 'social-chat-buttons' ),         'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_.]{1,30}$/' ),
+            'pinterest_msg' => array( 'label' => esc_html__( 'Pinterest Messages', 'social-chat-buttons' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{3,30}$/' ),
+            'reddit_chat'   => array( 'label' => esc_html__( 'Reddit Chat', 'social-chat-buttons' ),            'type' => 'username', 'pattern' => '/^[A-Za-z0-9_\-]{3,20}$/' ),
+            'youtube_chat'  => array( 'label' => esc_html__( 'YouTube Chat', 'social-chat-buttons' ),           'type' => 'url',      'pattern' => $urlPattern ),
+            'slack'         => array( 'label' => esc_html__( 'Slack Invite', 'social-chat-buttons' ),           'type' => 'url',      'pattern' => $urlPattern ),
+            'teams'         => array( 'label' => esc_html__( 'Microsoft Teams', 'social-chat-buttons' ),        'type' => 'email',    'pattern' => '/^[^\s@]+@[^\s@]+\.[^\s@]+$/' ),
+            'VK'            => array( 'label' => esc_html__( 'VK Messenger', 'social-chat-buttons' ),           'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.]{5,50}$/' ),
         );
 
         // If site language is Persian (fa*), add local networks Eitaa and Soroush.
@@ -189,7 +178,7 @@ class WPSCB {
         $defaults = array(
             // Button
             'button_mode'            => 'icon',          // 'icon', 'text', 'image'
-            'button_text'            => esc_html__( 'Chat', 'wp-social-chat-button' ),
+            'button_text'            => esc_html__( 'Chat', 'social-chat-buttons' ),
             'button_image'           => 0,               // attachment ID
             'button_size'            => 56,              // px
             'button_icon_size'       => 24,              // px for icon/text size
@@ -197,7 +186,7 @@ class WPSCB {
             'button_text_color'      => '#ffffff',
             // Popup
             'popup_width'            => 340,             // px
-            'popup_title'            => esc_html__( 'Chat', 'wp-social-chat-button' ), // popup header title
+            'popup_title'            => esc_html__( 'Chat', 'social-chat-buttons' ), // popup header title
             'popup_bg_color'         => '#ffffff',
             'popup_header_color'     => '#6610f2',       // gradient start
             'popup_header_color_end' => '#d63384',       // gradient end
@@ -340,11 +329,11 @@ class WPSCB {
 
     public static function wpscb_verify_request() {
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Insufficient permissions.', 'wp-social-chat-button' ) ), 403 );
+            wp_send_json_error( array( 'message' => esc_html__( 'Insufficient permissions.', 'social-chat-buttons' ) ), 403 );
         }
         $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
         if ( ! wp_verify_nonce( $nonce, 'wpscb_nonce' ) ) {
-            wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'wp-social-chat-button' ) ), 400 );
+            wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'social-chat-buttons' ) ), 400 );
         }
     }
 }

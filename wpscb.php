@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: WP Social Chat Button
- * Plugin URI:  https://example.com/wp-social-chat-button
- * Description: مدیریت راه‌های ارتباطی شبکه‌های اجتماعی (WhatsApp, Telegram, Signal و ...) با دکمه شناور در فرانت و پنل مدرن در ادمین.
- * Version:     0.1.9
- * Author:      hassantafreshi
- * Author URI:  https://example.com
+ * Plugin Name: Social Chat Buttons
+ * Plugin URI:  https://github.com/hassantafreshi/social-chat-button
+ * Description: Add a beautiful floating chat widget to connect with visitors through WhatsApp, Telegram, Instagram, and 15+ social networks. Features smart scheduling, custom styling, and mobile optimization.
+ * Version:     0.1.0
+ * Author:      whitestudio.team
+ * Author URI:  https://whitestudio.team
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wp-social-chat-button
+ * Text Domain: social-chat-buttons
  * Domain Path: /languages
  */
 
