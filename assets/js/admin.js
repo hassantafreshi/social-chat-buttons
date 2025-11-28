@@ -584,6 +584,11 @@
         if ( $( '.wpscb-settings-page' ).length ) {
             wpscb_initSettingsPage();
         }
+         // Add powered by text to footer
+        const footerLeft = document.getElementById('footer-thankyou');
+        if (footerLeft && WPSCB.i18n && WPSCB.i18n.poweredBy) {
+            footerLeft.innerHTML += WPSCB.i18n.poweredBy;
+        }
     });
 
     // Settings page auto-save and preview
@@ -783,7 +788,7 @@
             // Copyright footer
             const copyrightHtml = hideCopyright ? '' : `
                 <div class="wpscb-popup-footer">
-                    <div style="font-size:11px;color:var(--wpscb-popup-label);">Developed by WP Chat Button</div>
+                    <div style="font-size:11px;color:var(--wpscb-popup-label);">Developed by Social Chat Buttons</div>
                 </div>
             `;
 
@@ -959,6 +964,8 @@
                 wpscb_updatePreview();
             }, 100);
         }
+
+
     }
 
 }( jQuery ) );

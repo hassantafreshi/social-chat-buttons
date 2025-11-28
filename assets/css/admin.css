@@ -103,7 +103,7 @@ input#wpscb-search {
 .wpscb-field select { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 12px; min-height: 38px; }
 .wpscb-field .wpscb-field-error { color:#dc2626; font-size:12px; margin-top:6px; display:none; }
 .wpscb-field input, .wpscb-md-select { min-height: 44px; }
-.wpscb-empty { padding: 16px; background: #f8fafc; border: 1px dashed #e2e8f0; border-radius: 8px; color: #475569; }
+.wpscb-empty {margin:10px; padding: 16px; background: #f8fafc; border: 1px dashed #e2e8f0; border-radius: 8px; color: #475569; }
 
 /* Settings notice */
 .wpscb-notice { margin-top: 10px; }

@@ -33,7 +33,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Icon, text, or custom image modes
 * Gradient header backgrounds
 * Responsive design for all devices
-* Auto dark mode (8 PM - 7 AM)
+* Auto dark mode (8 PM - 7 AM, using WordPress site time)
 
 **⚡ Advanced Features**
 * **Smart availability scheduling** - Set different hours for each contact
@@ -71,7 +71,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 ✅ **Professional Design** - Modern UI with smooth animations
 ✅ **Developer Friendly** - Clean code following WordPress standards
 ✅ **Regular Updates** - Actively maintained and improved
-✅ **Community Support** - Free support through WordPress forums
+✅ **Community Support** -  Support through WordPress forums
 
 ### 🚀 **Perfect For:**
 * E-commerce stores
@@ -81,6 +81,10 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Persian/Iranian websites
 * Customer support teams
 * Multi-language sites
+
+**[Live Demo](https://whitestudio.team/)**
+**[Documentation](https://github.com/hassantafreshi/social-chat-button)**
+**[Support](https://wordpress.org/support/plugin/social-chat-buttons/)**
 
 == Installation ==
 
@@ -161,7 +165,7 @@ Need help? We provide free community support through:
 
 == Contributing ==
 
-Social Chat Buttons is open source! Contribute on [GitHub](https://github.com/hassantafreshi/social-chat-button)
+Social Chat Buttons is under GPLv2! Contribute on [GitHub](https://github.com/hassantafreshi/social-chat-buttons)
 
 == External Services ==
 

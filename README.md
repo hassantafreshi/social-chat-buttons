@@ -23,12 +23,14 @@ A **professional, feature-rich, and completely FREE** WordPress plugin that adds
 ### 💬 **Multi-Platform Support**
 Connect your visitors through their preferred communication channels:
 
-| **Messaging Apps** | **Social Media** | **Professional**
-|-------------------|------------------|------------------|
-| WhatsApp Business | Instagram Direct | LinkedIn Messages |
-| WhatsApp Personal | Facebook Messenger |  - |
-| Telegram | Twitter/X DM | Discord |
-| Signal | TikTok | Viber | - |
+| **Supported Platforms** | | | |
+|----------|----------|----------|----------|
+| WhatsApp | Telegram | Facebook Messenger | Instagram |
+| Signal | Viber | Line | WeChat |
+| Twitter/X | Discord | Skype | Snapchat |
+| KakaoTalk | LinkedIn | Threads | Pinterest |
+| Reddit | YouTube | Slack | Microsoft Teams |
+| VK  |
 
 ### 🎨 **Advanced Customization**
 
@@ -406,7 +408,6 @@ Verify usernames (without @ symbol for most platforms)
 # Test URL format
 Most platforms: username only
 WhatsApp: full phone number with country code
-Email: full email address
 ```
 
 **Styling Issues**

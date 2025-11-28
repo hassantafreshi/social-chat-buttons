@@ -558,7 +558,7 @@ Requires PHP: 5.4+
 Requires WordPress: 5.0+
 
 Credits:
-  - Developed by WP Chat Button
+  - Developed by Social Chat Buttons
   - Sponsored by whitestudio.team
 
 =================================================================

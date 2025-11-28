@@ -14,7 +14,7 @@ class WPSCB_Frontend {
 
     public function wpscb_enqueue_front_assets() {
         $settings = $this->core->wpscb_get_settings();
-
+        $is_preview =false; // Set to true if in preview mode
         // Skip enabled check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
 
@@ -38,7 +38,7 @@ class WPSCB_Frontend {
                 $advanced['button_image_url'] = $img_src[0];
             }
         }
-
+            $poweredBy = $this->core->wpscb_copyright_notice('public');
         wp_localize_script( 'wpscb-front', 'WPSCB_FRONT', array(
             'contacts' => $contacts,
             'settings' => $settings,
@@ -50,15 +50,14 @@ class WPSCB_Frontend {
             ),
             'i18n' => array(
                 'chat' => esc_html__( 'Chat', 'social-chat-buttons' ),
-                'poweredBy' => esc_html__( 'Developed by WP Chat Button', 'social-chat-buttons' ),
-                'sponsoredBy' => esc_html__( 'Sponsored by whitestudio.team', 'social-chat-buttons' ),
+                'poweredBy' =>  $poweredBy,
             ),
         ) );
     }
 
     public function wpscb_render_frontend_widget() {
         $settings = $this->core->wpscb_get_settings();
-
+        $is_preview =false; // Set to true if in preview mode
         // Skip enabled and contacts check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
         $contacts = $this->core->wpscb_get_contacts();

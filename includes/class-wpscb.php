@@ -336,4 +336,28 @@ class WPSCB {
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'social-chat-buttons' ) ), 400 );
         }
     }
+
+    public static function wpscb_copyright_notice($state) {
+            /* translators: %1$s and %2$s are opening and closing anchor tags */
+            $powered_by = esc_html__( 'By %1$sSocial Chat Buttons%2$s', 'social-chat-buttons' );
+            /* translators: %1$s and %3$s are opening and closing anchor tags, %2$s is the sponsor name */
+            $sponsoredBy = esc_html__( 'Sponsored by %1$s%2$s%3$s', 'social-chat-buttons' );
+            $powered_by = sprintf(
+                $powered_by,
+                '<a href="https://whitestudio.team/plugins/social-chat-buttons.html" class="wpscb-link poweredby" target="_blank" rel="noopener" style="text-decoration:unset;">',
+                '</a>'
+            );
+            $sponser_url = 'https://whitestudio.team';
+            $sponsoredBy = sprintf(
+                $sponsoredBy,
+                '<a href="' . esc_url( $sponser_url ) . '" class="wpscb-link sponsor" target="_blank" rel="noopener" style="text-decoration: unset;">',
+                'WhiteStudio.team',
+                '</a>'
+            );
+            // if state == public then show $sponsoredBy else return only $powered_by
+            //$rtrn = $state === 'public' ? $sponsoredBy : $powered_by;
+            $rtrn = $state === 'public' ? $powered_by : $powered_by;
+
+            return $rtrn;
+    }
 }

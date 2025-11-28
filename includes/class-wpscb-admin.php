@@ -42,6 +42,7 @@ class WPSCB_Admin {
             }
         }
         unset( $c );
+        $poweredBy = $this->core->wpscb_copyright_notice('admin');
         wp_localize_script( 'wpscb-admin', 'WPSCB', array(
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
             'nonce'   => wp_create_nonce( 'wpscb_nonce' ),
@@ -113,6 +114,7 @@ class WPSCB_Admin {
                 'day_fri'          => esc_html__( 'Fri', 'social-chat-buttons' ),
                 'day_sat'          => esc_html__( 'Sat', 'social-chat-buttons' ),
                 'day_sun'          => esc_html__( 'Sun', 'social-chat-buttons' ),
+                'poweredBy'          => $poweredBy,
             ),
             'networks' => $this->core->wpscb_get_supported_networks(),
             'contacts' => $contacts,

@@ -361,7 +361,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
             </div>
             ${!wpscb_advanced.hide_copyright ? `
                 <div class="wpscb-popup-footer">
-                    <div style="font-size:11px;color:var(--wpscb-popup-label);">Developed by WP Chat Button</div>
+                    <div style="font-size:11px;color:var(--wpscb-popup-label);">${WPSCB_FRONT.i18n.poweredBy}</div>
                 </div>
             ` : ''}
         `;
