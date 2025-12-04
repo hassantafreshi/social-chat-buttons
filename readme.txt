@@ -136,8 +136,7 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 1. **Admin Panel** - Easy contact management with modern interface
 2. **Settings Page** - Comprehensive customization options with live preview
 3. **Frontend Widget** - Beautiful floating chat button on your website
-4. **Contact Modal** - Clean popup showing all available contacts
-5. **Mobile View** - Responsive design works perfectly on mobile devices
+
 
 == Changelog ==
 

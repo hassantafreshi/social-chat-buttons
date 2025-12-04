@@ -959,7 +959,7 @@
         // Initialize live preview
         if ( $livePreview.length ) {
             // Test content first
-            $livePreview.html('<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ffffff;font-size:16px;">🚀 Live Preview Loading...</div>');
+            $livePreview.html('<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#000;font-size:16px;">🚀 Live Preview Loading...</div>');
             setTimeout(function(){
                 wpscb_updatePreview();
             }, 100);

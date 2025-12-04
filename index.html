@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free social chat buttons plugin for WordPress" id="meta-description">
+    <meta name="keywords" content="wordpress, chat, whatsapp, telegram" id="meta-keywords">
+    <title id="page-title">Social Chat Buttons - Free WordPress Social Chat Plugin</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" id="google-fonts">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- Fallback Font Awesome from jsDelivr -->
+    <script>
+        // Check if Font Awesome loaded, if not load from fallback CDN
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var faTest = document.createElement('i');
+                faTest.className = 'fas fa-home';
+                faTest.style.display = 'none';
+                document.body.appendChild(faTest);
+                var computed = window.getComputedStyle(faTest);
+
+                if (computed.fontFamily.indexOf('Font Awesome') === -1) {
+                    console.warn('Font Awesome not loaded, trying fallback...');
+                    var fallback = document.createElement('link');
+                    fallback.rel = 'stylesheet';
+                    fallback.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css';
+                    document.head.appendChild(fallback);
+                }
+                document.body.removeChild(faTest);
+            }, 100);
+        });
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #6610f2;
+            --secondary-color: #d63384;
+            --accent-color: #2563eb;
+            --danger-color: #dc2626;
+            --dark-color: #1a1a2e;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        [dir="rtl"] * {
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* Cursor styles */
+        a, button, .lang-btn, .cta-button {
+            cursor: pointer;
+        }
+
+        h1, h2, h3, h4, h5, h6, p, span, div:not(a):not(button) {
+            cursor: default;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 50px;
+            padding: 8px 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 8px;
+        }
+
+        [dir="rtl"] .language-switcher {
+            right: auto;
+            left: 20px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+
+        .lang-btn:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 100px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: var(--dark-color);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .cta-button {
+            background: white;
+            color: var(--primary-color);
+            padding: 15px 45px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            color: var(--primary-color);
+        }
+
+        .cta-button-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-right: 15px;
+        }
+
+        .cta-button-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background: var(--light-bg);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(102, 16, 242, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .feature-description {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+
+        /* Platforms Section */
+        .platforms-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .platform-item {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: default;
+        }
+
+        .platform-icon, .platform-icon img, .platform-name {
+            cursor: default;
+        }
+
+        .platform-item:hover {
+            background: white;
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 16, 242, 0.15);
+        }
+
+        .platform-icon {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+        }
+
+        .platform-icon img {
+            transition: transform 0.3s ease;
+        }
+
+        .platform-item:hover .platform-icon img {
+            transform: scale(1.1);
+        }
+
+        .platform-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #2d2d44 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Customization Section */
+        .customization-section {
+            padding: 80px 0;
+            background: var(--light-bg);
+        }
+
+        .customization-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: var(--primary-color);
+            margin-left: 5px;
+            padding: 0px 8px;
+            font-size: 1.3rem;
+        }
+
+
+
+        /* GDPR Section */
+        .gdpr-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .gdpr-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .gdpr-badge i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .gdpr-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .gdpr-text {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* CTA Section */
+        .final-cta-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .final-cta-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .final-cta-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .platform-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 15px;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .cta-button-secondary {
+                margin-right: 0;
+                margin-bottom: 15px;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="changeLanguage('fa')">فا</button>
+        <button class="lang-btn" onclick="changeLanguage('ar')">عربي</button>
+        <button class="lang-btn" onclick="changeLanguage('de')">DE</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center hero-content">
+                    <div class="free-badge">
+                        <i class="fas fa-gift me-2"></i>
+                        <span data-i18n="hero.freeBadge">100% FREE - No Hidden Costs</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Social Chat Buttons
+                    </h1>
+                    <p class="hero-subtitle" data-i18n="hero.subtitle">
+                        Professional Social Chat Buttons Plugin for WordPress<br>Connect with visitors through 23+ social networks
+                    </p>
+                    <div class="mt-4">
+                        <a href="https://wordpress.org/plugins/social-chat-buttons/" class="cta-button cta-button-secondary" target="_blank">
+                            <i class="fab fa-wordpress me-2"></i>
+                            <span data-i18n="hero.downloadBtn">Free Download</span>
+                        </a>
+                        <a href="https://whitestudio.team/" class="cta-button" target="_blank">
+                            <i class="fas fa-eye me-2"></i>
+                            <span data-i18n="hero.demoBtn">View Live Demo</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">23+</div>
+                        <div class="stat-label" data-i18n="stats.platforms">Social Networks</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label" data-i18n="stats.free">Free</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label" data-i18n="stats.hiddenCosts">Hidden Costs</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label" data-i18n="stats.features">Unlimited Features</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title" data-i18n="features.title">Key Features</h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">All features completely free at your disposal</p>
+            </div>
+
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.multiPlatform.title">Multi-Network Support</h3>
+                        <p class="feature-description" data-i18n="features.multiPlatform.description">
+                            Connect with visitors through WhatsApp, Telegram, Instagram, Signal, Viber and 18+ other networks
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.smartScheduling.title">Smart Scheduling</h3>
+                        <p class="feature-description" data-i18n="features.smartScheduling.description">
+                            Set different working hours for each contact, support for holidays and lunch breaks
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.customization.title">Full Customization</h3>
+                        <p class="feature-description" data-i18n="features.customization.description">
+                            Three display modes, unlimited colors, size control, position and live preview
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.responsive.title">Responsive & Mobile</h3>
+                        <p class="feature-description" data-i18n="features.responsive.description">
+                            Fully responsive design with separate display control for mobile and desktop
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.darkMode.title">Auto Dark Mode</h3>
+                        <p class="feature-description" data-i18n="features.darkMode.description">
+                            Automatically switches to dark mode from 8 PM to 7 AM based on visitor timezone
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="features.autoSave.title">Auto-Save</h3>
+                        <p class="feature-description" data-i18n="features.autoSave.description">
+                            Settings are automatically saved while typing, live preview of changes
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platforms Section -->
+    <section class="platforms-section">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title" data-i18n="platforms.title">Supported Social Networks</h2>
+                <p class="section-subtitle" data-i18n="platforms.subtitle">Over 23 popular communication platforms worldwide</p>
+            </div>
+
+            <div class="platform-grid" id="platform-grid">
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.whatsapp">WhatsApp</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.telegram">Telegram</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.instagram">Instagram</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/messenger/0084FF" alt="Messenger" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.messenger">Messenger</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/signal/3A76F0" alt="Signal" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.signal">Signal</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/viber/7360F2" alt="Viber" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.viber">Viber</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/line/00B900" alt="Line" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.line">Line</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/wechat/07C160" alt="WeChat" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.wechat">WeChat</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/x/000000" alt="Twitter/X" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.twitter">Twitter/X</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/discord/5865F2" alt="Discord" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.discord">Discord</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/snapchat/FFFC00" alt="Snapchat" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.snapchat">Snapchat</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/kakaotalk/FFCD00" alt="KakaoTalk" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.kakao">KakaoTalk</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="48" height="48" rx="8" fill="#0077B5"/>
+                            <path d="M16.5 19.5H11.5V36.5H16.5V19.5Z" fill="white"/>
+                            <path d="M14 17.5C15.38 17.5 16.5 16.38 16.5 15C16.5 13.62 15.38 12.5 14 12.5C12.62 12.5 11.5 13.62 11.5 15C11.5 16.38 12.62 17.5 14 17.5Z" fill="white"/>
+                            <path d="M36.5 36.5H31.5V27.5C31.5 25.29 30.71 24 28.5 24C26.09 24 25.5 25.79 25.5 27.5V36.5H20.5V19.5H25.5V21.73C25.5 21.73 27.09 18.5 31 18.5C34.91 18.5 36.5 20.91 36.5 25.5V36.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.linkedin">LinkedIn</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/threads/000000" alt="Threads" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.threads">Threads</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/pinterest/E60023" alt="Pinterest" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.pinterest">Pinterest</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/reddit/FF4500" alt="Reddit" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.reddit">Reddit</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.youtube">YouTube</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/slack/4A154B" alt="Slack" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.slack">Slack</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="48" height="48" rx="8" fill="#5059C9"/>
+                            <path d="M30 18H26V22H30V18Z" fill="white"/>
+                            <path d="M24 13C21.24 13 19 15.24 19 18C19 20.76 21.24 23 24 23C26.76 23 29 20.76 29 18C29 15.24 26.76 13 24 13Z" fill="white"/>
+                            <path d="M24 24C19.03 24 15 28.03 15 33V35H33V33C33 28.03 28.97 24 24 24Z" fill="white"/>
+                            <path d="M35 24H31V28H35V24Z" fill="#7B83EB"/>
+                            <path d="M35 29H31V33H35V29Z" fill="#7B83EB"/>
+                        </svg>
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.teams">Teams</div>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon">
+                        <img src="https://cdn.simpleicons.org/vk/0077FF" alt="VK" width="48" height="48">
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.vk">VK</div>
+                </div>
+
+                <!-- Persian-only platforms -->
+                <div class="platform-item platform-fa-only" style="display: none;">
+                    <div class="platform-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect width="48" height="48" rx="12" fill="#1DA1F2"/>
+                            <text x="24" y="32" font-family="Arial" font-size="20" font-weight="bold" fill="white" text-anchor="middle">ایتا</text>
+                        </svg>
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.eitaa">ایتا</div>
+                </div>
+                <div class="platform-item platform-fa-only" style="display: none;">
+                    <div class="platform-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect width="48" height="48" rx="12" fill="#FF6B35"/>
+                            <text x="24" y="32" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle">سروش</text>
+                        </svg>
+                    </div>
+                    <div class="platform-name" data-i18n="platforms.list.soroush">سروش</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customization Section -->
+    <section class="customization-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="section-title" data-i18n="customization.title">Advanced Customization</h2>
+                    <p class="section-subtitle" data-i18n="customization.subtitle">Complete control over widget appearance and behavior</p>
+
+                    <ul class="feature-list mt-4" id="customization-features">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Three display modes:</strong> Icon, text, or custom image
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Unlimited colors:</strong> Color selection with live preview
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Size control:</strong> Adjust button and icon size (40-80px)
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Positioning:</strong> Left or right side of page
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Gradient headers:</strong> Beautiful gradient backgrounds
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Custom messages:</strong> Welcome message for each contact
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Avatars:</strong> Custom photos or default icons
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <strong>Sorting:</strong> Drag and drop to reorder
+                        </li>
+                    </ul>
+                </div>                <div class="col-lg-6">
+                    <div class="customization-preview">
+                        <img src="social-chat-buttons.png" alt="Preview of Social Chat Buttons plugin" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GDPR Section -->
+    <section class="gdpr-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="gdpr-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3 class="gdpr-title" data-i18n="gdpr.title">Fully GDPR Compliant</h3>
+                        <p class="gdpr-text mb-0" data-i18n="gdpr.description">
+                            No personal data collected • No cookies • No tracking<br>User security and privacy is our priority
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5 g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="gdpr.security.title">High Security</h3>
+                        <p class="feature-description" data-i18n="gdpr.security.description">
+                            WordPress coding standards, Nonce verification, data sanitization
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="gdpr.optimized.title">Optimized</h3>
+                        <p class="feature-description" data-i18n="gdpr.optimized.description">
+                            Less than 50KB, minified CSS & JS, cache compatible
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3 class="feature-title" data-i18n="gdpr.multilingual.title">Multilingual</h3>
+                        <p class="feature-description" data-i18n="gdpr.multilingual.description">
+                            Translation ready, full RTL support, WPML compatible
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="final-cta-title" data-i18n="cta.title">Ready to Get Started?</h2>
+                    <p class="final-cta-subtitle" data-i18n="cta.subtitle">
+                        Download the plugin for free and set it up in minutes<br>No credit card, no registration, no limitations!
+                    </p>
+                    <div class="mt-4">
+                        <a href="https://wordpress.org/plugins/social-chat-buttons/" class="cta-button" target="_blank">
+                            <i class="fab fa-wordpress me-2"></i>
+                            <span data-i18n="cta.downloadBtn">Free Download from WordPress</span>
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://github.com/hassantafreshi/social-chat-button" class="text-white" target="_blank">
+                            <i class="fab fa-github me-2"></i>
+                            <span data-i18n="cta.github">View on GitHub</span>
+                        </a>
+                        <span class="mx-3">|</span>
+                        <a href="https://whitestudio.team/" class="text-white" target="_blank">
+                            <i class="fas fa-eye me-2"></i>
+                            <span data-i18n="cta.demo">Live Demo</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="mb-2">
+                        <span data-i18n="footer.designedBy">Designed and developed with ❤️ by</span>
+                        <a href="https://whitestudio.team/" target="_blank">WhiteStudio.team</a>
+                    </p>
+                    <p class="mb-0">
+                        <a href="https://github.com/hassantafreshi/social-chat-button" target="_blank"><span data-i18n="footer.github">GitHub</span></a>
+                        <span class="mx-2">•</span>
+                        <a href="https://wordpress.org/support/plugin/social-chat-buttons/" target="_blank"><span data-i18n="footer.support">Support</span></a>
+                        <span class="mx-2">•</span>
+                        <a href="https://wordpress.org/plugins/social-chat-buttons/" target="_blank"><span data-i18n="footer.download">Download</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Language Files -->
+    <script src="lang/en.js"></script>
+    <script src="lang/fa.js"></script>
+    <script src="lang/ar.js"></script>
+    <script src="lang/de.js"></script>
+    <script src="lang/translator.js"></script>
+
+    <!-- Smooth Scroll -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
