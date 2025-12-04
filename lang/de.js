@@ -22,7 +22,7 @@ const translations_de = {
     },
     features: {
         title: 'Hauptmerkmale',
-        subtitle: 'Alle Funktionen völlig kostenlos zu Ihrer Verfügung',
+        subtitle: 'Alle Funktionen stehen Ihnen völlig kostenlos zur Verfügung',
         multiPlatform: {
             title: 'Multi-Netzwerk-Unterstützung',
             description: 'Verbinden Sie sich mit Besuchern über WhatsApp, Telegram, Instagram, Signal, Viber und 18+ weitere Netzwerke'
@@ -79,26 +79,26 @@ const translations_de = {
         title: 'Erweiterte Anpassung',
         subtitle: 'Vollständige Kontrolle über Aussehen und Verhalten des Widgets',
         features: [
-            '<strong>Drei Anzeigemodi:</strong> Symbol, Text oder benutzerdefiniertes Bild',
-            '<strong>Unbegrenzte Farben:</strong> Farbauswahl mit Live-Vorschau',
-            '<strong>Größenkontrolle:</strong> Schaltflächen- und Symbolgröße anpassen (40-80px)',
-            '<strong>Positionierung:</strong> Linke oder rechte Seite der Seite',
-            '<strong>Gradient-Header:</strong> Schöne Gradient-Hintergründe',
-            '<strong>Benutzerdefinierte Nachrichten:</strong> Willkommensnachricht für jeden Kontakt',
-            '<strong>Avatare:</strong> Benutzerdefinierte Fotos oder Standard-Symbole',
-            '<strong>Sortierung:</strong> Ziehen und Ablegen zum Neuordnen'
+            '<strong>Drei Anzeigemodi:</strong>&nbsp;Symbol, Text oder individuelles Bild',
+            '<strong>Unbegrenzte Farben:</strong>&nbsp;Farbauswahl mit Live-Vorschau',
+            '<strong>Größenkontrolle:</strong>&nbsp;Button- und Symbolgröße anpassen (40-80px)',
+            '<strong>Positionierung:</strong>&nbsp;Links oder rechts auf der Seite',
+            '<strong>Gradient-Header:</strong>&nbsp;Schöne Gradient-Hintergründe',
+            '<strong>Benutzerdefinierte Nachrichten:</strong>&nbsp;Willkommensnachricht für jeden Kontakt',
+            '<strong>Avatare:</strong>&nbsp;Individuelle Fotos oder Standardsymbole',
+            '<strong>Sortierung:</strong>&nbsp;Drop-and-drop zum Neuordnen'
         ]
     },
     gdpr: {
         title: 'Vollständig DSGVO-konform',
-        description: 'Keine persönlichen Daten gesammelt • Keine Cookies • Kein Tracking<br>Benutzersicherheit und Datenschutz haben Priorität',
+        description: 'Es werden keine personenbezogenen Daten gesammelt • Keine Cookies • Kein Tracking<br>Benutzersicherheit und Datenschutz haben Priorität',
         security: {
             title: 'Hohe Sicherheit',
             description: 'WordPress-Codierungsstandards, Nonce-Verifizierung, Datenbereinigung'
         },
         optimized: {
             title: 'Optimiert',
-            description: 'Weniger als 50KB, minifiziertes CSS & JS, Cache-kompatibel'
+            description: 'Weniger als 50 KB, minifiziertes CSS & JS, Cache-kompatibel'
         },
         multilingual: {
             title: 'Mehrsprachig',
