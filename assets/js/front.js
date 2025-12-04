@@ -306,12 +306,15 @@ document.addEventListener( 'DOMContentLoaded', function() {
         // Button mode: icon, text, or image
         const mode = wpscb_advanced.button_mode || 'icon';
         if(mode === 'text'){
+            const iconSize = wpscb_advanced.button_icon_size || 24;
             fab.textContent = wpscb_advanced.button_text || wpscb_i18n.chat || 'Chat';
             fab.style.fontSize = 'var(--wpscb-button-icon-size)';
-            fab.style.padding = '0 20px';
+            fab.style.padding = iconSize + 'px 20px';
             fab.style.width = 'auto';
         } else if(mode === 'image' && wpscb_advanced.button_image_url){
             fab.innerHTML = '<img src="'+wpscb_esc(wpscb_advanced.button_image_url)+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" />';
+            fab.style.backgroundColor = 'transparent';
+            fab.style.boxShadow = 'none';
         } else {
             fab.innerHTML = wpscb_chatIcon;
         }

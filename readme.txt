@@ -33,7 +33,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Icon, text, or custom image modes
 * Gradient header backgrounds
 * Responsive design for all devices
-* Auto dark mode (8 PM - 7 AM, using WordPress site time)
+* Auto dark mode (8 PM - 7 AM, based on visitor's local time)
 
 **⚡ Advanced Features**
 * **Smart availability scheduling** - Set different hours for each contact
@@ -78,7 +78,6 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Business websites
 * Personal blogs
 * Service providers
-* Persian/Iranian websites
 * Customer support teams
 * Multi-language sites
 

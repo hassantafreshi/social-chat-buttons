@@ -57,11 +57,11 @@ class WPSCB_Frontend {
 
     public function wpscb_render_frontend_widget() {
         $settings = $this->core->wpscb_get_settings();
-        $is_preview =false; // Set to true if in preview mode
+
         // Skip enabled and contacts check in preview mode
-        if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
+        if ( empty( $settings['enabled'] )  ) { return; }
         $contacts = $this->core->wpscb_get_contacts();
-        if ( empty( $contacts ) && ! $is_preview ) { return; }
+        if ( empty( $contacts )  ) { return; }
 
         $position_class = $settings['position'] === 'left' ? 'wpscb-left' : 'wpscb-right';
 
