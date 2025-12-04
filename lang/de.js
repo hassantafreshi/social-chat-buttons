@@ -18,7 +18,7 @@ const translations_de = {
         platforms: 'Soziale Netzwerke',
         free: 'Kostenlos',
         hiddenCosts: 'Versteckte Kosten',
-        features: 'Unbegrenzte Funktionen'
+        features: 'Kostenlose Funktionen'
     },
     features: {
         title: 'Hauptmerkmale',
