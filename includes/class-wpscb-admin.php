@@ -13,7 +13,9 @@ class WPSCB_Admin {
     public function wpscb_register_admin_menu() {
         $cap = 'manage_options';
         add_menu_page(
+            /* translators: Page title and menu name for the main plugin page in WordPress admin menu */
             esc_html__( 'Social Chat Buttons', 'social-chat-buttons' ),
+            /* translators: Menu name displayed in WordPress admin sidebar */
             esc_html__( 'Social Chat Buttons', 'social-chat-buttons' ),
             $cap,
             'wpscb_panel',
@@ -21,7 +23,9 @@ class WPSCB_Admin {
             'dashicons-format-chat',
             56
         );
+        /* translators: Submenu page title and menu name for the Panel page where users manage their social media contacts */
         add_submenu_page( 'wpscb_panel', esc_html__( 'Panel', 'social-chat-buttons' ), esc_html__( 'Panel', 'social-chat-buttons' ), $cap, 'wpscb_panel', array( $this, 'wpscb_render_panel_page' ) );
+        /* translators: Submenu page title and menu name for the Settings page where users configure widget appearance and behavior */
         add_submenu_page( 'wpscb_panel', esc_html__( 'Settings', 'social-chat-buttons' ), esc_html__( 'Settings', 'social-chat-buttons' ), $cap, 'wpscb_settings', array( $this, 'wpscb_render_settings_page' ) );
     }
 
@@ -52,67 +56,129 @@ class WPSCB_Admin {
                 'string' => wp_timezone_string(), // WordPress timezone string
             ),
             'i18n'    => array(
+                /* translators: Button text in admin panel modal to add a new social media contact */
                 'addContact'      => esc_html__( 'Add Contact', 'social-chat-buttons' ),
+                /* translators: Modal title when editing an existing social media contact */
                 'editContact'     => esc_html__( 'Edit Contact', 'social-chat-buttons' ),
+                /* translators: Label for the social network selection dropdown (e.g., WhatsApp, Telegram) */
                 'network'         => esc_html__( 'Network', 'social-chat-buttons' ),
+                /* translators: Label for username input field when network requires a username */
                 'username'        => esc_html__( 'Username', 'social-chat-buttons' ),
+                /* translators: Label for phone number input field when network requires a phone number */
                 'phone'           => esc_html__( 'Phone Number', 'social-chat-buttons' ),
+                /* translators: Button text to save a new contact in the admin panel */
                 'save'            => esc_html__( 'Save', 'social-chat-buttons' ),
+                /* translators: Button text to update an existing contact in the admin panel */
                 'update'          => esc_html__( 'Update', 'social-chat-buttons' ),
+                /* translators: Button text to cancel adding or editing a contact */
                 'cancel'          => esc_html__( 'Cancel', 'social-chat-buttons' ),
+                /* translators: Button text to delete a contact from the list */
                 'delete'          => esc_html__( 'Delete', 'social-chat-buttons' ),
+                /* translators: Label for the contact name input field */
                 'name'            => esc_html__( 'Name', 'social-chat-buttons' ),
+                /* translators: Label for the photo/avatar upload field */
                 'photo'           => esc_html__( 'Photo', 'social-chat-buttons' ),
+                /* translators: Button text to open WordPress media library for choosing or uploading a photo */
                 'chooseUpload'    => esc_html__( 'Choose / Upload', 'social-chat-buttons' ),
+                /* translators: Button text to remove the currently selected photo from a contact */
                 'remove'          => esc_html__( 'Remove', 'social-chat-buttons' ),
+                /* translators: Placeholder text shown when no image has been selected for a contact */
                 'noImageSelected' => esc_html__( 'No image selected', 'social-chat-buttons' ),
+                /* translators: Text displayed when a contact has no photo/avatar */
                 'noImage'         => esc_html__( 'No image', 'social-chat-buttons' ),
+                /* translators: Placeholder text in network dropdown when no network is selected */
                 'selectNetwork'   => esc_html__( 'Select network', 'social-chat-buttons' ),
+                /* translators: Placeholder text in search input boxes throughout the admin interface */
                 'searchPlaceholder' => esc_html__( 'Search...', 'social-chat-buttons' ),
+                /* translators: Message shown when search returns no matching results */
                 'noResults'       => esc_html__( 'No results found', 'social-chat-buttons' ),
+                /* translators: Confirmation prompt asking user to confirm deletion of an item */
                 'confirmDelete'   => esc_html__( 'Delete this item?', 'social-chat-buttons' ),
+                /* translators: Error message shown when user input doesn't match the required format */
                 'invalidFormat'   => esc_html__( 'Invalid input format.', 'social-chat-buttons' ),
+                /* translators: Generic error message shown when saving a contact fails */
                 'errorSaving'     => esc_html__( 'Error saving', 'social-chat-buttons' ),
+                /* translators: Generic error message shown when deleting a contact fails */
                 'errorDeleting'   => esc_html__( 'Error deleting', 'social-chat-buttons' ),
+                /* translators: Success message shown when settings are saved successfully */
                 'settingsSaved'   => esc_html__( 'Settings saved.', 'social-chat-buttons' ),
+                /* translators: Error message shown when saving settings fails */
                 'errorSavingSettings' => esc_html__( 'Error saving settings', 'social-chat-buttons' ),
+                /* translators: Message shown in contacts table when no contacts have been added yet */
                 'emptyMessage'    => esc_html__( 'No contacts added. Click the add button.', 'social-chat-buttons' ),
+                /* translators: Table column header for contact name */
                 'tableHeaderName' => esc_html__( 'Name', 'social-chat-buttons' ),
+                /* translators: Table column header for contact value (username, phone number, or other identifier) */
                 'tableHeaderValue' => esc_html__( 'Username / Number / Value', 'social-chat-buttons' ),
+                /* translators: Table column header for social network type */
                 'tableHeaderNetwork' => esc_html__( 'Network', 'social-chat-buttons' ),
+                /* translators: Table column header for contact photo/avatar */
                 'tableHeaderPhoto' => esc_html__( 'Photo', 'social-chat-buttons' ),
+                /* translators: Table column header for action buttons (edit, delete) */
                 'tableHeaderActions' => esc_html__( 'Actions', 'social-chat-buttons' ),
+                /* translators: Label for email address input field when network requires an email */
                 'labelEmail'      => esc_html__( 'Email', 'social-chat-buttons' ),
+                /* translators: Label for ID input field when network requires a numeric ID */
                 'labelID'         => esc_html__( 'ID', 'social-chat-buttons' ),
+                /* translators: Label for code input field when network requires a code or token */
                 'labelCode'       => esc_html__( 'Code', 'social-chat-buttons' ),
+                /* translators: Label for URL input field when network requires a full URL */
                 'labelURL'        => esc_html__( 'URL', 'social-chat-buttons' ),
+                /* translators: Generic label for value input field used across different input types */
                 'labelValue'      => esc_html__( 'Value', 'social-chat-buttons' ),
+                /* translators: Error message when WordPress media library is not available */
                 'mediaUnavailable' => esc_html__( 'Media library unavailable.', 'social-chat-buttons' ),
+                /* translators: Label for the message input field where users can set a default greeting */
                 'message'          => esc_html__( 'Message', 'social-chat-buttons' ),
+                /* translators: Default welcome message shown to website visitors when they open the chat widget */
                 'defaultMessage'   => esc_html__( 'Hello from Social Chat Buttons — how can we help?', 'social-chat-buttons' ),
+                /* translators: Success message shown when a new contact is added successfully */
                 'savedContact'     => esc_html__( 'Contact added successfully.', 'social-chat-buttons' ),
+                /* translators: Success message shown when an existing contact is updated successfully */
                 'updatedContact'   => esc_html__( 'Contact updated successfully.', 'social-chat-buttons' ),
+                /* translators: Validation error message shown when a required field is left empty */
                 'fieldRequired'    => esc_html__( 'This field is required.', 'social-chat-buttons' ),
+                /* translators: Validation error message shown when trying to save without selecting a network */
                 'selectNetworkFirst' => esc_html__( 'Please select a network.', 'social-chat-buttons' ),
+                /* translators: Validation error message shown when contact value field is empty */
                 'valueRequired'    => esc_html__( 'Please enter a value.', 'social-chat-buttons' ),
+                /* translators: Confirmation dialog title when deleting a contact */
                 'deleteContactTitle' => esc_html__( 'Delete Contact', 'social-chat-buttons' ),
+                /* translators: Confirmation message asking if user really wants to delete a contact permanently */
                 'deleteContactMessage' => esc_html__( 'Are you sure you want to delete this contact? This action cannot be undone.', 'social-chat-buttons' ),
+                /* translators: Button text in confirmation dialog to proceed with deletion */
                 'deleteBtn'        => esc_html__( 'Delete', 'social-chat-buttons' ),
+                /* translators: Success message shown when a contact is deleted successfully */
                 'deletedContact'   => esc_html__( 'Contact deleted successfully.', 'social-chat-buttons' ),
+                /* translators: Section heading for scheduling when a contact is available */
                 'availability'     => esc_html__( 'Schedule & Availability', 'social-chat-buttons' ),
+                /* translators: Label for days of the week selection in availability schedule */
                 'availableDays'    => esc_html__( 'Days', 'social-chat-buttons' ),
+                /* translators: Label for time hours selection in availability schedule */
                 'availableHours'   => esc_html__( 'Hours', 'social-chat-buttons' ),
+                /* translators: Button text to add a new time range in availability schedule */
                 'addTimeRange'     => esc_html__( 'Add time range', 'social-chat-buttons' ),
+                /* translators: Label for start time in time range selection */
                 'from'             => esc_html__( 'From', 'social-chat-buttons' ),
+                /* translators: Label for end time in time range selection */
                 'to'               => esc_html__( 'To', 'social-chat-buttons' ),
+                /* translators: Button text to remove all time ranges for a specific day */
                 'clearDay'         => esc_html__( 'Clear day', 'social-chat-buttons' ),
+                /* translators: Button text to copy current day's schedule to all other days of the week */
                 'copyToAll'        => esc_html__( 'Copy to all days', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Monday in weekly schedule */
                 'day_mon'          => esc_html__( 'Mon', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Tuesday in weekly schedule */
                 'day_tue'          => esc_html__( 'Tue', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Wednesday in weekly schedule */
                 'day_wed'          => esc_html__( 'Wed', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Thursday in weekly schedule */
                 'day_thu'          => esc_html__( 'Thu', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Friday in weekly schedule */
                 'day_fri'          => esc_html__( 'Fri', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Saturday in weekly schedule */
                 'day_sat'          => esc_html__( 'Sat', 'social-chat-buttons' ),
+                /* translators: Abbreviation for Sunday in weekly schedule */
                 'day_sun'          => esc_html__( 'Sun', 'social-chat-buttons' ),
                 'poweredBy'          => $poweredBy,
             ),
@@ -125,7 +191,9 @@ class WPSCB_Admin {
 
     public function wpscb_render_panel_page() {
         if ( ! current_user_can( 'manage_options' ) ) { return; }
+        /* translators: Page heading for the admin panel where users manage their social media contacts */
         echo '<div class="wrap wpscb-wrap"><h1>' . esc_html__( 'Social Chat Panel', 'social-chat-buttons' ) . '</h1>';
+        /* translators: Description text below page heading explaining the purpose of the panel */
         echo '<p>' . esc_html__( 'Manage your social support contact methods below.', 'social-chat-buttons' ) . '</p>';
         echo '<div id="wpscb-app" class="wpscb-panel"></div>';
         echo '</div>';

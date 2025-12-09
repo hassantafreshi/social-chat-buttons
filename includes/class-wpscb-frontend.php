@@ -49,6 +49,7 @@ class WPSCB_Frontend {
                 'string' => wp_timezone_string(), // WordPress timezone string
             ),
             'i18n' => array(
+                /* translators: Text displayed on the frontend widget to initiate a chat */
                 'chat' => esc_html__( 'Chat', 'social-chat-buttons' ),
                 'poweredBy' =>  $poweredBy,
             ),

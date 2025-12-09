@@ -1,9 +1,9 @@
 === Social Chat Buttons ===
-Contributors: hassantafreshi,whitestudio
+Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz
 Tags: social, chat, whatsapp, telegram, customer service
-Stable tag: 0.1.0
+Stable tag: 1.0.1
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,7 +82,7 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Multi-language sites
 
 **[Live Demo](https://whitestudio.team/)**
-**[Documentation](https://github.com/hassantafreshi/social-chat-button)**
+**[Documentation](https://github.com/hassantafreshi/social-chat-buttons)**
 **[Support](https://wordpress.org/support/plugin/social-chat-buttons/)**
 
 == Installation ==
@@ -142,7 +142,7 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 
 
-= 0.1.0 =
+= 1.0.0 =
 * Initial release
 * Multi-network social media support
 * Admin panel with contact management
@@ -150,8 +150,12 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 == Upgrade Notice ==
 
-= 0.1.0 =
+= 1.0.1 =
+* Fixed broken Plugin Support Page link in the Support section
+
+= 1.0.0 =
 * Initial release
+
 
 == Support ==
 
@@ -236,6 +240,7 @@ When visitors click on chat buttons, they are redirected to the respective socia
 == Credits ==
 
 * Developed with ❤️ by Hassan Tafreshi
+* Translated into multiple languages by our amazing community: German by [presskopp](https://profiles.wordpress.org/presskopp/) and [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/), and Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
 * Community feedback and suggestions
 * WordPress community support
 

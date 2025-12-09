@@ -164,7 +164,7 @@ Sunday: Closed
 
 ```bash
 # Clone the repository
-git clone https://github.com/hassantafreshi/social-chat-button.git
+git clone https://github.com/hassantafreshi/social-chat-buttons.git
 
 # Navigate to plugins directory
 cd /path/to/wordpress/wp-content/plugins/
@@ -468,7 +468,7 @@ We welcome contributions from the community! Here's how you can help:
 ### **Code Contributions**
 ```bash
 # Fork the repository
-git fork https://github.com/hassantafreshi/social-chat-button
+git fork https://github.com/hassantafreshi/social-chat-buttons
 
 # Create feature branch
 git checkout -b feature/your-feature-name
@@ -491,7 +491,7 @@ Help make the plugin available in more languages:
 
 ### **Free Community Support**
 - **WordPress Forums**: [Official Plugin Support](https://wordpress.org/support/plugin/social-chat-buttons/)
-- **GitHub Issues**: [Technical Issues & Feature Requests](https://github.com/hassantafreshi/social-chat-button/issues)
+- **GitHub Issues**: [Technical Issues & Feature Requests](https://github.com/hassantafreshi/social-chat-buttons/issues)
 - **Documentation**: This README and inline help text
 
 ### **Response Times**
@@ -550,7 +550,17 @@ All social media platform names and logos are trademarks of their respective own
 - **Testing**: Cross-platform compatibility testing
 
 ### **Community Contributors**
-- **Translators**: Multi-language support contributors
+
+| Contributor | Name | Role |
+|-------------|------|------|
+| [@hassantafreshi](https://github.com/hassantafreshi/) | Hassan Tafreshi | Developer, Debug, Persian Translation |
+| [@presskopp](https://github.com/Presskopp) | presskopp | Debug, German Translation |
+| [@tobifjellner](https://github.com/tobifjellner) | Tor-Bjorn Fjellner | German Translation |
+| [@psmits1567](https://profiles.wordpress.org/psmits1567/) | Peter Smits | Dutch Translation |
+| [@fakhriaz](https://github.com/FakhriAz/) | Fakhri Azzouz | Arabic Translation |
+| [@srrahimi](https://github.com/srrahimi) | Sadegh Rahimi | Video Production |
+
+**Special Thanks:**
 - **Beta Testers**: Early adopters providing valuable feedback
 - **Feature Suggestions**: Community-driven feature development
 - **Bug Reports**: Users helping improve stability
@@ -568,7 +578,7 @@ Special thanks to the WordPress community for continuous inspiration and the ope
 4. **Test the functionality** on your live site
 5. **Enjoy increased customer engagement!**
 
-**Need help?** Check our [support forums](https://wordpress.org/support/plugin/social-chat-buttons/) or [GitHub issues](https://github.com/hassantafreshi/social-chat-button/issues).
+**Need help?** Check our [support forums](https://wordpress.org/support/plugin/social-chat-buttons/) or [GitHub issues](https://github.com/hassantafreshi/social-chat-buttons/issues).
 
 **Love the plugin?** Please consider [leaving a 5-star review](https://wordpress.org/plugins/social-chat-buttons/#reviews) to help others discover it!
 

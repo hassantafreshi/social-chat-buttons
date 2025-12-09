@@ -34,26 +34,46 @@ class WPSCB {
         $urlPattern = '/^https?:\/\/[^\s]+$/i';
         $networks = array(
             // Core asked list
+            /* translators: Label for WhatsApp social network in network selection dropdown */
             'whatsapp'      => array( 'label' => esc_html__( 'WhatsApp', 'social-chat-buttons' ),               'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
+            /* translators: Label for Facebook Messenger social network in network selection dropdown */
             'messenger'     => array( 'label' => esc_html__( 'Facebook Messenger', 'social-chat-buttons' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9.]{5,50}$/' ),
+            /* translators: Label for Telegram social network in network selection dropdown */
             'telegram'      => array( 'label' => esc_html__( 'Telegram', 'social-chat-buttons' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{5,32}$/' ),
+            /* translators: Label for Instagram Direct messaging in network selection dropdown */
             'instagram_dm'  => array( 'label' => esc_html__( 'Instagram Direct', 'social-chat-buttons' ),       'type' => 'id',       'pattern' => '/^[0-9]{5,20}$/' ),
+            /* translators: Label for Viber social network in network selection dropdown */
             'viber'         => array( 'label' => esc_html__( 'Viber', 'social-chat-buttons' ),                  'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
+            /* translators: Label for LINE social network in network selection dropdown */
             'line'          => array( 'label' => esc_html__( 'LINE', 'social-chat-buttons' ),                   'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_\-.]{2,50}$/' ),
+            /* translators: Label for WeChat social network in network selection dropdown */
             'wechat'        => array( 'label' => esc_html__( 'WeChat', 'social-chat-buttons' ),                 'type' => 'url',      'pattern' => $urlPattern ), // expect QR/official URL
+            /* translators: Label for Twitter/X Direct Messages in network selection dropdown */
             'twitter_dm'    => array( 'label' => esc_html__( 'Twitter (X) DM', 'social-chat-buttons' ),         'type' => 'id',       'pattern' => '/^[0-9]{1,20}$/' ),
+            /* translators: Label for Discord social network in network selection dropdown */
             'discord'       => array( 'label' => esc_html__( 'Discord', 'social-chat-buttons' ),                'type' => 'code',     'pattern' => '/^([A-Za-z0-9]{4,10}|https?:\/\/discord\.gg\/[^\s]+)$/i' ),
+            /* translators: Label for Signal private messenger in network selection dropdown */
             'signal'        => array( 'label' => esc_html__( 'Signal', 'social-chat-buttons' ),                 'type' => 'phone',    'pattern' => '/^[0-9+\- ]{6,20}$/' ),
          //   'skype'         => array( 'label' => esc_html__( 'Skype', 'social-chat-buttons' ),                  'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,32}$/' ),
+            /* translators: Label for Snapchat social network in network selection dropdown */
             'snapchat'      => array( 'label' => esc_html__( 'Snapchat', 'social-chat-buttons' ),               'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.-]{3,39}$/' ),
+            /* translators: Label for KakaoTalk social network in network selection dropdown */
             'kakaotalk'     => array( 'label' => esc_html__( 'KakaoTalk', 'social-chat-buttons' ),              'type' => 'code',     'pattern' => '/^[A-Za-z0-9]{6,50}$/' ),
+            /* translators: Label for LinkedIn Messaging in network selection dropdown */
             'linkedin_msg'  => array( 'label' => esc_html__( 'LinkedIn Messaging', 'social-chat-buttons' ),     'type' => 'url',      'pattern' => $urlPattern ),
+            /* translators: Label for Threads (Meta) social network in network selection dropdown */
             'threads'       => array( 'label' => esc_html__( 'Threads (Meta)', 'social-chat-buttons' ),         'type' => 'username', 'pattern' => '/^@?[A-Za-z0-9_.]{1,30}$/' ),
+            /* translators: Label for Pinterest Messages in network selection dropdown */
             'pinterest_msg' => array( 'label' => esc_html__( 'Pinterest Messages', 'social-chat-buttons' ),     'type' => 'username', 'pattern' => '/^[A-Za-z0-9_]{3,30}$/' ),
+            /* translators: Label for Reddit Chat in network selection dropdown */
             'reddit_chat'   => array( 'label' => esc_html__( 'Reddit Chat', 'social-chat-buttons' ),            'type' => 'username', 'pattern' => '/^[A-Za-z0-9_\-]{3,20}$/' ),
+            /* translators: Label for YouTube Chat in network selection dropdown */
             'youtube_chat'  => array( 'label' => esc_html__( 'YouTube Chat', 'social-chat-buttons' ),           'type' => 'url',      'pattern' => $urlPattern ),
+            /* translators: Label for Slack Invite link in network selection dropdown */
             'slack'         => array( 'label' => esc_html__( 'Slack Invite', 'social-chat-buttons' ),           'type' => 'url',      'pattern' => $urlPattern ),
+            /* translators: Label for Microsoft Teams in network selection dropdown */
             'teams'         => array( 'label' => esc_html__( 'Microsoft Teams', 'social-chat-buttons' ),        'type' => 'email',    'pattern' => '/^[^\s@]+@[^\s@]+\.[^\s@]+$/' ),
+            /* translators: Label for VK Messenger social network in network selection dropdown */
             'VK'            => array( 'label' => esc_html__( 'VK Messenger', 'social-chat-buttons' ),           'type' => 'username', 'pattern' => '/^[A-Za-z0-9_.]{5,50}$/' ),
         );
 
@@ -178,6 +198,7 @@ class WPSCB {
         $defaults = array(
             // Button
             'button_mode'            => 'icon',          // 'icon', 'text', 'image'
+            /* translators: Default text displayed on the chat button when button mode is set to 'text' */
             'button_text'            => esc_html__( 'Chat', 'social-chat-buttons' ),
             'button_image'           => 0,               // attachment ID
             'button_size'            => 56,              // px
@@ -186,6 +207,7 @@ class WPSCB {
             'button_text_color'      => '#ffffff',
             // Popup
             'popup_width'            => 340,             // px
+            /* translators: Default title text displayed in the chat popup header */
             'popup_title'            => esc_html__( 'Chat', 'social-chat-buttons' ), // popup header title
             'popup_bg_color'         => '#ffffff',
             'popup_header_color'     => '#6610f2',       // gradient start
@@ -329,22 +351,24 @@ class WPSCB {
 
     public static function wpscb_verify_request() {
         if ( ! current_user_can( 'manage_options' ) ) {
+            /* translators: Error message shown when user doesn't have permission to perform an action */
             wp_send_json_error( array( 'message' => esc_html__( 'Insufficient permissions.', 'social-chat-buttons' ) ), 403 );
         }
         $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
         if ( ! wp_verify_nonce( $nonce, 'wpscb_nonce' ) ) {
+            /* translators: Error message shown when security nonce verification fails */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid nonce.', 'social-chat-buttons' ) ), 400 );
         }
     }
 
     public static function wpscb_copyright_notice($state) {
-            /* translators: %1$s and %2$s are opening and closing anchor tags */
+            /* translators: %1$s and %2$s are opening and closing anchor tags linking to plugin page */
             $powered_by = esc_html__( 'By %1$sSocial Chat Buttons%2$s', 'social-chat-buttons' );
-            /* translators: %1$s and %3$s are opening and closing anchor tags, %2$s is the sponsor name */
+            /* translators: %1$s and %3$s are opening and closing anchor tags, %2$s is the sponsor name (WhiteStudio.team) */
             $sponsoredBy = esc_html__( 'Sponsored by %1$s%2$s%3$s', 'social-chat-buttons' );
             $powered_by = sprintf(
                 $powered_by,
-                '<a href="https://whitestudio.team/plugins/social-chat-buttons.html" class="wpscb-link poweredby" target="_blank" rel="noopener" style="text-decoration:unset;">',
+                '<a href="https://whitestudio.team/plugins/social-chat-buttons/" class="wpscb-link poweredby" target="_blank" rel="noopener" style="text-decoration:unset;">',
                 '</a>'
             );
             $sponser_url = 'https://whitestudio.team';

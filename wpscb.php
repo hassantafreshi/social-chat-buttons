@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Social Chat Buttons
- * Plugin URI:  https://github.com/hassantafreshi/social-chat-button
+ * Plugin URI:  https://whitestudio.team/plugins/social-chat-buttons/
  * Description: Add a beautiful floating chat widget to connect with visitors through WhatsApp, Telegram, Instagram, and 15+ social networks. Features smart scheduling, custom styling, and mobile optimization.
- * Version:     0.1.0
- * Author:      whitestudio.team
- * Author URI:  https://whitestudio.team
+ * Version:     1.0.1
+ * Author:      whitestudio
+ * Author URI:  https://whitestudio.team/plugins/social-chat-buttons/
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: social-chat-buttons

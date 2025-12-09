@@ -53,11 +53,13 @@ class WPSCB_Ajax {
 
         $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
+            /* translators: Error message when user selects an invalid or unsupported social network */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'social-chat-buttons' ) ) );
         }
 
         $pattern = $networks[ $network ]['pattern'];
         if ( $value === '' || ( $pattern && ! preg_match( $pattern, $value ) ) ) {
+            /* translators: Error message when contact value (username, phone, etc.) doesn't match required format */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'social-chat-buttons' ) ) );
         }
 
@@ -81,6 +83,7 @@ class WPSCB_Ajax {
         $index = isset( $_POST['index'] ) ? absint( $_POST['index'] ) : -1;
         $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
+            /* translators: Error message when trying to delete a contact with invalid array index */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'social-chat-buttons' ) ) );
         }
         unset( $contacts[ $index ] );
@@ -138,15 +141,18 @@ class WPSCB_Ajax {
 
         $contacts = $this->core->wpscb_get_contacts();
         if ( $index < 0 || ! isset( $contacts[ $index ] ) ) {
+            /* translators: Error message when trying to update a contact with invalid array index */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid index.', 'social-chat-buttons' ) ) );
         }
 
         $networks = $this->core->wpscb_get_supported_networks();
         if ( ! isset( $networks[ $network ] ) ) {
+            /* translators: Error message when user selects an invalid or unsupported social network during contact update */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid network.', 'social-chat-buttons' ) ) );
         }
         $pattern = $networks[ $network ]['pattern'];
         if ( $value === '' || ( $pattern && ! preg_match( $pattern, $value ) ) ) {
+            /* translators: Error message when contact value doesn't match required format during contact update */
             wp_send_json_error( array( 'message' => esc_html__( 'Invalid value format.', 'social-chat-buttons' ) ) );
         }
 
