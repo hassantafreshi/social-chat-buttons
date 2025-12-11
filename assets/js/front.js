@@ -320,7 +320,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
         }
 
         fab.onclick = wpscb_togglePopup;
-        console.log(wpscb_advanced);
+        // console.log(wpscb_advanced);
         const popup = document.createElement('div');
         popup.className = 'wpscb-popup';
         popup.style.display = 'none';
@@ -331,7 +331,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
             </div>
             <div class="wpscb-popup-body">
                 ${available.map(c => {
-                    console.log(c);
+                    // console.log(c);
                     const url = wpscb_buildURL(c.network, c.value, c.message);
 
                     // Use photo if available, otherwise network icon

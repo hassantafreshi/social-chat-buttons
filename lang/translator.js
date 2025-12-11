@@ -85,7 +85,7 @@ function applyTranslations(lang) {
 
             if (icons.length > 0 && element.children.length > 0) {
                 // Element has icons as children - skip to avoid breaking them
-                console.log('Preserving icons in element:', element);
+                // console.log('Preserving icons in element:', element);
             } else if (iconHTML) {
                 // Icons exist but might be text content - preserve and update
                 element.innerHTML = iconHTML + translation;
@@ -143,15 +143,15 @@ function ensureFontAwesomeLoaded() {
             return;
         }
         if (faLink.sheet) {
-            console.log('Font Awesome already loaded');
+            // console.log('Font Awesome already loaded');
             resolve();
         } else {
             faLink.addEventListener('load', () => {
-                console.log('Font Awesome loaded successfully');
+                // console.log('Font Awesome loaded successfully');
                 resolve();
             });
             faLink.addEventListener('error', () => {
-                console.error('Font Awesome failed to load');
+                // console.error('Font Awesome failed to load');
                 resolve();
             });
         }
@@ -163,7 +163,7 @@ function ensureFontAwesomeLoaded() {
 document.addEventListener('DOMContentLoaded', function() {
     ensureFontAwesomeLoaded().then(() => {
         const lang = getLanguageFromURL();
-        console.log('Initializing language:', lang);
+        // console.log('Initializing language:', lang);
         applyTranslations(lang);
 
         // Set active language button
@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verify Font Awesome is loaded
         setTimeout(() => {
             const icons = document.querySelectorAll('i.fas, i.fab, i.far');
-            console.log('Font Awesome icons found:', icons.length);
+            // console.log('Font Awesome icons found:', icons.length);
             if (icons.length > 0) {
                 const sampleIcon = icons[0];
                 const computedStyle = window.getComputedStyle(sampleIcon);
-                console.log('Font Awesome font-family:', computedStyle.fontFamily);
+                // console.log('Font Awesome font-family:', computedStyle.fontFamily);
             }
         }, 1000);
     });

@@ -1,7 +1,7 @@
 === Social Chat Buttons ===
 Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz
 Tags: social, chat, whatsapp, telegram, customer service
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -144,8 +144,10 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.2 =
 
+* Minor bug fixes and performance improvements
+* Update readme
 
 
 = 1.0.0 =

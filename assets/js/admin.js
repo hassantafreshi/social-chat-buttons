@@ -594,13 +594,13 @@
     // Settings page auto-save and preview
     function wpscb_initSettingsPage() {
         const $page = $('.wpscb-settings-page');
-        console.log('Settings page found:', $page.length);
+        // console.log('Settings page found:', $page.length);
         if(!$page.length) return;
 
         let saveTimeout;
         const $indicator = $('.wpscb-settings-save-indicator');
         const $livePreview = $('#wpscb-live-preview');
-        console.log('Live preview element found:', $livePreview.length);
+        // console.log('Live preview element found:', $livePreview.length);
 
         // Debounced auto-save
         function wpscb_autoSave(){
