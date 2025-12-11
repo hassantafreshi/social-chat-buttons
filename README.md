@@ -7,6 +7,12 @@
 
 A **professional, feature-rich, and completely FREE** WordPress plugin that adds a beautiful floating social media chat widget to your website. Connect with your visitors instantly through multiple communication platforms with advanced customization options and smart availability scheduling.
 
+## 📺 **Video Introduction**
+
+[![Social Chat Buttons Tutorial](https://img.youtube.com/vi/X8q6eLdVoM8/maxresdefault.jpg)](https://youtu.be/X8q6eLdVoM8)
+
+**Watch our comprehensive video guide** to learn how to install, configure, and customize Social Chat Buttons for your WordPress website.
+
 ## 🌟 **Why Choose Social Chat Buttons?**
 
 - ✅ **100% Free** - 100% Free, no hidden costs
@@ -554,11 +560,11 @@ All social media platform names and logos are trademarks of their respective own
 | Contributor | Name | Role |
 |-------------|------|------|
 | [@hassantafreshi](https://github.com/hassantafreshi/) | Hassan Tafreshi | Developer, Debug, Persian Translation |
-| [@presskopp](https://github.com/Presskopp) | presskopp | Debug, German Translation |
+| [@presskopp](https://github.com/Presskopp) | Presskopp | Debug, German Translation |
 | [@tobifjellner](https://github.com/tobifjellner) | Tor-Bjorn Fjellner | German Translation |
 | [@psmits1567](https://profiles.wordpress.org/psmits1567/) | Peter Smits | Dutch Translation |
 | [@fakhriaz](https://github.com/FakhriAz/) | Fakhri Azzouz | Arabic Translation |
-| [@srrahimi](https://github.com/srrahimi) | Sadegh Rahimi | Video Production |
+| [@srrahimi](https://github.com/srrahimi) | Reza Rahimi | Video Production |
 
 **Special Thanks:**
 - **Beta Testers**: Early adopters providing valuable feedback

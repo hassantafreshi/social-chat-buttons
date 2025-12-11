@@ -14,6 +14,10 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 
 **Social Chat Buttons** is a **100% FREE** WordPress plugin that adds a beautiful floating chat widget to your website. Connect with your visitors through multiple social media platforms including WhatsApp, Telegram, Signal.
 
+[youtube https://www.youtube.com/watch?v=X8q6eLdVoM8]
+
+**[Live Demo](https://whitestudio.team/)** | **[Documentation](https://github.com/hassantafreshi/social-chat-buttons)** | **[Support](https://wordpress.org/support/plugin/social-chat-buttons/)**
+
 ### 🌟 **Key Features (All FREE!)**
 
 **💬 Multi-Network Support**
@@ -140,6 +144,8 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 == Changelog ==
 
+= 1.0.0 =
+
 
 
 = 1.0.0 =
@@ -240,7 +246,7 @@ When visitors click on chat buttons, they are redirected to the respective socia
 == Credits ==
 
 * Developed with ❤️ by Hassan Tafreshi
-* Translated into multiple languages by our amazing community: German by [presskopp](https://profiles.wordpress.org/presskopp/) and [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/), and Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
+* Translated into multiple languages by our amazing community: German by [Presskopp](https://profiles.wordpress.org/presskopp/), Swedish by [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/) and Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
 * Community feedback and suggestions
 * WordPress community support
 
