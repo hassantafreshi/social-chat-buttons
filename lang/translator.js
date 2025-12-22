@@ -1,6 +1,6 @@
 // Multi-language support system
 // Load all language files
-const AVAILABLE_LANGUAGES = ['en', 'fa', 'ar', 'de'];
+const AVAILABLE_LANGUAGES = ['en', 'fa', 'ar', 'de', 'tr'];
 const DEFAULT_LANGUAGE = 'en';
 let currentTranslations = null;
 
@@ -49,6 +49,9 @@ function applyTranslations(lang) {
             break;
         case 'de':
             translations = translations_de;
+            break;
+        case 'tr':
+            translations = translations_tr;
             break;
         default:
             translations = translations_en;
