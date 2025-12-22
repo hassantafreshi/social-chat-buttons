@@ -560,11 +560,15 @@ All social media platform names and logos are trademarks of their respective own
 | Contributor | Name | Role |
 |-------------|------|------|
 | [@hassantafreshi](https://github.com/hassantafreshi/) | Hassan Tafreshi | Developer, Debug, Persian Translation |
-| [@presskopp](https://github.com/Presskopp) | Presskopp | Debug, German Translation |
-| [@tobifjellner](https://github.com/tobifjellner) | Tor-Bjorn Fjellner | German Translation |
+| [@presskopp](https://github.com/Presskopp) | Presskopp | Debug,  Beta Testing, German Translation ,Landing Page Translation, Development Collaboration  |
+| [@fxbenard](https://github.com/fxbenard/) | FX Bénard | Franch Translation , Head of Translation Team - [WP-Translations](https://wp-translations.pro/) |
+| [@tobifjellner](https://github.com/tobifjellner) | Tor-Bjorn Fjellner | Swedish Translation |
 | [@psmits1567](https://profiles.wordpress.org/psmits1567/) | Peter Smits | Dutch Translation |
-| [@fakhriaz](https://github.com/FakhriAz/) | Fakhri Azzouz | Arabic Translation |
+| [@fakhriaz](https://github.com/FakhriAz/) | Fakhri Azzouz | Arabic and Franch Translation |
+| [@emreerkan](https://github.com/emreerkan) | Emre Erkan | Turkish Translation, Landing Page Translation |
 | [@srrahimi](https://github.com/srrahimi) | Reza Rahimi | Video Production |
+
+
 
 **Special Thanks:**
 - **Beta Testers**: Early adopters providing valuable feedback

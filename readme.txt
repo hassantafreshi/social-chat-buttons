@@ -248,7 +248,7 @@ When visitors click on chat buttons, they are redirected to the respective socia
 == Credits ==
 
 * Developed with ❤️ by Hassan Tafreshi
-* Translated into multiple languages by our amazing community: German by [Presskopp](https://profiles.wordpress.org/presskopp/), Swedish by [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/) and Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
+* Translated into multiple languages by our amazing community: German by [Presskopp](https://profiles.wordpress.org/presskopp/), Swedish by [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic and Franch by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/), French reviewed and approved by [FX Bénard](https://profiles.wordpress.org/fxbenard/), Turkish by [Emre Erkan](https://profiles.wordpress.org/emre/), Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
 * Community feedback and suggestions
 * WordPress community support
 
