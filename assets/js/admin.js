@@ -903,6 +903,7 @@
                     }
                     .wpscb-direct-icons.wpscb-direct-hidden .wpscb-direct-icon { opacity:0; transform:scale(0.3); pointer-events:none; }
                     .wpscb-direct-icon {
+                        position:relative;
                         width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:50%; display:flex; align-items:center; justify-content:center;
                         background:transparent;
                         text-decoration:none; transition:transform .25s cubic-bezier(.4,0,.2,1), opacity .25s cubic-bezier(.4,0,.2,1);
@@ -910,6 +911,21 @@
                     }
                     .wpscb-direct-icon:hover { transform:scale(1.15); }
                     .wpscb-direct-icon svg { width:var(--wpscb-button-size) !important; height:var(--wpscb-button-size) !important; }
+
+                    /* Tooltip */
+                    .wpscb-direct-icon::after {
+                        content:attr(data-tooltip);
+                        position:absolute; top:50%; transform:translateY(-50%);
+                        background:var(--wpscb-button-color); color:var(--wpscb-button-text-color);
+                        font-size:12px; font-weight:500; white-space:nowrap;
+                        padding:6px 12px; border-radius:8px;
+                        pointer-events:none; opacity:0;
+                        transition:opacity .2s, transform .2s;
+                        box-shadow:0 2px 8px rgba(0,0,0,.15);
+                        z-index:2;
+                        ${position === 'left' ? 'left:calc(100% + 10px); right:auto;' : 'right:calc(100% + 10px); left:auto;'}
+                    }
+                    .wpscb-direct-icon:hover::after { opacity:1; }
                 </style>
                 <div class="wpscb-widget-wpscb_root ${position === 'left' ? 'wpscb-left' : 'wpscb-right'}">
                     <button class="wpscb-fab" onclick="wpscb_togglePreviewPopup()" aria-label="Chat" style="${fabExtraStyle}">${buttonContent}</button>
@@ -917,7 +933,7 @@
                     <div class="wpscb-direct-icons wpscb-direct-hidden" id="wpscb-preview-direct">
                         ${savedContacts.map(contact => {
                             const icon = networkIcons[contact.network] || '<svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10" fill="#94a3b8"/></svg>';
-                            return '<a href="#" class="wpscb-direct-icon" onclick="return false;" title="'+wpscb_escapeHtml(contact.name || contact.network)+'">' + icon + '</a>';
+                            return '<a href="#" class="wpscb-direct-icon" onclick="return false;" data-tooltip="'+wpscb_escapeHtml(contact.name || contact.network)+'">' + icon + '</a>';
                         }).join('')}
                     </div>
                     ` : `

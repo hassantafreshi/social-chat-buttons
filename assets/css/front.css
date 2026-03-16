@@ -80,6 +80,7 @@
   opacity:0; transform:scale(0.3); pointer-events:none;
 }
 .wpscb-direct-icon {
+  position:relative;
   width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:50%; display:flex; align-items:center; justify-content:center;
   background:transparent;
   text-decoration:none; cursor:pointer;
@@ -88,6 +89,30 @@
 }
 .wpscb-direct-icon:hover { transform:scale(1.15); }
 .wpscb-direct-icon svg { width:var(--wpscb-button-size) !important; height:var(--wpscb-button-size) !important; }
+
+/* Direct icon tooltip */
+.wpscb-direct-icon::after {
+  content:attr(data-tooltip);
+  position:absolute; top:50%; transform:translateY(-50%);
+  background:var(--wpscb-button-color); color:var(--wpscb-button-text-color);
+  font-size:12px; font-weight:500; white-space:nowrap;
+  padding:6px 12px; border-radius:8px;
+  pointer-events:none; opacity:0;
+  transition:opacity .2s, transform .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  z-index:2;
+}
+/* Right position: tooltip appears to the left */
+#wpscb-widget-root.wpscb-right .wpscb-direct-icon::after {
+  right:calc(100% + 10px); left:auto;
+}
+/* Left position: tooltip appears to the right */
+#wpscb-widget-root.wpscb-left .wpscb-direct-icon::after {
+  left:calc(100% + 10px); right:auto;
+}
+.wpscb-direct-icon:hover::after {
+  opacity:1;
+}
 
 @media (max-width: 480px) {
   .wpscb-popup { width:calc(100vw - 48px); max-width:var(--wpscb-popup-width); }

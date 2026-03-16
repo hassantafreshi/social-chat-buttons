@@ -341,7 +341,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
                 a.target = '_blank';
                 a.rel = 'noopener';
                 a.className = 'wpscb-direct-icon';
-                a.title = c.name || c.network;
+                a.setAttribute('data-tooltip', c.name || c.network);
                 a.style.transitionDelay = (idx * 40) + 'ms';
                 a.innerHTML = wpscb_getNetworkIcon(c.network);
                 directContainer.appendChild(a);

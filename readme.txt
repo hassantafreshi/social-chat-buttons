@@ -1,7 +1,7 @@
 === Social Chat Buttons ===
-Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz
-Tags: social, chat, whatsapp, telegram, customer service
-Stable tag: 1.0.2
+Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz,fxbenard,emre
+Tags: social, chat, whatsapp, telegram, customer service, floating button, speed dial, direct icons, social media widget, live chat, contact button
+Stable tag: 1.0.3
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
@@ -35,9 +35,18 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 * Modern floating chat button
 * Customizable colors and sizes
 * Icon, text, or custom image modes
+* **Icon Picker** with WordPress Dashicons, Bootstrap Icons, and custom SVG upload
+* **Adjustable border radius** — from square corners to fully rounded buttons
 * Gradient header backgrounds
 * Responsive design for all devices
 * Auto dark mode (8 PM - 7 AM, based on visitor's local time)
+
+**🚀 Two Display Modes**
+* **Popup Mode** — Classic chat popup window with contact list, header, and business hours
+* **Direct Icons (Speed Dial) Mode** — Social icons fan out from the floating button with cascading animation
+* **Hover tooltips** in direct mode — contact name appears next to each icon
+* RTL and LTR aware tooltip positioning
+* Click outside to close — intuitive user experience
 
 **⚡ Advanced Features**
 * **Smart availability scheduling** - Set different hours for each contact
@@ -73,6 +82,8 @@ A comprehensive and free social media chat widget for WordPress with multi-netwo
 
 ✅ **Completely FREE** - No premium version, no hidden costs
 ✅ **Professional Design** - Modern UI with smooth animations
+✅ **Two Display Modes** - Popup window or direct speed-dial social icons
+✅ **Icon Picker** - Dashicons, Bootstrap Icons, or custom SVG
 ✅ **Developer Friendly** - Clean code following WordPress standards
 ✅ **Regular Updates** - Actively maintained and improved
 ✅ **Community Support** -  Support through WordPress forums
@@ -121,7 +132,13 @@ Yes! You can set different availability schedules for each contact. Define worki
 Yes! The widget is fully responsive and works perfectly on all devices. You can also choose to hide it on mobile if needed.
 
 = Can I customize the appearance? =
-Absolutely! Customize colors, sizes, position, button mode (icon/text/image), and much more through the intuitive settings panel.
+Absolutely! Customize colors, sizes, border radius, position, button mode (icon/text/image), and much more through the intuitive settings panel. You can also choose from WordPress Dashicons, Bootstrap Icons, or upload a custom SVG for the button icon.
+
+= What is Direct Icons mode? =
+Direct Icons (speed dial) mode shows your social media icons fanning out directly from the floating button — no popup window needed. Each icon links directly to the chat platform. Hovering shows the contact name in a beautiful tooltip. It's perfect for quick access to your communication channels.
+
+= Does it support RTL languages? =
+Yes! The plugin is fully RTL-compatible. Tooltips and icon positions automatically adapt based on your widget placement (left or right side) and text direction.
 
 = Does it work with caching plugins? =
 Yes! The plugin is optimized to work with all major caching plugins including WP Rocket, W3 Total Cache, and WP Super Cache.
@@ -143,6 +160,10 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 
 == Changelog ==
+
+= 1.0.3 =
+
+* Minor bug fixes and performance improvements
 
 = 1.0.2 =
 

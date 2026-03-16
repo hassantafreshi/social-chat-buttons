@@ -20,6 +20,8 @@ A **professional, feature-rich, and completely FREE** WordPress plugin that adds
 - ✅ **15+ Social Networks** - Comprehensive platform support
 - ✅ **Smart Scheduling** - Advanced availability management
 - ✅ **Mobile Optimized** - Perfect responsive design
+- ✅ **Two Display Modes** - Popup window or speed-dial direct icons
+- ✅ **Icon Picker** - Choose from Dashicons, Bootstrap Icons, or upload custom SVG
 - ✅ **Developer Friendly** - Clean code following WordPress standards
 - ✅ **Translation Ready** - Full internationalization support
 - ✅ **Security First** - Enterprise-level security implementation
@@ -41,11 +43,18 @@ Connect your visitors through their preferred communication channels:
 ### 🎨 **Advanced Customization**
 
 **Button Appearance**
-- **3 Display Modes**: Icon only, Text only, or Custom image
+- **3 Button Modes**: Icon only, Text only, or Custom image
+- **Icon Picker**: Choose from WordPress Dashicons, Bootstrap Icons, or upload your own custom SVG icon
 - **Color Themes**: Unlimited color combinations with live preview
 - **Size Control**: Adjustable button and icon sizes (40-80px)
+- **Border Radius**: Fully adjustable button corner radius (0-50px) — from square to fully rounded
 - **Position**: Left or right side placement
 - **Gradient Headers**: Beautiful gradient backgrounds for chat popup
+
+**Display Modes**
+- **Popup Window**: Classic chat popup with contact list, header, business hours, and footer
+- **Direct Icons (Speed Dial)**: Social media icons fan out from the floating button with smooth cascading animation — no popup, no business hours, just quick access to all your channels
+- **Hover Tooltips**: In direct icons mode, hovering over each icon shows the contact name in a beautiful tooltip — position-aware for LTR and RTL layouts
 
 **Smart Features**
 - **Auto Dark Mode**: Automatically switches to dark theme from 8 PM to 7 AM
@@ -95,13 +104,21 @@ Sunday: Closed
 ## 📱 **Frontend Experience**
 
 ### **Floating Chat Button**
+- **Two Display Modes**: Choose between popup window or direct speed-dial social icons
 - **Attention-Grabbing**: Subtle animations and hover effects
 - **Non-Intrusive**: Carefully positioned to not interfere with content
 - **Accessibility**: Full keyboard navigation and screen reader support
 - **Performance**: Lightweight with minimal impact on page speed
 
+### **Direct Icons (Speed Dial) Mode**
+- **Quick Access**: Social media icons expand directly from the floating button
+- **Cascading Animation**: Icons fan out with smooth staggered animation
+- **Hover Tooltips**: Contact name appears on hover — adapts to left/right position and RTL/LTR direction
+- **No Popup Needed**: Perfect for sites that want faster, more direct access to chat channels
+- **Click Outside to Close**: Intuitive interaction — click anywhere to collapse icons
+
 ### **Chat Popup Window**
-- **Clean Design**: Minimalist interface focusing on communication
+- **Clean Design**: Minimalist interface focusing on communicationّ
 - **Contact Cards**: Professional display of each contact method
 - **Status Indicators**: Clear online/offline status for each contact
 - **Direct Links**: One-click connection to preferred platform
@@ -588,7 +605,7 @@ Special thanks to the WordPress community for continuous inspiration and the ope
 4. **Test the functionality** on your live site
 5. **Enjoy increased customer engagement!**
 
-**Need help?** Check our [support forums](https://wordpress.org/support/plugin/social-chat-buttons/) or [GitHub issues](https://github.com/hassantafreshi/social-chat-buttons/issues).
+**Need help?** Check our [support forums](https://wordpress.org/support/plugin/social-chat-buttons/) or [GitHub issues](https://github.com/hassantafreshi/social-chat-buttons/issues) or Contact us on Official website [Whitstdutio.team](https://whitestudio.team/)
 
 **Love the plugin?** Please consider [leaving a 5-star review](https://wordpress.org/plugins/social-chat-buttons/#reviews) to help others discover it!
 
