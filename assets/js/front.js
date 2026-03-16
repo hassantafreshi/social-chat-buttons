@@ -341,15 +341,25 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
                     // Show availability info if available (based on WordPress timezone)
                     let avail = '';
-                    if(c.availability){
-                        const wpNow = wpscb_getWordPressTime();
-                        const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
-                        const currentDay = dayNames[wpNow.getDay()];
-                        const todaySlots = c.availability[currentDay] || [];
-                        if(todaySlots.length > 0){
-                            const firstSlot = todaySlots[0];
-                            const lastSlot = todaySlots[todaySlots.length - 1];
-                            avail = '<div class="wpscb-contact-time" style="color:var(--wpscb-popup-label);">'+firstSlot.start+' - '+lastSlot.end+'</div>';
+                    if(c.availability && typeof c.availability === 'object' && !Array.isArray(c.availability)){
+                        // Check if availability has any actual time slots defined
+                        const hasDefined = Object.keys(c.availability).some(function(day){
+                            return Array.isArray(c.availability[day]) && c.availability[day].length > 0 &&
+                                c.availability[day].some(function(s){ return s && s.start && s.end; });
+                        });
+                        if(hasDefined){
+                            const wpNow = wpscb_getWordPressTime();
+                            const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
+                            const currentDay = dayNames[wpNow.getDay()];
+                            const todaySlots = (c.availability[currentDay] || []).filter(function(s){ return s && s.start && s.end; });
+                            if(todaySlots.length > 0){
+                                const firstSlot = todaySlots[0];
+                                const lastSlot = todaySlots[todaySlots.length - 1];
+                                // Hide time if it covers the full day (00:00 - 23:59)
+                                if(!(firstSlot.start === '00:00' && lastSlot.end === '23:59')){
+                                    avail = '<div class="wpscb-contact-time" style="color:var(--wpscb-popup-label);">'+firstSlot.start+' - '+lastSlot.end+'</div>';
+                                }
+                            }
                         }
                     }
 

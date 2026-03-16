@@ -185,8 +185,19 @@ class WPSCB_Admin {
             'networks' => $this->core->wpscb_get_supported_networks(),
             'contacts' => $contacts,
             'settings' => $this->core->wpscb_get_settings(),
-            'advanced' => $this->core->wpscb_get_advanced_settings(),
+            'advanced' => $this->wpscb_enrich_advanced_settings(),
         ) );
+    }
+
+    private function wpscb_enrich_advanced_settings() {
+        $advanced = $this->core->wpscb_get_advanced_settings();
+        if ( ! empty( $advanced['button_image'] ) ) {
+            $img_src = wp_get_attachment_image_src( absint( $advanced['button_image'] ), 'thumbnail' );
+            if ( $img_src ) {
+                $advanced['button_image_url'] = $img_src[0];
+            }
+        }
+        return $advanced;
     }
 
     public function wpscb_render_panel_page() {

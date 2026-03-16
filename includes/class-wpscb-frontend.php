@@ -8,6 +8,7 @@ class WPSCB_Frontend {
         $this->core = $core;
         add_action( 'wp_enqueue_scripts', array( $this, 'wpscb_enqueue_front_assets' ) );
         add_action( 'wp_footer', array( $this, 'wpscb_render_frontend_widget' ) );
+        add_action( 'wp_footer', array( $this, 'efb_output_schema_free' ) );
 
 
     }
@@ -68,4 +69,55 @@ class WPSCB_Frontend {
 
         echo '<div id="wpscb-widget-root" class="' . esc_attr( $position_class ) . '"></div>';
     }
+
+    public function efb_output_schema_free() {
+		$page_url = home_url( add_query_arg( [], sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ) ) ) );
+		$locale = get_locale();
+		$lang   = str_replace('_', '-', $locale);
+		$ws_url = 'https://whitestudio.team';
+		$wp_url = 'https://wordpress.org/plugins/social-chat-buttons/';
+		$schema = [
+			'@context' => 'https://schema.org',
+			'@type'    => 'WebPage',
+			'@id'      => $page_url . '#webpage',
+			'url'      => $page_url,
+			'mentions' => [
+				'@type' => 'SoftwareApplication',
+				'@id'   => $wp_url . '#software',
+				'name'  => esc_html__( 'Social Chat Buttons', 'social-chat-buttons' ),
+				/* translators: %s: plugin name */
+				'alternateName' => sprintf( esc_html__( '%s – Free WhatsApp & Social Chat Widget for WordPress', 'social-chat-buttons' ), esc_html__( 'Social Chat Buttons', 'social-chat-buttons' ) ),
+				/* translators: %s: plugin name */
+				'description' => sprintf( esc_html__( '%s lets you add WhatsApp, Telegram, and social chat buttons to your WordPress site so visitors can start a conversation with one click. Lightweight, mobile-friendly, and completely free.', 'social-chat-buttons' ), esc_html__( 'Social Chat Buttons', 'social-chat-buttons' ) ),
+				'applicationCategory' => ['BusinessApplication', 'WebApplication', 'CommunicationApplication'],
+				'operatingSystem'     => 'WordPress',
+				'softwareVersion'     => defined('WPSCB_PLUGIN_VERSION') ? WPSCB_PLUGIN_VERSION : '1.0.2',
+				'url'   => $wp_url,
+				'downloadUrl' => $wp_url,
+				'isAccessibleForFree' => true,
+				'offers' => [
+					'@type' => 'Offer',
+					'price' => '0',
+					'priceCurrency' => 'USD',
+				],
+				'keywords' => [
+					esc_html__( 'WordPress WhatsApp chat plugin', 'social-chat-buttons' ),
+					esc_html__( 'social chat widget', 'social-chat-buttons' ),
+					esc_html__( 'free WordPress chat button', 'social-chat-buttons' ),
+					esc_html__( 'WhatsApp button WordPress', 'social-chat-buttons' ),
+					esc_html__( 'Telegram chat plugin', 'social-chat-buttons' ),
+					esc_html__( 'live chat widget', 'social-chat-buttons' ),
+				],
+				'publisher' => [
+					'@type' => 'Organization',
+					'@id'   => $ws_url . '/#organization',
+					'name'  => 'White Studio Team',
+					'url'   => $ws_url
+				],
+				'inLanguage' => $lang
+			]
+		];
+
+		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
+	}
 }
