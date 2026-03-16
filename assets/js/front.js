@@ -235,6 +235,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
         let css = '#wpscb-widget-root{';
         css += '--wpscb-button-size:'+(wpscb_advanced.button_size||56)+'px;';
         css += '--wpscb-button-icon-size:'+(wpscb_advanced.button_icon_size||24)+'px;';
+        css += '--wpscb-button-border-radius:'+(wpscb_advanced.button_border_radius !== undefined ? wpscb_advanced.button_border_radius : 16)+'px;';
         css += '--wpscb-button-color:'+(wpscb_advanced.button_color||'#6610f2')+';';
         css += '--wpscb-button-text-color:'+(wpscb_advanced.button_text_color||'#ffffff')+';';
         css += '--wpscb-popup-width:'+(wpscb_advanced.popup_width||340)+'px;';
@@ -312,11 +313,16 @@ document.addEventListener( 'DOMContentLoaded', function() {
             fab.style.padding = iconSize + 'px 20px';
             fab.style.width = 'auto';
         } else if(mode === 'image' && wpscb_advanced.button_image_url){
-            fab.innerHTML = '<img src="'+wpscb_esc(wpscb_advanced.button_image_url)+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" />';
+            fab.innerHTML = '<img src="'+wpscb_esc(wpscb_advanced.button_image_url)+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:var(--wpscb-button-border-radius, 16px);" />';
             fab.style.backgroundColor = 'transparent';
             fab.style.boxShadow = 'none';
         } else {
-            fab.innerHTML = wpscb_chatIcon;
+            // Icon mode — use custom SVG if set
+            if(wpscb_advanced.button_icon_svg){
+                fab.innerHTML = wpscb_advanced.button_icon_svg;
+            } else {
+                fab.innerHTML = wpscb_chatIcon;
+            }
         }
 
         fab.onclick = wpscb_togglePopup;

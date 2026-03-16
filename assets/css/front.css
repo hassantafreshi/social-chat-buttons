@@ -20,7 +20,7 @@
 #wpscb-widget-root.wpscb-left { left:24px; }
 
 .wpscb-fab {
-  width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:16px;
+  width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:var(--wpscb-button-border-radius, 16px);
   background:var(--wpscb-button-color); color:var(--wpscb-button-text-color); border:none; cursor:pointer;
   box-shadow:0 6px 16px rgba(102,16,242,.4), 0 2px 6px rgba(0,0,0,.15);
   display:flex; align-items:center; justify-content:center; transition:transform .2s, box-shadow .2s;

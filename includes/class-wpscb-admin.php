@@ -181,6 +181,14 @@ class WPSCB_Admin {
                 /* translators: Abbreviation for Sunday in weekly schedule */
                 'day_sun'          => esc_html__( 'Sun', 'social-chat-buttons' ),
                 'poweredBy'          => $poweredBy,
+                /* translators: Button label to open icon selection modal */
+                'chooseIcon'       => esc_html__( 'Choose Icon', 'social-chat-buttons' ),
+                /* translators: Help text shown in custom SVG tab */
+                'customSvgHelp'    => esc_html__( 'Paste your SVG code below:', 'social-chat-buttons' ),
+                /* translators: Button to confirm using the selected icon */
+                'useThisIcon'      => esc_html__( 'Use This Icon', 'social-chat-buttons' ),
+                /* translators: Button to reset icon back to default chat bubble */
+                'resetDefault'     => esc_html__( 'Reset to Default', 'social-chat-buttons' ),
             ),
             'networks' => $this->core->wpscb_get_supported_networks(),
             'contacts' => $contacts,
@@ -249,6 +257,23 @@ class WPSCB_Admin {
                                 <label><input type="radio" name="button_mode" value="image" <?php checked( 'image', $adv['button_mode'] ); ?>> <?php esc_html_e( 'Image', 'social-chat-buttons' ); ?></label>
                             </div>
                         </div>
+                        <div class="wpscb-setting-row wpscb-conditional" data-show-if="button_mode=icon">
+                            <label><?php esc_html_e( 'Choose Icon', 'social-chat-buttons' ); ?></label>
+                            <div class="wpscb-icon-picker-row">
+                                <div class="wpscb-icon-preview" id="wpscb-icon-preview">
+                                    <?php if ( ! empty( $adv['button_icon_svg'] ) ) : ?>
+                                        <?php echo wp_kses( $adv['button_icon_svg'], array( 'svg' => array( 'viewbox' => true, 'width' => true, 'height' => true, 'fill' => true, 'xmlns' => true, 'class' => true, 'aria-hidden' => true ), 'path' => array( 'd' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'opacity' => true ), 'circle' => array( 'cx' => true, 'cy' => true, 'r' => true, 'fill' => true, 'stroke' => true ), 'rect' => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true, 'fill' => true ), 'line' => array( 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true, 'stroke' => true ), 'polyline' => array( 'points' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true ), 'polygon' => array( 'points' => true, 'fill' => true ), 'g' => array( 'fill' => true, 'transform' => true, 'stroke' => true, 'stroke-width' => true ), 'ellipse' => array( 'cx' => true, 'cy' => true, 'rx' => true, 'ry' => true, 'fill' => true ) ) ); ?>
+                                    <?php else : ?>
+                                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                    <?php endif; ?>
+                                </div>
+                                <button type="button" class="button" id="wpscb-open-icon-picker"><?php esc_html_e( 'Choose Icon', 'social-chat-buttons' ); ?></button>
+                                <?php if ( ! empty( $adv['button_icon_svg'] ) ) : ?>
+                                    <button type="button" class="button button-link-delete" id="wpscb-reset-icon"><?php esc_html_e( 'Reset to Default', 'social-chat-buttons' ); ?></button>
+                                <?php endif; ?>
+                            </div>
+                            <input type="hidden" name="button_icon_svg" id="wpscb-button-icon-svg" value="<?php echo esc_attr( $adv['button_icon_svg'] ); ?>">
+                        </div>
                         <div class="wpscb-setting-row wpscb-conditional" data-show-if="button_mode=text">
                             <label><?php esc_html_e( 'Button Text', 'social-chat-buttons' ); ?></label>
                             <input type="text" name="button_text" value="<?php echo esc_attr( $adv['button_text'] ); ?>" class="wpscb-input">
@@ -272,6 +297,11 @@ class WPSCB_Admin {
                             <label><?php esc_html_e( 'Icon/Text Size (px)', 'social-chat-buttons' ); ?></label>
                             <input type="range" name="button_icon_size" min="16" max="48" value="<?php echo esc_attr( $adv['button_icon_size'] ); ?>" class="wpscb-range">
                             <span class="wpscb-range-value"><?php echo esc_html( $adv['button_icon_size'] ); ?></span>
+                        </div>
+                        <div class="wpscb-setting-row">
+                            <label><?php esc_html_e( 'Border Radius (px)', 'social-chat-buttons' ); ?></label>
+                            <input type="range" name="button_border_radius" min="0" max="50" value="<?php echo esc_attr( $adv['button_border_radius'] ); ?>" class="wpscb-range">
+                            <span class="wpscb-range-value"><?php echo esc_html( $adv['button_border_radius'] ); ?></span>
                         </div>
                         <div class="wpscb-setting-row wpscb-color-row">
                             <label><?php esc_html_e( 'Button Color', 'social-chat-buttons' ); ?></label>

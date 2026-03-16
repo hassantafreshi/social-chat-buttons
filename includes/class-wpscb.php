@@ -201,8 +201,10 @@ class WPSCB {
             /* translators: Default text displayed on the chat button when button mode is set to 'text' */
             'button_text'            => esc_html__( 'Chat', 'social-chat-buttons' ),
             'button_image'           => 0,               // attachment ID
+            'button_icon_svg'        => '',               // custom SVG for icon mode
             'button_size'            => 56,              // px
             'button_icon_size'       => 24,              // px for icon/text size
+            'button_border_radius'   => 16,              // px border-radius
             'button_color'           => '#6610f2',       // primary purple
             'button_text_color'      => '#ffffff',
             // Popup
@@ -235,8 +237,20 @@ class WPSCB {
         $adv['button_mode']            = in_array( $adv['button_mode'], array( 'icon', 'text', 'image' ), true ) ? $adv['button_mode'] : 'icon';
         $adv['button_text']            = sanitize_text_field( $adv['button_text'] );
         $adv['button_image']           = absint( $adv['button_image'] );
+        $adv['button_icon_svg']        = isset( $adv['button_icon_svg'] ) ? wp_kses( $adv['button_icon_svg'], array(
+            'svg'    => array( 'viewbox' => true, 'width' => true, 'height' => true, 'fill' => true, 'xmlns' => true, 'class' => true, 'aria-hidden' => true ),
+            'path'   => array( 'd' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'opacity' => true ),
+            'circle' => array( 'cx' => true, 'cy' => true, 'r' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true ),
+            'rect'   => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true, 'fill' => true, 'stroke' => true ),
+            'line'   => array( 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true, 'stroke' => true, 'stroke-width' => true ),
+            'polyline' => array( 'points' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true ),
+            'polygon' => array( 'points' => true, 'fill' => true, 'stroke' => true ),
+            'g'      => array( 'fill' => true, 'transform' => true, 'stroke' => true, 'stroke-width' => true ),
+            'ellipse' => array( 'cx' => true, 'cy' => true, 'rx' => true, 'ry' => true, 'fill' => true ),
+        ) ) : '';
         $adv['button_size']            = max( 40, min( 80, absint( $adv['button_size'] ) ) );
         $adv['button_icon_size']       = max( 16, min( 48, absint( $adv['button_icon_size'] ) ) );
+        $adv['button_border_radius']   = max( 0, min( 50, absint( $adv['button_border_radius'] ) ) );
         $adv['button_color']           = sanitize_hex_color( $adv['button_color'] );
         $adv['button_text_color']      = sanitize_hex_color( $adv['button_text_color'] );
         $adv['popup_width']            = max( 280, min( 480, absint( $adv['popup_width'] ) ) );
