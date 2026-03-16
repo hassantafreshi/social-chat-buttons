@@ -326,90 +326,133 @@ document.addEventListener( 'DOMContentLoaded', function() {
         }
 
         fab.onclick = wpscb_togglePopup;
-        // console.log(wpscb_advanced);
-        const popup = document.createElement('div');
-        popup.className = 'wpscb-popup';
-        popup.style.display = 'none';
-        popup.innerHTML = `
-            <div class="wpscb-popup-header">
-                <span>${wpscb_esc(wpscb_advanced.popup_title || wpscb_i18n.chat || 'Chat')}</span>
-                <button class="wpscb-popup-close" aria-label="Close">✕</button>
-            </div>
-            <div class="wpscb-popup-body">
-                ${available.map(c => {
-                    // console.log(c);
-                    const url = wpscb_buildURL(c.network, c.value, c.message);
 
-                    // Use photo if available, otherwise network icon
-                    const avatar = c.photo_url ?
-                        `<img src="${wpscb_esc(c.photo_url)}" alt="" class="wpscb-contact-avatar" />` :
-                        `<span class="wpscb-contact-avatar-icon">${wpscb_getNetworkIcon(c.network)}</span>`;
+        const displayMode = wpscb_advanced.display_mode || 'popup';
 
-                    // Show availability info if available (based on WordPress timezone)
-                    let avail = '';
-                    if(c.availability && typeof c.availability === 'object' && !Array.isArray(c.availability)){
-                        // Check if availability has any actual time slots defined
-                        const hasDefined = Object.keys(c.availability).some(function(day){
-                            return Array.isArray(c.availability[day]) && c.availability[day].length > 0 &&
-                                c.availability[day].some(function(s){ return s && s.start && s.end; });
-                        });
-                        if(hasDefined){
-                            const wpNow = wpscb_getWordPressTime();
-                            const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
-                            const currentDay = dayNames[wpNow.getDay()];
-                            const todaySlots = (c.availability[currentDay] || []).filter(function(s){ return s && s.start && s.end; });
-                            if(todaySlots.length > 0){
-                                const firstSlot = todaySlots[0];
-                                const lastSlot = todaySlots[todaySlots.length - 1];
-                                // Hide time if it covers the full day (00:00 - 23:59)
-                                if(!(firstSlot.start === '00:00' && lastSlot.end === '23:59')){
-                                    avail = '<div class="wpscb-contact-time" style="color:var(--wpscb-popup-label);">'+firstSlot.start+' - '+lastSlot.end+'</div>';
+        if(displayMode === 'direct'){
+            // Direct Icons mode — fan out social icons, no popup, no business hours
+            const directContainer = document.createElement('div');
+            directContainer.className = 'wpscb-direct-icons wpscb-direct-hidden';
+
+            available.forEach(function(c, idx){
+                const url = wpscb_buildURL(c.network, c.value, c.message);
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.className = 'wpscb-direct-icon';
+                a.title = c.name || c.network;
+                a.style.transitionDelay = (idx * 40) + 'ms';
+                a.innerHTML = wpscb_getNetworkIcon(c.network);
+                directContainer.appendChild(a);
+            });
+
+            widgetContainer.appendChild(fab);
+            widgetContainer.appendChild(directContainer);
+            wpscb_root.appendChild(widgetContainer);
+
+            document.addEventListener('click', function(e){
+                if(wpscb_isOpen && !directContainer.contains(e.target) && !fab.contains(e.target)){
+                    wpscb_closePopup();
+                }
+            });
+
+        } else {
+            // Popup mode (default)
+            const popup = document.createElement('div');
+            popup.className = 'wpscb-popup';
+            popup.style.display = 'none';
+            popup.innerHTML = `
+                <div class="wpscb-popup-header">
+                    <span>${wpscb_esc(wpscb_advanced.popup_title || wpscb_i18n.chat || 'Chat')}</span>
+                    <button class="wpscb-popup-close" aria-label="Close">✕</button>
+                </div>
+                <div class="wpscb-popup-body">
+                    ${available.map(c => {
+                        const url = wpscb_buildURL(c.network, c.value, c.message);
+
+                        const avatar = c.photo_url ?
+                            `<img src="${wpscb_esc(c.photo_url)}" alt="" class="wpscb-contact-avatar" />` :
+                            `<span class="wpscb-contact-avatar-icon">${wpscb_getNetworkIcon(c.network)}</span>`;
+
+                        let avail = '';
+                        if(c.availability && typeof c.availability === 'object' && !Array.isArray(c.availability)){
+                            const hasDefined = Object.keys(c.availability).some(function(day){
+                                return Array.isArray(c.availability[day]) && c.availability[day].length > 0 &&
+                                    c.availability[day].some(function(s){ return s && s.start && s.end; });
+                            });
+                            if(hasDefined){
+                                const wpNow = wpscb_getWordPressTime();
+                                const dayNames = ['sun','mon','tue','wed','thu','fri','sat'];
+                                const currentDay = dayNames[wpNow.getDay()];
+                                const todaySlots = (c.availability[currentDay] || []).filter(function(s){ return s && s.start && s.end; });
+                                if(todaySlots.length > 0){
+                                    const firstSlot = todaySlots[0];
+                                    const lastSlot = todaySlots[todaySlots.length - 1];
+                                    if(!(firstSlot.start === '00:00' && lastSlot.end === '23:59')){
+                                        avail = '<div class="wpscb-contact-time" style="color:var(--wpscb-popup-label);">'+firstSlot.start+' - '+lastSlot.end+'</div>';
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    return `<a href="${wpscb_esc(url)}" target="_blank" rel="noopener" class="wpscb-contact-item">
-                        ${avatar}
-                        <div class="wpscb-contact-info">
-                            <div class="wpscb-contact-name">${wpscb_esc(c.name || c.network)}</div>
-                            ${avail}
-                        </div>
-                    </a>`;
-                }).join('')}
-            </div>
-            ${!wpscb_advanced.hide_copyright ? `
-                <div class="wpscb-popup-footer">
-                    <div style="font-size:11px;color:var(--wpscb-popup-label);">${WPSCB_FRONT.i18n.poweredBy}</div>
+                        return `<a href="${wpscb_esc(url)}" target="_blank" rel="noopener" class="wpscb-contact-item">
+                            ${avatar}
+                            <div class="wpscb-contact-info">
+                                <div class="wpscb-contact-name">${wpscb_esc(c.name || c.network)}</div>
+                                ${avail}
+                            </div>
+                        </a>`;
+                    }).join('')}
                 </div>
-            ` : ''}
-        `;
+                ${!wpscb_advanced.hide_copyright ? `
+                    <div class="wpscb-popup-footer">
+                        <div style="font-size:11px;color:var(--wpscb-popup-label);">${WPSCB_FRONT.i18n.poweredBy}</div>
+                    </div>
+                ` : ''}
+            `;
 
-        // Add elements to widget container (same structure as Live Preview)
-        widgetContainer.appendChild(fab);
-        widgetContainer.appendChild(popup);
+            widgetContainer.appendChild(fab);
+            widgetContainer.appendChild(popup);
+            wpscb_root.appendChild(widgetContainer);
 
-        // Add widget container to wpscb_root
-        wpscb_root.appendChild(widgetContainer);
-
-        popup.querySelector('.wpscb-popup-close').onclick = wpscb_closePopup;
-        document.addEventListener('click', (e) => {
-            if(wpscb_isOpen && !popup.contains(e.target) && !fab.contains(e.target)){
-                wpscb_closePopup();
-            }
-        });
+            popup.querySelector('.wpscb-popup-close').onclick = wpscb_closePopup;
+            document.addEventListener('click', (e) => {
+                if(wpscb_isOpen && !popup.contains(e.target) && !fab.contains(e.target)){
+                    wpscb_closePopup();
+                }
+            });
+        }
     }
 
     function wpscb_togglePopup(){
-        const popup = wpscb_root.querySelector('.wpscb-popup');
-        if(!popup) return;
-        wpscb_isOpen = !wpscb_isOpen;
-        popup.style.display = wpscb_isOpen ? 'flex' : 'none';
+        const displayMode = wpscb_advanced.display_mode || 'popup';
+        if(displayMode === 'direct'){
+            const direct = wpscb_root.querySelector('.wpscb-direct-icons');
+            if(!direct) return;
+            wpscb_isOpen = !wpscb_isOpen;
+            if(wpscb_isOpen){
+                direct.classList.remove('wpscb-direct-hidden');
+            } else {
+                direct.classList.add('wpscb-direct-hidden');
+            }
+        } else {
+            const popup = wpscb_root.querySelector('.wpscb-popup');
+            if(!popup) return;
+            wpscb_isOpen = !wpscb_isOpen;
+            popup.style.display = wpscb_isOpen ? 'flex' : 'none';
+        }
     }
 
     function wpscb_closePopup(){
-        const popup = wpscb_root.querySelector('.wpscb-popup');
-        if(popup){ popup.style.display = 'none'; wpscb_isOpen = false; }
+        const displayMode = wpscb_advanced.display_mode || 'popup';
+        if(displayMode === 'direct'){
+            const direct = wpscb_root.querySelector('.wpscb-direct-icons');
+            if(direct){ direct.classList.add('wpscb-direct-hidden'); wpscb_isOpen = false; }
+        } else {
+            const popup = wpscb_root.querySelector('.wpscb-popup');
+            if(popup){ popup.style.display = 'none'; wpscb_isOpen = false; }
+        }
     }
 
     // Apply advanced settings as CSS variables first

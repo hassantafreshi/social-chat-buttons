@@ -196,6 +196,8 @@ class WPSCB {
 
     public function wpscb_get_advanced_settings() {
         $defaults = array(
+            // Display
+            'display_mode'           => 'popup',         // 'popup' or 'direct'
             // Button
             'button_mode'            => 'icon',          // 'icon', 'text', 'image'
             /* translators: Default text displayed on the chat button when button mode is set to 'text' */
@@ -234,6 +236,7 @@ class WPSCB {
         $defaults = $this->wpscb_get_advanced_settings();
         $adv = wp_parse_args( $adv, $defaults );
         // sanitize
+        $adv['display_mode']           = in_array( $adv['display_mode'], array( 'popup', 'direct' ), true ) ? $adv['display_mode'] : 'popup';
         $adv['button_mode']            = in_array( $adv['button_mode'], array( 'icon', 'text', 'image' ), true ) ? $adv['button_mode'] : 'icon';
         $adv['button_text']            = sanitize_text_field( $adv['button_text'] );
         $adv['button_image']           = absint( $adv['button_image'] );

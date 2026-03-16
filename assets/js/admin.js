@@ -622,6 +622,7 @@
             const advData = {
                 action: 'wpscb_save_advanced_settings',
                 nonce: WPSCB.nonce,
+                display_mode: $page.find('input[name="display_mode"]:checked').val(),
                 button_mode: $page.find('input[name="button_mode"]:checked').val(),
                 button_text: $page.find('input[name="button_text"]').val(),
                 button_image: $page.find('input[name="button_image"]').val(),
@@ -680,6 +681,7 @@
             // Get current settings from form
             const enabled = $page.find('input[name="enabled"]').is(':checked');
             const position = $page.find('select[name="position"]').val() || 'right';
+            const displayMode = $page.find('input[name="display_mode"]:checked').val() || 'popup';
             const buttonMode = $page.find('input[name="button_mode"]:checked').val() || 'icon';
             const buttonText = $page.find('input[name="button_text"]').val() || 'Chat';
             const buttonSize = parseInt($page.find('input[name="button_size"]').val()) || 56;
@@ -854,7 +856,7 @@
                         bottom: 20px;
                         z-index: 1000;
                     }
-                    .wpscb-fab svg { width:var(--wpscb-button-icon-size); height:var(--wpscb-button-icon-size); }
+                    .wpscb-fab svg { width:var(--wpscb-button-icon-size) !important; height:var(--wpscb-button-icon-size) !important; }
                     .wpscb-fab:hover { transform:scale(1.05); box-shadow:0 8px 20px rgba(102,16,242,.5), 0 4px 8px rgba(0,0,0,.2); }
 
                     .wpscb-popup {
@@ -890,9 +892,35 @@
                     .wpscb-popup-footer {
                         padding:12px 20px; border-top:1px solid #e2e8f0; background:#f8f9fa; text-align:center;
                     }
+
+                    /* Direct Icons mode */
+                    .wpscb-direct-icons {
+                        position:absolute;
+                        ${position === 'left' ? 'left: 20px;' : 'right: 20px;'}
+                        bottom:calc(var(--wpscb-button-size) + 28px);
+                        display:flex; flex-direction:column-reverse; gap:10px;
+                        z-index:1001;
+                    }
+                    .wpscb-direct-icons.wpscb-direct-hidden .wpscb-direct-icon { opacity:0; transform:scale(0.3); pointer-events:none; }
+                    .wpscb-direct-icon {
+                        width:var(--wpscb-button-size); height:var(--wpscb-button-size); border-radius:50%; display:flex; align-items:center; justify-content:center;
+                        background:transparent;
+                        text-decoration:none; transition:transform .25s cubic-bezier(.4,0,.2,1), opacity .25s cubic-bezier(.4,0,.2,1);
+                        opacity:1; transform:scale(1); cursor:pointer;
+                    }
+                    .wpscb-direct-icon:hover { transform:scale(1.15); }
+                    .wpscb-direct-icon svg { width:var(--wpscb-button-size) !important; height:var(--wpscb-button-size) !important; }
                 </style>
                 <div class="wpscb-widget-wpscb_root ${position === 'left' ? 'wpscb-left' : 'wpscb-right'}">
                     <button class="wpscb-fab" onclick="wpscb_togglePreviewPopup()" aria-label="Chat" style="${fabExtraStyle}">${buttonContent}</button>
+                    ${displayMode === 'direct' ? `
+                    <div class="wpscb-direct-icons wpscb-direct-hidden" id="wpscb-preview-direct">
+                        ${savedContacts.map(contact => {
+                            const icon = networkIcons[contact.network] || '<svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10" fill="#94a3b8"/></svg>';
+                            return '<a href="#" class="wpscb-direct-icon" onclick="return false;" title="'+wpscb_escapeHtml(contact.name || contact.network)+'">' + icon + '</a>';
+                        }).join('')}
+                    </div>
+                    ` : `
                     <div class="wpscb-popup" id="wpscb-preview-popup" style="display:none;">
                         <div class="wpscb-popup-header">
                             <span>${popupTitle}</span>
@@ -903,11 +931,17 @@
                         </div>
                         ${copyrightHtml}
                     </div>
+                    `}
                 </div>
                 <script>
                     window.wpscb_togglePreviewPopup = function(){
+                        ${displayMode === 'direct' ? `
+                        const direct = document.getElementById('wpscb-preview-direct');
+                        if(direct) direct.classList.toggle('wpscb-direct-hidden');
+                        ` : `
                         const popup = document.getElementById('wpscb-preview-popup');
                         if(popup) popup.classList.toggle('show');
+                        `}
                     };
                 </script>
             `;
@@ -920,6 +954,17 @@
             const mode = $page.find( 'input[name="button_mode"]:checked' ).val();
             $page.find( '.wpscb-conditional' ).removeClass( 'show' );
             $page.find( '.wpscb-conditional[data-show-if="button_mode=' + mode + '"]' ).addClass( 'show' );
+
+            // Display mode conditionals
+            const dMode = $page.find( 'input[name="display_mode"]:checked' ).val() || 'popup';
+            $page.find( '.wpscb-display-conditional' ).each( function() {
+                const showIf = $( this ).data( 'show-if-display' );
+                if ( showIf === dMode ) {
+                    $( this ).slideDown( 200 );
+                } else {
+                    $( this ).slideUp( 200 );
+                }
+            } );
         }
 
         // Range value display
@@ -942,7 +987,7 @@
         } );
 
         // Radio change triggers conditional visibility
-        $page.on( 'change', 'input[name="button_mode"]', function() {
+        $page.on( 'change', 'input[name="button_mode"], input[name="display_mode"]', function() {
             wpscb_updateConditionals();
             wpscb_autoSave();
         } );

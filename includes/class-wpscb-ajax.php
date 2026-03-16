@@ -173,6 +173,7 @@ class WPSCB_Ajax {
     public function wpscb_save_advanced_settings() {
         WPSCB::wpscb_verify_request();
         $adv = array(
+            'display_mode'           => isset( $_POST['display_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['display_mode'] ) ) : 'popup',
             'button_mode'            => isset( $_POST['button_mode'] ) ? sanitize_text_field( wp_unslash( $_POST['button_mode'] ) ) : 'icon',
             'button_text'            => isset( $_POST['button_text'] ) ? sanitize_text_field( wp_unslash( $_POST['button_text'] ) ) : '',
             'button_image'           => isset( $_POST['button_image'] ) ? absint( $_POST['button_image'] ) : 0,

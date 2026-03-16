@@ -246,6 +246,21 @@ class WPSCB_Admin {
                         </div>
                     </div>
 
+                    <!-- Display Mode -->
+                    <div class="wpscb-settings-section">
+                        <h2><?php esc_html_e( 'Display Mode', 'social-chat-buttons' ); ?></h2>
+                        <div class="wpscb-setting-row">
+                            <label><?php esc_html_e( 'Display Mode', 'social-chat-buttons' ); ?></label>
+                            <div class="wpscb-radio-group">
+                                <label><input type="radio" name="display_mode" value="popup" <?php checked( 'popup', $adv['display_mode'] ); ?>> <?php esc_html_e( 'Popup', 'social-chat-buttons' ); ?></label>
+                                <label><input type="radio" name="display_mode" value="direct" <?php checked( 'direct', $adv['display_mode'] ); ?>> <?php esc_html_e( 'Direct Icons', 'social-chat-buttons' ); ?></label>
+                            </div>
+                            <p class="description" style="margin-top:6px;color:#6c757d;font-size:12px;">
+                                <?php esc_html_e( 'Popup: opens a chat window. Direct Icons: social icons fan out from the button.', 'social-chat-buttons' ); ?>
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Button Appearance -->
                     <div class="wpscb-settings-section">
                         <h2><?php esc_html_e( 'Chat Button Appearance', 'social-chat-buttons' ); ?></h2>
@@ -313,8 +328,8 @@ class WPSCB_Admin {
                         </div>
                     </div>
 
-                    <!-- Popup Appearance -->
-                    <div class="wpscb-settings-section">
+                    <!-- Popup Appearance (hidden when direct mode) -->
+                    <div class="wpscb-settings-section wpscb-display-conditional" data-show-if-display="popup">
                         <h2><?php esc_html_e( 'Popup Appearance', 'social-chat-buttons' ); ?></h2>
                         <div class="wpscb-setting-row">
                             <label><?php esc_html_e( 'Popup Width (px)', 'social-chat-buttons' ); ?></label>
