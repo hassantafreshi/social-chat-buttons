@@ -3,7 +3,7 @@
  * Plugin Name: Social Chat Buttons
  * Plugin URI:  https://whitestudio.team/plugins/social-chat-buttons/
  * Description: Add a beautiful floating chat widget to connect with visitors through WhatsApp, Telegram, Instagram, and 15+ social networks. Features smart scheduling, custom styling, and mobile optimization.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Requires at least: 5.0
  * Requires PHP: 7.4
  * Author:      whitestudio
@@ -16,7 +16,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'WPSCB_VERSION', '0.1.9' );
+define( 'WPSCB_VERSION', '0.1.10' );
 define( 'WPSCB_PLUGIN_FILE', __FILE__ );
 define( 'WPSCB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPSCB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

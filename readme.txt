@@ -1,7 +1,7 @@
 === Social Chat Buttons ===
 Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz,fxbenard,emre,pedromendonca,rbilohash,pandanb,irinashl,nekojonez
 Tags: social, chat, whatsapp, telegram, customer service, floating button, speed dial, direct icons, social media widget, live chat, contact button
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.4
