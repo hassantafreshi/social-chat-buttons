@@ -1,9 +1,9 @@
 === Social Chat Buttons ===
-Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz,fxbenard,emre
+Contributors: hassantafreshi,whitestudio,presskopp,tobifjellner,psmits1567,fakhriaz,fxbenard,emre,pedromendonca,rbilohash,pandanb,irinashl,nekojonez
 Tags: social, chat, whatsapp, telegram, customer service, floating button, speed dial, direct icons, social media widget, live chat, contact button
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -161,6 +161,11 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 
 == Changelog ==
 
+= 1.0.4 =
+
+* Tested compatibility with WordPress 7.0
+* Updated plugin metadata for the latest WordPress release
+
 = 1.0.3 =
 
 * Minor bug fixes and performance improvements
@@ -178,6 +183,9 @@ No! The plugin is lightweight and optimized for performance. It loads minimal re
 * Security features with nonce verification
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+* Compatibility update for WordPress 7.0
 
 = 1.0.1 =
 * Fixed broken Plugin Support Page link in the Support section
@@ -269,7 +277,17 @@ When visitors click on chat buttons, they are redirected to the respective socia
 == Credits ==
 
 * Developed with ❤️ by Hassan Tafreshi
-* Translated into multiple languages by our amazing community: German by [Presskopp](https://profiles.wordpress.org/presskopp/), Swedish by [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/), Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/), Arabic and Franch by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/), French reviewed and approved by [FX Bénard](https://profiles.wordpress.org/fxbenard/), Turkish by [Emre Erkan](https://profiles.wordpress.org/emre/), Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
+* Translated into multiple languages by our amazing community:
+  - German by [Presskopp](https://profiles.wordpress.org/presskopp/)
+  - Swedish by [Tor-Bjorn Fjellner](https://profiles.wordpress.org/tobifjellner/)
+  - Dutch by [Peter Smits](https://profiles.wordpress.org/psmits1567/)
+  - Arabic and Franch by [Fakhri Azzouz](https://profiles.wordpress.org/fakhriaz/), French reviewed and approved by [FX Bénard](https://profiles.wordpress.org/fxbenard/)
+  - Turkish by [Emre Erkan](https://profiles.wordpress.org/emre/)
+  - Persian by [Hassan Tafreshi](https://profiles.wordpress.org/hassantafreshi/)
+  - Portuguese by [Pedro Mendonça](https://profiles.wordpress.org/pedromendonca/)
+  - Ukrainian by [bilohash](https://profiles.wordpress.org/rbilohash/) and [Andriy_Panchenko](https://profiles.wordpress.org/pandanb/)
+  - Russian by [Irina](https://profiles.wordpress.org/irinashl/)
+  - Dutch (Belgium) by [Peter Smits](https://profiles.wordpress.org/psmits1567/) and (Pieterjan Deneys)[https://profiles.wordpress.org/nekojonez/]
 * Community feedback and suggestions
 * WordPress community support
 
