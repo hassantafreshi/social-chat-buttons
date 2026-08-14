@@ -64,6 +64,8 @@ class WPSCB_Admin {
                 'addContact'      => esc_html__( 'Add Contact', 'social-chat-buttons' ),
                 /* translators: Modal title when editing an existing social media contact */
                 'editContact'     => esc_html__( 'Edit Contact', 'social-chat-buttons' ),
+                /* translators: Short help line shown at the top of the add/edit contact modal */
+                'contactModalHelp' => esc_html__( 'Pick a network, then fill in the contact\'s details below.', 'social-chat-buttons' ),
                 /* translators: Label for the social network selection dropdown (e.g., WhatsApp, Telegram) */
                 'network'         => esc_html__( 'Network', 'social-chat-buttons' ),
                 /* translators: Label for username input field when network requires a username */
@@ -321,8 +323,8 @@ class WPSCB_Admin {
                                 <label><input type="radio" name="display_mode" value="popup" <?php checked( 'popup', $adv['display_mode'] ); ?>> <?php esc_html_e( 'Popup', 'social-chat-buttons' ); ?></label>
                                 <label><input type="radio" name="display_mode" value="direct" <?php checked( 'direct', $adv['display_mode'] ); ?>> <?php esc_html_e( 'Direct Icons', 'social-chat-buttons' ); ?></label>
                             </div>
-                            <p class="description" style="margin-top:6px;color:#6c757d;font-size:12px;">
-                                <?php esc_html_e( 'Popup: opens a chat window. Direct Icons: social icons fan out from the button.', 'social-chat-buttons' ); ?>
+                            <p class="wpscb-setting-description">
+                                <?php esc_html_e( 'Popup opens a chat window; Direct Icons fans the social icons out from the button.', 'social-chat-buttons' ); ?>
                             </p>
                         </div>
                     </div>

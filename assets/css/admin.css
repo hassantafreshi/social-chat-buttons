@@ -45,6 +45,7 @@ input#wpscb-search {
 .wpscb-network-tag { display:inline-block; padding:2px 8px; font-size:11px; border-radius:16px; background:#eef2f6; color:#475569; }
 .wpscb-actions { display:flex; gap:6px; }
 .wpscb-btn.icon { padding:6px 8px; }
+.wpscb-actions .wpscb-delete.outline:hover { background:#fef2f2; border-color:#fca5a5; color:#dc2626; }
 .wpscb-btn[data-variant="outline"] { background:#fff; color:#1e293b; border:1px solid #cbd5e1; }
 .wpscb-btn[data-variant="outline"]:hover { background:#f1f5f9; }
 
@@ -220,11 +221,11 @@ body.rtl .wpscb-dropdown { direction:rtl; }
 
 /* New per-day slots UI */
 .wpscb-day-row { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px; margin-bottom:12px; }
-.wpscb-day-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.wpscb-day-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:6px; }
 .wpscb-day-label { font-weight:600; color:#334155; }
-.wpscb-day-actions { display:flex; gap:8px; }
+.wpscb-day-actions { display:flex; gap:8px; flex-wrap:wrap; }
 .wpscb-slots { display:flex; flex-direction:column; gap:8px; }
-.wpscb-slot-row { display:flex; align-items:center; gap:8px; padding:8px; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:8px; }
+.wpscb-slot-row { display:flex; align-items:center; gap:8px; padding:8px; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:8px; flex-wrap:wrap; }
 .wpscb-slot-row input[type="time"] { min-height:34px; padding:6px 10px; border:1px solid #d1d5db; border-radius:8px; }
 .wpscb-slot-label { font-size:12px; color:#64748b; }
 .wpscb-slot-sep { color:#94a3b8; }

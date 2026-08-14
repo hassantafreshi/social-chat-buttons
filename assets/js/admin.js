@@ -51,7 +51,7 @@
         }
         let html = '';
         html += '<div class="wpscb-header">';
-        html += '<button type="button" class="wpscb-btn" id="wpscb-add">'+WPSCB.i18n.addContact+'</button>';
+        html += '<button type="button" class="wpscb-btn" id="wpscb-add"><span aria-hidden="true">+</span> '+wpscb_escapeHtml(WPSCB.i18n.addContact)+'</button>';
         html += '</div>';
         if(wpscb_state.contacts.length){
             html += '<div class="wpscb-table-wrapper"><table class="wpscb-table"><thead><tr>'+
@@ -67,7 +67,7 @@
                 html += '<td>'+wpscb_escapeHtml(c.value)+'</td>';
                 html += '<td><span class="wpscb-network-tag">'+wpscb_networkIconSvg(c.network)+wpscb_escapeHtml(wpscb_capitalize(c.network))+'</span></td>';
                 html += '<td>'+wpscb_renderPhotoCell(c)+'</td>';
-                html += '<td><div class="wpscb-actions"><button type="button" class="wpscb-btn secondary wpscb-edit" aria-label="Edit">✎</button><button type="button" class="wpscb-btn danger wpscb-delete" aria-label="Delete">🗑</button></div></td>';
+                html += '<td><div class="wpscb-actions"><button type="button" class="wpscb-btn icon outline wpscb-edit" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.editContact)+'">✎</button><button type="button" class="wpscb-btn icon outline wpscb-delete" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.deleteBtn)+'">🗑</button></div></td>';
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
@@ -110,7 +110,7 @@
                         </header>
             <div class="body">
                 <div class="notice notice-error wpscb-alert" id="wpscb-top-alert" style="display:none"><p></p></div>
-                <p id="wpscb-modal-desc" style="margin-top:0;color:#475569;font-size:13px">${WPSCB.i18n.selectNetwork} ${WPSCB.i18n.searchPlaceholder}</p>
+                <p id="wpscb-modal-desc" style="margin-top:0;color:#475569;font-size:13px">${wpscb_escapeHtml( WPSCB.i18n.contactModalHelp )}</p>
                             <div class="wpscb-field">
                                 <label>${WPSCB.i18n.name}</label>
                                 <input type="text" id="wpscb-name" value="${existing.name}" />
@@ -164,7 +164,7 @@
             </div>
             <footer>
                             <button type="button" class="wpscb-btn" id="wpscb-save">${wpscb_escapeHtml(editing ? WPSCB.i18n.update : WPSCB.i18n.save)}</button>
-              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
+              <button type="button" class="wpscb-btn outline" id="wpscb-cancel">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
             </footer>
           </div>
         </div>`;
@@ -435,7 +435,7 @@
             </div>
             <footer>
               <button type="button" class="wpscb-btn danger" id="wpscb-confirm-delete">${wpscb_escapeHtml(WPSCB.i18n.deleteBtn)}</button>
-              <button type="button" class="wpscb-btn secondary" id="wpscb-cancel-delete">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
+              <button type="button" class="wpscb-btn outline" id="wpscb-cancel-delete">${wpscb_escapeHtml(WPSCB.i18n.cancel)}</button>
             </footer>
           </div>
         </div>`;
