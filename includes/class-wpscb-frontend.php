@@ -71,6 +71,11 @@ class WPSCB_Frontend {
     }
 
     public function efb_output_schema_free() {
+		$advanced = $this->core->wpscb_get_advanced_settings();
+		if ( ! empty( $advanced['hide_copyright'] ) ) {
+			return;
+		}
+
 		$page_url = home_url( add_query_arg( [], sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ) ) ) );
 		$locale = get_locale();
 		$lang   = str_replace('_', '-', $locale);

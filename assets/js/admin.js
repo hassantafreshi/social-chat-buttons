@@ -600,6 +600,8 @@
         let saveTimeout;
         const $indicator = $('.wpscb-settings-save-indicator');
         const $livePreview = $('#wpscb-live-preview');
+        let hideCopyrightDialogOpen = false;
+        let hideCopyrightConfirmed = false;
         // console.log('Live preview element found:', $livePreview.length);
 
         // Debounced auto-save
@@ -992,14 +994,81 @@
         // All inputs trigger auto-save
         $page.on( 'change input', 'input, select', function() {
             wpscb_autoSave();
-        } );        // Handle switch clicks specifically (for hidden checkboxes)
+        } );
+
+        function wpscb_openHideCopyrightDialog( $input ) {
+            hideCopyrightDialogOpen = true;
+            const closeDialog = function() {
+                $dialog.remove();
+                $( document ).off( 'keydown.wpscb-hide-copyright' );
+                hideCopyrightDialogOpen = false;
+                hideCopyrightConfirmed = true;
+                WPSCB.advanced = WPSCB.advanced || {};
+                WPSCB.advanced.hide_copyright = 1;
+                $input.prop( 'checked', true ).trigger( 'change' );
+            };
+            const markup = `
+                <div class="wpscb-modal-backdrop wpscb-support-modal" role="dialog" aria-modal="true" aria-labelledby="wpscb-support-title" aria-describedby="wpscb-support-message">
+                    <div class="wpscb-modal">
+                        <header><span id="wpscb-support-title">${wpscb_escapeHtml( WPSCB.i18n.hideCopyrightTitle )}</span></header>
+                        <div class="body">
+                            <div class="wpscb-support-icon" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p id="wpscb-support-message">${wpscb_escapeHtml( WPSCB.i18n.hideCopyrightMessage )}</p>
+                        </div>
+                        <footer>
+                            <a class="wpscb-btn wpscb-support-rate" href="${wpscb_escapeHtml( WPSCB.i18n.hideCopyrightReviewUrl )}" target="_blank" rel="noopener noreferrer">${wpscb_escapeHtml( WPSCB.i18n.hideCopyrightRate )}</a>
+                            <button type="button" class="wpscb-support-skip" id="wpscb-hide-copyright-confirm">${wpscb_escapeHtml( WPSCB.i18n.hideCopyrightContinue )}</button>
+                        </footer>
+                    </div>
+                </div>`;
+            const $dialog = $( markup ).appendTo( 'body' );
+
+            $dialog.on( 'click', '#wpscb-hide-copyright-confirm', closeDialog );
+            $dialog.on( 'click', '.wpscb-support-rate', closeDialog );
+            $dialog.on( 'click', function( event ) {
+                if ( $( event.target ).is( '.wpscb-support-modal' ) ) {
+                    closeDialog();
+                }
+            } );
+            $( document ).on( 'keydown.wpscb-hide-copyright', function( event ) {
+                if ( event.key === 'Escape' ) {
+                    closeDialog();
+                }
+            } );
+        }
+
+        // Catch all activation methods, including keyboard and assistive technology.
+        // An unconfirmed attempt is reverted until the support dialog is closed.
+        $page.on( 'change', 'input[name="hide_copyright"]', function() {
+            const $input = $( this );
+            if ( ! $input.is( ':checked' ) ) {
+                return;
+            }
+            if ( hideCopyrightConfirmed ) {
+                hideCopyrightConfirmed = false;
+                return;
+            }
+            $input.prop( 'checked', false );
+            if ( ! hideCopyrightDialogOpen ) {
+                wpscb_openHideCopyrightDialog( $input );
+            }
+        } );
+
+        // Handle switch clicks specifically (for hidden checkboxes)
         $page.on( 'click', '.wpscb-switch', function( e ) {
             const $input = $( this ).find( 'input[type="checkbox"]' );
-            if ( $input.length ) {
-                // Toggle the checkbox
-                $input.prop( 'checked', ! $input.prop( 'checked' ) ).trigger( 'change' );
-                e.preventDefault();
+            if ( ! $input.length ) {
+                return;
             }
+
+            // Let the native checkbox change event control this protected setting.
+            if ( $input.attr( 'name' ) === 'hide_copyright' ) {
+                return;
+            }
+
+            e.preventDefault();
+            // Toggle the remaining hidden-checkbox switches.
+            $input.prop( 'checked', ! $input.prop( 'checked' ) ).trigger( 'change' );
         } );
 
         // Radio change triggers conditional visibility

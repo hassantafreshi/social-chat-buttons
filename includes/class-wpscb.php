@@ -379,6 +379,11 @@ class WPSCB {
     }
 
     public static function wpscb_copyright_notice($state) {
+			$advanced = self::instance()->wpscb_get_advanced_settings();
+			if ( ! empty( $advanced['hide_copyright'] ) ) {
+				return '';
+			}
+
             /* translators: %1$s and %2$s are opening and closing anchor tags linking to plugin page */
             $powered_by = esc_html__( 'By %1$sSocial Chat Buttons%2$s', 'social-chat-buttons' );
             /* translators: %1$s and %3$s are opening and closing anchor tags, %2$s is the sponsor name (WhiteStudio.team) */

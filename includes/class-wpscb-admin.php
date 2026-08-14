@@ -35,8 +35,12 @@ class WPSCB_Admin {
         }
         // Media library for photo field
         wp_enqueue_media();
-        wp_enqueue_style( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/css/admin.css', array(), WPSCB_VERSION );
-        wp_enqueue_script( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), WPSCB_VERSION, true );
+        // Use the asset modification time so browsers always receive admin UI fixes
+        // immediately, even when the plugin version has not changed yet.
+        $admin_css_version = WPSCB_VERSION . '.' . filemtime( WPSCB_PLUGIN_DIR . 'assets/css/admin.css' );
+        $admin_js_version  = WPSCB_VERSION . '.' . filemtime( WPSCB_PLUGIN_DIR . 'assets/js/admin.js' );
+        wp_enqueue_style( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/css/admin.css', array(), $admin_css_version );
+        wp_enqueue_script( 'wpscb-admin', WPSCB_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), $admin_js_version, true );
         $contacts = $this->core->wpscb_get_contacts();
         // enrich contacts with photo url (best-effort)
         foreach ( $contacts as &$c ) {
@@ -189,6 +193,15 @@ class WPSCB_Admin {
                 'useThisIcon'      => esc_html__( 'Use This Icon', 'social-chat-buttons' ),
                 /* translators: Button to reset icon back to default chat bubble */
                 'resetDefault'     => esc_html__( 'Reset to Default', 'social-chat-buttons' ),
+                /* translators: Title of the dialog shown before copyright messages are hidden */
+                'hideCopyrightTitle' => esc_html__( 'Enjoying Social Chat Buttons?', 'social-chat-buttons' ),
+                /* translators: Explanation shown before copyright messages are hidden */
+                'hideCopyrightMessage' => esc_html__( 'This plugin is free and built with care. A 5-star review takes 30 seconds and helps more people find it.', 'social-chat-buttons' ),
+                /* translators: Button which opens the WordPress.org review page */
+                'hideCopyrightRate' => esc_html__( '★ Leave a 5-Star Review', 'social-chat-buttons' ),
+                /* translators: Button which confirms hiding copyright messages */
+                'hideCopyrightContinue' => esc_html__( 'No thanks, just hide it', 'social-chat-buttons' ),
+                'hideCopyrightReviewUrl' => 'https://wordpress.org/support/plugin/social-chat-buttons/reviews/?filter=5',
             ),
             'networks' => $this->core->wpscb_get_supported_networks(),
             'contacts' => $contacts,

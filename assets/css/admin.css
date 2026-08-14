@@ -169,6 +169,18 @@ body.rtl .wpscb-dropdown { direction:rtl; }
 .wpscb-modal header #wpscb-delete-title { font-size:20px; font-weight:500; line-height:28px; }
 .wpscb-modal .body label { font-size:14px; font-weight:500; line-height:20px; color:#1e293b; }
 .wpscb-modal footer { border-top:1px solid var(--wpscb-outline); }
+.wpscb-support-modal .wpscb-modal { max-width: 420px; text-align: center; animation: wpscb-support-pop .25s cubic-bezier(.34,1.56,.64,1); }
+.wpscb-support-modal header { border-bottom: none; padding: 26px 28px 0; }
+.wpscb-support-modal header #wpscb-support-title { font-size: 21px; font-weight: 700; line-height: 1.3; color: #0f172a; }
+.wpscb-support-modal .body { padding: 8px 28px 22px; }
+.wpscb-support-icon { margin: 0 0 14px; font-size: 26px; letter-spacing: 6px; color: #f59e0b; text-shadow: 0 2px 6px rgba(245, 158, 11, .35); }
+.wpscb-support-modal #wpscb-support-message { margin: 0; color: #475569; font-size: 15px; line-height: 1.6; }
+.wpscb-support-modal footer { flex-direction: column; align-items: stretch; border-top: none; padding: 4px 28px 26px; gap: 10px; }
+.wpscb-support-rate { justify-content: center; background: #f59e0b; color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; padding: 13px 16px; border-radius: 14px; box-shadow: 0 8px 20px -4px rgba(245, 158, 11, .5); }
+.wpscb-support-rate:hover, .wpscb-support-rate:focus { background: #d97706; color: #fff; transform: translateY(-1px); }
+.wpscb-support-skip { background: none; border: none; color: #94a3b8; font-size: 13px; cursor: pointer; padding: 4px; text-decoration: underline; text-underline-offset: 2px; }
+.wpscb-support-skip:hover, .wpscb-support-skip:focus { color: #64748b; }
+@keyframes wpscb-support-pop { from { opacity: 0; transform: scale(.92) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 .wpscb-field input, .wpscb-field select { border:1px solid var(--wpscb-outline); border-radius:12px; padding:12px 14px; min-height:38px; }
 .wpscb-field input:focus { outline:2px solid var(--wpscb-focus-ring); }
 .wpscb-empty { background:var(--wpscb-primary-container); border-color:var(--wpscb-outline); border-radius:16px; color:var(--wpscb-on-primary-container); font-weight:500; }
