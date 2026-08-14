@@ -129,7 +129,7 @@
                                                         </div>
                             <div class="wpscb-field">
                                 <label>${WPSCB.i18n.photo}</label>
-                                <div><button type="button" class="wpscb-btn secondary" id="wpscb-pick-media">${WPSCB.i18n.chooseUpload}</button></div>
+                                <div><button type="button" class="wpscb-btn outline" id="wpscb-pick-media">${WPSCB.i18n.chooseUpload}</button></div>
                                                 <div class="wpscb-media-preview" id="wpscb-media-preview">${(existing.photo_url||existing.photo)?('<img src="'+wpscb_escapeHtml(existing.photo_url||wpscb_getAttachmentUrl(existing.photo))+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+WPSCB.i18n.remove+'</button>'):('<span style="font-size:12px;color:#64748b">'+WPSCB.i18n.noImageSelected+'</span>')}</div>
                                 <input type="hidden" id="wpscb-photo" value="${existing.photo}" />
                             </div>
