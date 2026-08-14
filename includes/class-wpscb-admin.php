@@ -369,6 +369,7 @@ class WPSCB_Admin {
                                 <?php endif; endif; ?>
                             </div>
                         </div>
+                        <p class="wpscb-group-label"><?php esc_html_e( 'Size & Shape', 'social-chat-buttons' ); ?></p>
                         <div class="wpscb-setting-row">
                             <label><?php esc_html_e( 'Button Size (px)', 'social-chat-buttons' ); ?></label>
                             <input type="range" name="button_size" min="40" max="80" value="<?php echo esc_attr( $adv['button_size'] ); ?>" class="wpscb-range">
@@ -384,6 +385,7 @@ class WPSCB_Admin {
                             <input type="range" name="button_border_radius" min="0" max="50" value="<?php echo esc_attr( $adv['button_border_radius'] ); ?>" class="wpscb-range">
                             <span class="wpscb-range-value"><?php echo esc_html( $adv['button_border_radius'] ); ?></span>
                         </div>
+                        <p class="wpscb-group-label"><?php esc_html_e( 'Colors', 'social-chat-buttons' ); ?></p>
                         <div class="wpscb-setting-row wpscb-color-row">
                             <label><?php esc_html_e( 'Button Color', 'social-chat-buttons' ); ?></label>
                             <input type="color" name="button_color" value="<?php echo esc_attr( $adv['button_color'] ); ?>" class="wpscb-color">
@@ -406,33 +408,36 @@ class WPSCB_Admin {
                             <label><?php esc_html_e( 'Popup Title', 'social-chat-buttons' ); ?></label>
                             <input type="text" name="popup_title" value="<?php echo esc_attr( $adv['popup_title'] ); ?>" class="wpscb-input" placeholder="<?php esc_attr_e( 'Chat', 'social-chat-buttons' ); ?>">
                         </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Background Color', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="popup_bg_color" value="<?php echo esc_attr( $adv['popup_bg_color'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Header Gradient Start', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="popup_header_color" value="<?php echo esc_attr( $adv['popup_header_color'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Header Gradient End', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="popup_header_color_end" value="<?php echo esc_attr( $adv['popup_header_color_end'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Text Color', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="popup_text_color" value="<?php echo esc_attr( $adv['popup_text_color'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Label Color', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="popup_label_color" value="<?php echo esc_attr( $adv['popup_label_color'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Contact Background', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="contact_bg_color" value="<?php echo esc_attr( $adv['contact_bg_color'] ); ?>" class="wpscb-color">
-                        </div>
-                        <div class="wpscb-setting-row wpscb-color-row">
-                            <label><?php esc_html_e( 'Contact Hover', 'social-chat-buttons' ); ?></label>
-                            <input type="color" name="contact_hover_color" value="<?php echo esc_attr( $adv['contact_hover_color'] ); ?>" class="wpscb-color">
+                        <p class="wpscb-group-label"><?php esc_html_e( 'Colors', 'social-chat-buttons' ); ?></p>
+                        <div class="wpscb-color-grid">
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="popup_bg_color" value="<?php echo esc_attr( $adv['popup_bg_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Background', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="popup_header_color" value="<?php echo esc_attr( $adv['popup_header_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Gradient Start', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="popup_header_color_end" value="<?php echo esc_attr( $adv['popup_header_color_end'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Gradient End', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="popup_text_color" value="<?php echo esc_attr( $adv['popup_text_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Text', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="popup_label_color" value="<?php echo esc_attr( $adv['popup_label_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Label', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="contact_bg_color" value="<?php echo esc_attr( $adv['contact_bg_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Contact BG', 'social-chat-buttons' ); ?></span>
+                            </label>
+                            <label class="wpscb-color-chip">
+                                <input type="color" name="contact_hover_color" value="<?php echo esc_attr( $adv['contact_hover_color'] ); ?>" class="wpscb-color">
+                                <span><?php esc_html_e( 'Contact Hover', 'social-chat-buttons' ); ?></span>
+                            </label>
                         </div>
                     </div>
 
@@ -446,7 +451,7 @@ class WPSCB_Admin {
                                 <span class="wpscb-switch-label"><?php esc_html_e( 'Auto Dark Mode', 'social-chat-buttons' ); ?></span>
                             </label>
                             <p class="wpscb-setting-description">
-                                <?php esc_html_e( 'Automatically switches to dark colors during evening hours (8 PM - 7 AM) based on visitor\'s local time. Provides a comfortable viewing experience that adapts to natural lighting conditions.', 'social-chat-buttons' ); ?>
+                                <?php esc_html_e( 'Switches to dark colors from 8 PM to 7 AM, based on each visitor\'s local time.', 'social-chat-buttons' ); ?>
                             </p>
                         </div>
                         <div class="wpscb-setting-row">
@@ -455,6 +460,9 @@ class WPSCB_Admin {
                                 <span class="wpscb-switch-slider"></span>
                                 <span class="wpscb-switch-label"><?php esc_html_e( 'Hide on Mobile', 'social-chat-buttons' ); ?></span>
                             </label>
+                            <p class="wpscb-setting-description">
+                                <?php esc_html_e( 'Removes the chat widget on phones and small tablets entirely.', 'social-chat-buttons' ); ?>
+                            </p>
                         </div>
                         <div class="wpscb-setting-row">
                             <label class="wpscb-switch">
@@ -462,6 +470,9 @@ class WPSCB_Admin {
                                 <span class="wpscb-switch-slider"></span>
                                 <span class="wpscb-switch-label"><?php esc_html_e( 'Responsive Scaling', 'social-chat-buttons' ); ?></span>
                             </label>
+                            <p class="wpscb-setting-description">
+                                <?php esc_html_e( 'Shrinks the button and popup to fit smaller screens automatically.', 'social-chat-buttons' ); ?>
+                            </p>
                         </div>
                         <div class="wpscb-setting-row">
                             <label class="wpscb-switch">
@@ -469,6 +480,9 @@ class WPSCB_Admin {
                                 <span class="wpscb-switch-slider"></span>
                                 <span class="wpscb-switch-label"><?php esc_html_e( 'Hide Copyright Messages', 'social-chat-buttons' ); ?></span>
                             </label>
+                            <p class="wpscb-setting-description">
+                                <?php esc_html_e( 'Removes the small credit link and site schema this plugin adds by default.', 'social-chat-buttons' ); ?>
+                            </p>
                         </div>
                     </div>
 
