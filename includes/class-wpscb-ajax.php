@@ -196,6 +196,9 @@ class WPSCB_Ajax {
             'hide_mobile'            => isset( $_POST['hide_mobile'] ) && $_POST['hide_mobile'] == '1' ? 1 : 0,
             'hide_copyright'         => isset( $_POST['hide_copyright'] ) && $_POST['hide_copyright'] == '1' ? 1 : 0,
             'responsive_scale'       => isset( $_POST['responsive_scale'] ) && $_POST['responsive_scale'] == '1' ? 1 : 0,
+            'display_scope'          => isset( $_POST['display_scope'] ) ? sanitize_text_field( wp_unslash( $_POST['display_scope'] ) ) : 'all',
+            'display_page_ids'       => isset( $_POST['display_page_ids'] ) && is_array( $_POST['display_page_ids'] ) ? array_map( 'absint', wp_unslash( $_POST['display_page_ids'] ) ) : array(),
+            'display_category_ids'   => isset( $_POST['display_category_ids'] ) && is_array( $_POST['display_category_ids'] ) ? array_map( 'absint', wp_unslash( $_POST['display_category_ids'] ) ) : array(),
         );
 
         // Debug what we're trying to save

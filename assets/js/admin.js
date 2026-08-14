@@ -646,7 +646,10 @@
                 auto_dark_mode: $page.find('input[name="auto_dark_mode"]').is(':checked') ? 1 : 0,
                 hide_mobile: $page.find('input[name="hide_mobile"]').is(':checked') ? 1 : 0,
                 hide_copyright: $page.find('input[name="hide_copyright"]').is(':checked') ? 1 : 0,
-                responsive_scale: $page.find('input[name="responsive_scale"]').is(':checked') ? 1 : 0
+                responsive_scale: $page.find('input[name="responsive_scale"]').is(':checked') ? 1 : 0,
+                display_scope: $page.find('select[name="display_scope"]').val(),
+                display_page_ids: $page.find('input[name="display_page_ids[]"]:checked').map(function(){ return this.value; }).get(),
+                display_category_ids: $page.find('input[name="display_category_ids[]"]:checked').map(function(){ return this.value; }).get()
             };
 
             // Debug copyright setting
@@ -983,6 +986,25 @@
                     $( this ).slideUp( 200 );
                 }
             } );
+
+            // Display scope conditionals (page/category picker rows)
+            const scope = $page.find( 'select[name="display_scope"]' ).val() || 'all';
+            $page.find( '.wpscb-display-scope-conditional' ).each( function() {
+                const showIf = $( this ).data( 'show-if-scope' );
+                if ( showIf === scope ) {
+                    $( this ).slideDown( 200 );
+                } else {
+                    $( this ).slideUp( 200 );
+                }
+            } );
+        }
+
+        // Show/hide the "nothing selected yet" hint under each page/category picker
+        function wpscb_updatePickerHints() {
+            $page.find( '.wpscb-picker-list' ).each( function() {
+                const hasChecked = $( this ).find( 'input[type="checkbox"]:checked' ).length > 0;
+                $( this ).siblings( '.wpscb-picker-hint' ).toggle( ! hasChecked );
+            } );
         }
 
         // Range value display
@@ -1071,11 +1093,23 @@
             $input.prop( 'checked', ! $input.prop( 'checked' ) ).trigger( 'change' );
         } );
 
-        // Radio change triggers conditional visibility
-        $page.on( 'change', 'input[name="button_mode"], input[name="display_mode"]', function() {
+        // Radio/select change triggers conditional visibility
+        $page.on( 'change', 'input[name="button_mode"], input[name="display_mode"], select[name="display_scope"]', function() {
             wpscb_updateConditionals();
             wpscb_autoSave();
         } );
+
+        // Page/category picker: live search filter
+        $page.on( 'input', '.wpscb-picker-search', function() {
+            const term = $( this ).val().toLowerCase().trim();
+            const target = $( this ).data( 'target' );
+            $page.find( '.wpscb-picker-list[data-picker="' + target + '"] .wpscb-picker-item' ).each( function() {
+                $( this ).toggle( $( this ).text().toLowerCase().indexOf( term ) !== -1 );
+            } );
+        } );
+
+        // Page/category picker: toggle the empty-selection hint as boxes are (un)checked
+        $page.on( 'change', '.wpscb-picker-list input[type="checkbox"]', wpscb_updatePickerHints );
 
         // Media library for button image
         $page.on('click', '.wpscb-upload-btn', function(e){
@@ -1127,6 +1161,7 @@
 
         // Initialize conditionals
         wpscb_updateConditionals();
+        wpscb_updatePickerHints();
 
         // Initialize live preview
         if ( $livePreview.length ) {

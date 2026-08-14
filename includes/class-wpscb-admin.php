@@ -238,6 +238,7 @@ class WPSCB_Admin {
         ?>
         <div class="wrap wpscb-wrap wpscb-settings-page">
             <h1><?php esc_html_e( 'Settings', 'social-chat-buttons' ); ?></h1>
+            <p class="wpscb-page-subtitle"><?php esc_html_e( 'Configure how the chat widget looks, behaves, and where it appears on your site.', 'social-chat-buttons' ); ?></p>
             <div class="wpscb-settings-layout">
                 <div class="wpscb-settings-controls">
                     <!-- Basic Settings -->
@@ -256,6 +257,58 @@ class WPSCB_Admin {
                                 <option value="right" <?php selected( 'right', $settings['position'] ); ?>><?php esc_html_e( 'Right', 'social-chat-buttons' ); ?></option>
                                 <option value="left" <?php selected( 'left', $settings['position'] ); ?>><?php esc_html_e( 'Left', 'social-chat-buttons' ); ?></option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Display Rules -->
+                    <div class="wpscb-settings-section">
+                        <h2><?php esc_html_e( 'Display Rules', 'social-chat-buttons' ); ?></h2>
+                        <div class="wpscb-setting-row">
+                            <label><?php esc_html_e( 'Show Button On', 'social-chat-buttons' ); ?></label>
+                            <select name="display_scope" class="wpscb-select">
+                                <option value="all" <?php selected( 'all', $adv['display_scope'] ); ?>><?php esc_html_e( 'All Pages (default)', 'social-chat-buttons' ); ?></option>
+                                <option value="pages" <?php selected( 'pages', $adv['display_scope'] ); ?>><?php esc_html_e( 'Specific Pages', 'social-chat-buttons' ); ?></option>
+                                <option value="categories" <?php selected( 'categories', $adv['display_scope'] ); ?>><?php esc_html_e( 'Specific Categories', 'social-chat-buttons' ); ?></option>
+                            </select>
+                        </div>
+                        <p class="wpscb-setting-description"><?php esc_html_e( 'Choose where the chat button appears. It shows on every page by default.', 'social-chat-buttons' ); ?></p>
+
+                        <div class="wpscb-setting-row wpscb-display-scope-conditional wpscb-picker-row" data-show-if-scope="pages">
+                            <label><?php esc_html_e( 'Select Pages', 'social-chat-buttons' ); ?></label>
+                            <?php $wpscb_all_pages = get_pages( array( 'sort_column' => 'post_title', 'sort_order' => 'ASC' ) ); ?>
+                            <?php if ( empty( $wpscb_all_pages ) ) : ?>
+                                <p class="wpscb-picker-empty"><?php esc_html_e( 'No pages found on this site yet.', 'social-chat-buttons' ); ?></p>
+                            <?php else : ?>
+                                <input type="search" class="wpscb-picker-search" data-target="display_page_ids" placeholder="<?php esc_attr_e( 'Search pages…', 'social-chat-buttons' ); ?>">
+                                <div class="wpscb-picker-list" data-picker="display_page_ids">
+                                    <?php foreach ( $wpscb_all_pages as $wpscb_page ) : ?>
+                                        <label class="wpscb-picker-item">
+                                            <input type="checkbox" name="display_page_ids[]" value="<?php echo esc_attr( $wpscb_page->ID ); ?>" <?php checked( in_array( (int) $wpscb_page->ID, array_map( 'absint', $adv['display_page_ids'] ), true ) ); ?>>
+                                            <span><?php echo esc_html( $wpscb_page->post_title ? $wpscb_page->post_title : __( '(no title)', 'social-chat-buttons' ) ); ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                                <p class="wpscb-picker-hint"><?php esc_html_e( 'No pages selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ); ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="wpscb-setting-row wpscb-display-scope-conditional wpscb-picker-row" data-show-if-scope="categories">
+                            <label><?php esc_html_e( 'Select Categories', 'social-chat-buttons' ); ?></label>
+                            <?php $wpscb_all_cats = get_categories( array( 'hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC' ) ); ?>
+                            <?php if ( empty( $wpscb_all_cats ) ) : ?>
+                                <p class="wpscb-picker-empty"><?php esc_html_e( 'No categories found on this site yet.', 'social-chat-buttons' ); ?></p>
+                            <?php else : ?>
+                                <input type="search" class="wpscb-picker-search" data-target="display_category_ids" placeholder="<?php esc_attr_e( 'Search categories…', 'social-chat-buttons' ); ?>">
+                                <div class="wpscb-picker-list" data-picker="display_category_ids">
+                                    <?php foreach ( $wpscb_all_cats as $wpscb_cat ) : ?>
+                                        <label class="wpscb-picker-item">
+                                            <input type="checkbox" name="display_category_ids[]" value="<?php echo esc_attr( $wpscb_cat->term_id ); ?>" <?php checked( in_array( (int) $wpscb_cat->term_id, array_map( 'absint', $adv['display_category_ids'] ), true ) ); ?>>
+                                            <span><?php echo esc_html( $wpscb_cat->name ); ?><span class="wpscb-picker-count"><?php echo esc_html( $wpscb_cat->count ); ?></span></span>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                                <p class="wpscb-picker-hint"><?php esc_html_e( 'No categories selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ); ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
 

@@ -19,6 +19,9 @@ class WPSCB_Frontend {
         // Skip enabled check in preview mode
         if ( empty( $settings['enabled'] ) && ! $is_preview ) { return; }
 
+        $advanced = $this->core->wpscb_get_advanced_settings();
+        if ( ! $is_preview && ! $this->wpscb_current_page_allowed( $advanced ) ) { return; }
+
         wp_enqueue_style( 'wpscb-front', WPSCB_PLUGIN_URL . 'assets/css/front.css', array(), WPSCB_VERSION );
         wp_enqueue_script( 'wpscb-front', WPSCB_PLUGIN_URL . 'assets/js/front.js', array(), WPSCB_VERSION, true );
         // Localize frontend settings & contacts with availability
@@ -30,8 +33,6 @@ class WPSCB_Frontend {
             }
         }
         unset($c);
-
-        $advanced = $this->core->wpscb_get_advanced_settings();
         // Add button_image_url if exists
         if ( ! empty( $advanced['button_image'] ) ) {
             $img_src = wp_get_attachment_image_src( absint( $advanced['button_image'] ), 'thumbnail' );
@@ -64,10 +65,36 @@ class WPSCB_Frontend {
         if ( empty( $settings['enabled'] )  ) { return; }
         $contacts = $this->core->wpscb_get_contacts();
         if ( empty( $contacts )  ) { return; }
+        if ( ! $this->wpscb_current_page_allowed( $this->core->wpscb_get_advanced_settings() ) ) { return; }
 
         $position_class = $settings['position'] === 'left' ? 'wpscb-left' : 'wpscb-right';
 
         echo '<div id="wpscb-widget-root" class="' . esc_attr( $position_class ) . '"></div>';
+    }
+
+    /**
+     * Whether the widget is allowed to show on the current front-end request,
+     * based on the display_scope advanced setting ('all', 'pages', 'categories').
+     *
+     * @param array $advanced Advanced settings array.
+     * @return bool
+     */
+    private function wpscb_current_page_allowed( $advanced ) {
+        $scope = isset( $advanced['display_scope'] ) ? $advanced['display_scope'] : 'all';
+
+        if ( 'pages' === $scope ) {
+            $ids = ! empty( $advanced['display_page_ids'] ) ? array_map( 'absint', (array) $advanced['display_page_ids'] ) : array();
+            return ! empty( $ids ) && is_page( $ids );
+        }
+
+        if ( 'categories' === $scope ) {
+            $ids = ! empty( $advanced['display_category_ids'] ) ? array_map( 'absint', (array) $advanced['display_category_ids'] ) : array();
+            if ( empty( $ids ) ) { return false; }
+            if ( is_category( $ids ) ) { return true; }
+            return is_singular( 'post' ) && has_category( $ids, get_queried_object_id() );
+        }
+
+        return true;
     }
 
     public function efb_output_schema_free() {

@@ -225,6 +225,10 @@ class WPSCB {
             'hide_mobile'            => 0,               // 0=show on mobile, 1=hide
             'hide_copyright'         => 0,               // 0=show, 1=hide (premium)
             'responsive_scale'       => 1,               // 0=fixed, 1=responsive
+            // Display rules
+            'display_scope'          => 'all',            // 'all', 'pages', or 'categories'
+            'display_page_ids'       => array(),           // page IDs to show on when display_scope=pages
+            'display_category_ids'   => array(),           // category term IDs to show on when display_scope=categories
         );
         $adv = get_option( 'wpscb_advanced_settings', array() );
         $adv = wp_parse_args( is_array( $adv ) ? $adv : array(), $defaults );
@@ -269,6 +273,9 @@ class WPSCB {
         $adv['hide_mobile']            = ! empty( $adv['hide_mobile'] ) ? 1 : 0;
         $adv['hide_copyright']         = ! empty( $adv['hide_copyright'] ) ? 1 : 0;
         $adv['responsive_scale']       = ! empty( $adv['responsive_scale'] ) ? 1 : 0;
+        $adv['display_scope']          = in_array( $adv['display_scope'], array( 'all', 'pages', 'categories' ), true ) ? $adv['display_scope'] : 'all';
+        $adv['display_page_ids']       = array_values( array_unique( array_filter( array_map( 'absint', (array) $adv['display_page_ids'] ) ) ) );
+        $adv['display_category_ids']   = array_values( array_unique( array_filter( array_map( 'absint', (array) $adv['display_category_ids'] ) ) ) );
 
         $adv = apply_filters( 'wpscb_set_advanced_settings', $adv );
         update_option( 'wpscb_advanced_settings', $adv );
