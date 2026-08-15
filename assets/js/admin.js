@@ -51,26 +51,21 @@
         }
         let html = '';
         html += '<div class="wpscb-header">';
+        html += '<div class="wpscb-header-heading"><span class="wpscb-contact-count">'+wpscb_state.contacts.length+'</span><span>'+wpscb_escapeHtml(WPSCB.i18n.contactsHeading || '')+'</span></div>';
         html += '<button type="button" class="wpscb-btn" id="wpscb-add"><span aria-hidden="true">+</span> '+wpscb_escapeHtml(WPSCB.i18n.addContact)+'</button>';
         html += '</div>';
         if(wpscb_state.contacts.length){
-            html += '<div class="wpscb-table-wrapper"><table class="wpscb-table"><thead><tr>'+
-                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderName)+'</th>'+
-                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderValue)+'</th>'+
-                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderNetwork)+'</th>'+
-                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderPhoto)+'</th>'+
-                '<th>'+wpscb_escapeHtml(WPSCB.i18n.tableHeaderActions)+'</th>'+
-            '</tr></thead><tbody>';
+            html += '<div class="wpscb-contact-grid">';
             wpscb_state.contacts.forEach((c,i)=>{
-                html += '<tr data-index="'+i+'">';
-                html += '<td>'+wpscb_escapeHtml(c.name || '-')+'</td>';
-                html += '<td>'+wpscb_escapeHtml(c.value)+'</td>';
-                html += '<td><span class="wpscb-network-tag">'+wpscb_networkIconSvg(c.network)+wpscb_escapeHtml(wpscb_capitalize(c.network))+'</span></td>';
-                html += '<td>'+wpscb_renderPhotoCell(c)+'</td>';
-                html += '<td><div class="wpscb-actions"><button type="button" class="wpscb-btn icon outline wpscb-edit" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.editContact)+'">✎</button><button type="button" class="wpscb-btn icon outline wpscb-delete" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.deleteBtn)+'">🗑</button></div></td>';
-                html += '</tr>';
+                html += '<div class="wpscb-contact-card" data-index="'+i+'">';
+                html += '<div class="wpscb-contact-card-top">'+wpscb_renderPhotoCell(c)+
+                    '<div class="wpscb-actions"><button type="button" class="wpscb-btn icon outline wpscb-edit" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.editContact)+'">✎</button><button type="button" class="wpscb-btn icon outline wpscb-delete" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.deleteBtn)+'">🗑</button></div></div>';
+                html += '<div class="wpscb-contact-card-name">'+wpscb_escapeHtml(c.name || '—')+'</div>';
+                html += '<span class="wpscb-network-tag">'+wpscb_networkIconSvg(c.network)+wpscb_escapeHtml(wpscb_capitalize(c.network))+'</span>';
+                html += '<div class="wpscb-contact-card-value">'+wpscb_escapeHtml(c.value)+'</div>';
+                html += '</div>';
             });
-            html += '</tbody></table></div>';
+            html += '</div>';
         } else {
             html += '<div class="wpscb-empty">'+wpscb_escapeHtml(WPSCB.i18n.emptyMessage)+'</div>';
         }
@@ -471,11 +466,11 @@
     function wpscb_bindEvents(){
         $('#wpscb-app').on('click','#wpscb-add', function(){ wpscb_openModal(); });
         $('#wpscb-app').on('click','.wpscb-delete', function(){
-            const idx = $(this).closest('tr').data('index');
+            const idx = $(this).closest('.wpscb-contact-card').data('index');
             wpscb_deleteContact(idx);
         });
         $('#wpscb-app').on('click','.wpscb-edit', function(){
-            const idx = $(this).closest('tr').data('index');
+            const idx = $(this).closest('.wpscb-contact-card').data('index');
             wpscb_openModal(idx);
         });
         $('#wpscb-settings-form').on('submit', function(e){
@@ -1007,6 +1002,28 @@
             } );
         }
 
+        // Settings page tabs: switch panels and remember the last one per browser
+        const WPSCB_TAB_STORAGE_KEY = 'wpscb_settings_tab';
+        function wpscb_activateTab( tab ) {
+            const $tab = $page.find( '.wpscb-tab[data-tab="' + tab + '"]' );
+            if ( ! $tab.length ) { return; }
+            $page.find( '.wpscb-tab' ).removeClass( 'active' ).attr( 'aria-selected', 'false' );
+            $tab.addClass( 'active' ).attr( 'aria-selected', 'true' );
+            $page.find( '.wpscb-tab-panel' ).removeClass( 'active' );
+            $page.find( '.wpscb-tab-panel[data-tab-panel="' + tab + '"]' ).addClass( 'active' );
+            try { window.localStorage.setItem( WPSCB_TAB_STORAGE_KEY, tab ); } catch ( e ) {}
+        }
+        function wpscb_initTabs() {
+            if ( ! $page.find( '.wpscb-tabs' ).length ) { return; }
+            let saved = null;
+            try { saved = window.localStorage.getItem( WPSCB_TAB_STORAGE_KEY ); } catch ( e ) {}
+            const initial = ( saved && $page.find( '.wpscb-tab[data-tab="' + saved + '"]' ).length ) ? saved : $page.find( '.wpscb-tab' ).first().data( 'tab' );
+            wpscb_activateTab( initial );
+            $page.on( 'click', '.wpscb-tab', function() {
+                wpscb_activateTab( $( this ).data( 'tab' ) );
+            } );
+        }
+
         // Range value display
         $page.on( 'input', '.wpscb-range', function() {
             $( this ).next( '.wpscb-range-value' ).text( $( this ).val() );
@@ -1162,6 +1179,7 @@
         // Initialize conditionals
         wpscb_updateConditionals();
         wpscb_updatePickerHints();
+        wpscb_initTabs();
 
         // Initialize live preview
         if ( $livePreview.length ) {

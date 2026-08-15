@@ -33,19 +33,19 @@ input#wpscb-search {
   gap: 12px;
   flex-wrap: wrap;
 }
-.wpscb-table-wrapper { margin-top:20px; overflow-x:auto; }
-.wpscb-table { width:100%; min-width:520px; border-collapse: collapse; background:#fff; border:1px solid #e0e4e8; border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,.06); }
-.wpscb-table thead { background:#f6f8fa; }
-.wpscb-table th, .wpscb-table td { padding:12px 14px; text-align:left; }
-.wpscb-table th { font-weight:600; font-size:13px; letter-spacing:.5px; color:#374151; }
-.wpscb-table tbody tr { border-top:1px solid #edf0f2; transition:background .15s ease; }
-.wpscb-table tbody tr:hover { background:#f9fbfc; }
-.wpscb-table tbody td:first-child { font-weight:600; color:#1e293b; }
+.wpscb-header-heading { display:flex; align-items:center; gap:8px; font-size:14px; color:#475569; }
+.wpscb-contact-count { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 6px; border-radius:999px; background:#ede4fe; color:#300b73; font-size:12px; font-weight:700; }
+.wpscb-contact-grid { margin-top:20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; }
+.wpscb-contact-card { background:#fff; border:1px solid #e0e4e8; border-radius:14px; padding:16px; transition:box-shadow .15s ease, border-color .15s ease; }
+.wpscb-contact-card:hover { box-shadow:0 8px 20px rgba(0,0,0,.08); border-color:#d8dce3; }
+.wpscb-contact-card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+.wpscb-contact-card-name { font-size:15px; font-weight:600; color:#1e293b; margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.wpscb-contact-card-value { font-size:12.5px; color:#64748b; margin-top:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .wpscb-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; background:#e2e8f0; display:block; }
 .wpscb-avatar-icon { display:inline-flex; align-items:center; justify-content:center; }
 .wpscb-avatar-icon svg { width:20px; height:20px; }
-.wpscb-network-tag { display:inline-block; padding:2px 8px; font-size:11px; border-radius:16px; background:#eef2f6; color:#475569; }
-.wpscb-actions { display:flex; gap:6px; }
+.wpscb-network-tag { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; font-size:11px; border-radius:16px; background:#eef2f6; color:#475569; }
+.wpscb-actions { display:flex; gap:6px; flex-shrink:0; }
 .wpscb-btn.icon { padding:6px 8px; }
 .wpscb-actions .wpscb-delete.outline:hover { background:#fef2f2; border-color:#fca5a5; color:#dc2626; }
 .wpscb-btn[data-variant="outline"] { background:#fff; color:#1e293b; border:1px solid #cbd5e1; }
@@ -151,11 +151,9 @@ body.rtl .wpscb-dropdown { direction:rtl; }
   .wpscb-dropdown { max-width:calc(100vw - 32px); }
 }
 
-/* Table visual refinements & responsive */
-.wpscb-table { background:var(--wpscb-surface); border-color:var(--wpscb-outline); border-radius:18px; box-shadow:var(--wpscb-shadow); }
-.wpscb-table thead { background:var(--wpscb-surface-variant); }
-.wpscb-table tbody tr:hover { background:var(--wpscb-primary-container); }
-.wpscb-network-tag { background:var(--wpscb-secondary-container); color:var(--wpscb-on-secondary-container); padding:4px 10px; border-radius:18px; font-weight:500; display:inline-flex; align-items:center; gap:6px; }
+/* Contact card refinements */
+.wpscb-contact-card { border-color:var(--wpscb-outline); border-radius:16px; box-shadow:var(--wpscb-shadow); }
+.wpscb-network-tag { background:var(--wpscb-secondary-container); color:var(--wpscb-on-secondary-container); padding:4px 10px; border-radius:18px; font-weight:500; }
 .wpscb-media-preview img { width:56px; height:56px; border-radius:12px; border:2px solid var(--wpscb-outline); box-shadow:var(--wpscb-shadow); }
 
 /* Modal surface tweaks */
@@ -183,33 +181,8 @@ body.rtl .wpscb-dropdown { direction:rtl; }
 .wpscb-empty { background:var(--wpscb-primary-container); border-color:var(--wpscb-outline); border-radius:16px; color:var(--wpscb-on-primary-container); font-weight:500; text-align:center; padding:36px 20px; font-size:14px; }
 .wpscb-empty::before { content:"💬"; display:block; font-size:28px; margin-bottom:10px; }
 
-/* Responsive table to cards: reflow columns into a labeled card via grid-area,
-   instead of hiding thead and leaving a headerless 2-column grid. */
-@media (max-width: 640px){
-  .wpscb-table-wrapper { overflow-x:visible; }
-  .wpscb-table { min-width:0; }
-  .wpscb-table thead { display:none; }
-  .wpscb-table, .wpscb-table tbody { display:block; width:100%; }
-  .wpscb-table tbody tr {
-    display:grid;
-    grid-template-columns:44px 1fr auto;
-    grid-template-areas:
-      "photo name actions"
-      "photo value  value"
-      "photo network network";
-    column-gap:12px;
-    row-gap:4px;
-    padding:14px;
-  }
-  .wpscb-table tbody td { display:block; padding:0; }
-  .wpscb-table tbody td:nth-child(1) { grid-area:name; align-self:center; font-size:14.5px; }
-  .wpscb-table tbody td:nth-child(2) { grid-area:value; color:#64748b; font-size:13px; }
-  .wpscb-table tbody td:nth-child(3) { grid-area:network; }
-  .wpscb-table tbody td:nth-child(4) { grid-area:photo; }
-  .wpscb-table tbody td:nth-child(4) .wpscb-avatar,
-  .wpscb-table tbody td:nth-child(4) .wpscb-avatar-icon { width:44px; height:44px; }
-  .wpscb-table tbody td:nth-child(5) { grid-area:actions; align-self:start; display:flex; justify-content:flex-end; }
-}
+/* The contact card grid (auto-fit/minmax above) already reflows to a single
+   full-width column on narrow screens without a breakpoint. */
 
 /* WP notice styles inside plugin area */
 .wpscb-wrap .notice { margin-top: 10px; }
@@ -257,6 +230,16 @@ body.rtl .wpscb-dropdown { direction:rtl; }
 }
 .wpscb-page-subtitle { margin:4px 0 0; font-size:14px; color:#64748b; max-width:640px; line-height:1.6; }
 .wpscb-settings-controls { display:flex; flex-direction:column; gap:20px; min-width:0; }
+
+/* Settings tabs */
+.wpscb-tabs { display:flex; gap:4px; border-bottom:1px solid var(--wpscb-outline); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.wpscb-tab { background:none; border:none; padding:10px 4px; margin:0 14px -1px 0; font-size:14px; font-weight:600; color:#64748b; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s; }
+.wpscb-tab:last-child { margin-right:0; }
+.wpscb-tab:hover { color:#1e293b; }
+.wpscb-tab:focus-visible { outline:2px solid var(--wpscb-primary); outline-offset:2px; border-radius:4px; }
+.wpscb-tab.active { color:var(--wpscb-primary); border-bottom-color:var(--wpscb-primary); }
+.wpscb-tab-panel { display:none; flex-direction:column; gap:20px; }
+.wpscb-tab-panel.active { display:flex; }
 .wpscb-settings-section { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
 .wpscb-settings-section h2 { margin:0 0 16px 0; font-size:16px; font-weight:600; color:#1e293b; border-bottom:1px solid #e5e7eb; padding-bottom:10px; }
 .wpscb-setting-row { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid #f1f5f9; flex-wrap:wrap; }
@@ -362,10 +345,10 @@ body.rtl .wpscb-dropdown { direction:rtl; }
 
 /* Preview pane */
 .wpscb-settings-preview { position:sticky; top:32px; background:#fff; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.04);height: fit-content; }
-.wpscb-preview-header { padding:16px; background:linear-gradient(135deg, #6610f2 0%, #2555ca 100%); color:#fff; }
+.wpscb-preview-header { padding:16px; background:var(--wpscb-primary); color:#fff; }
 .wpscb-preview-header h3 { margin:0; font-size:16px; font-weight:600;color:#fff }
 .wpscb-preview-container { height:700px; background:#f9fafb; position:relative; min-width:400px; overflow:hidden; }
-#wpscb-live-preview { width:100%; height:100%; position:relative; background:linear-gradient(135deg, #ffffff 0%, #8419d424 100%); }
+#wpscb-live-preview { width:100%; height:100%; position:relative; background:var(--wpscb-surface-variant); }
 .wpscb-preview-loading { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#6b7280; font-size:14px; }
 .wpscb-preview-loading::before { content:''; display:inline-block; width:20px; height:20px; border:2px solid #e5e7eb; border-top-color:#6610f2; border-radius:50%; animation:spin 1s linear infinite; margin-right:8px; vertical-align:text-bottom; }
 @keyframes spin { to { transform:rotate(360deg); } }

@@ -110,18 +110,10 @@ class WPSCB_Admin {
                 'settingsSaved'   => esc_html__( 'Settings saved.', 'social-chat-buttons' ),
                 /* translators: Error message shown when saving settings fails */
                 'errorSavingSettings' => esc_html__( 'Error saving settings', 'social-chat-buttons' ),
-                /* translators: Message shown in contacts table when no contacts have been added yet */
+                /* translators: Message shown in contacts list when no contacts have been added yet */
                 'emptyMessage'    => esc_html__( 'No contacts added. Click the add button.', 'social-chat-buttons' ),
-                /* translators: Table column header for contact name */
-                'tableHeaderName' => esc_html__( 'Name', 'social-chat-buttons' ),
-                /* translators: Table column header for contact value (username, phone number, or other identifier) */
-                'tableHeaderValue' => esc_html__( 'Username / Number / Value', 'social-chat-buttons' ),
-                /* translators: Table column header for social network type */
-                'tableHeaderNetwork' => esc_html__( 'Network', 'social-chat-buttons' ),
-                /* translators: Table column header for contact photo/avatar */
-                'tableHeaderPhoto' => esc_html__( 'Photo', 'social-chat-buttons' ),
-                /* translators: Table column header for action buttons (edit, delete) */
-                'tableHeaderActions' => esc_html__( 'Actions', 'social-chat-buttons' ),
+                /* translators: Label next to the contact count in the Panel page header, e.g. "3 Contacts" */
+                'contactsHeading' => esc_html__( 'Contacts', 'social-chat-buttons' ),
                 /* translators: Label for email address input field when network requires an email */
                 'labelEmail'      => esc_html__( 'Email', 'social-chat-buttons' ),
                 /* translators: Label for ID input field when network requires a numeric ID */
@@ -233,16 +225,125 @@ class WPSCB_Admin {
         echo '</div>';
     }
 
+    /**
+     * Registry of "Show Button On" scopes for the Display Rules setting.
+     *
+     * To add a new scope later (e.g. tags, a post type, a user role), add one
+     * entry here with an `items` source; the <select> option and the picker
+     * markup are both generated from this list, and the front-end scope
+     * check in class-wpscb-frontend.php is the only other place to extend.
+     *
+     * @param array $adv Advanced settings array.
+     * @return array
+     */
+    private function wpscb_get_display_scope_choices( $adv ) {
+        return array(
+            'all' => array(
+                'label' => esc_html__( 'All Pages (default)', 'social-chat-buttons' ),
+            ),
+            'pages' => array(
+                'label'        => esc_html__( 'Specific Pages', 'social-chat-buttons' ),
+                'picker_label' => esc_html__( 'Select Pages', 'social-chat-buttons' ),
+                'field'        => 'display_page_ids',
+                'selected'     => array_map( 'absint', $adv['display_page_ids'] ),
+                'items'        => $this->wpscb_pages_as_picker_items(),
+                'search'       => esc_attr__( 'Search pages…', 'social-chat-buttons' ),
+                'empty'        => esc_html__( 'No pages found on this site yet.', 'social-chat-buttons' ),
+                'hint'         => esc_html__( 'No pages selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ),
+            ),
+            'categories' => array(
+                'label'        => esc_html__( 'Specific Categories', 'social-chat-buttons' ),
+                'picker_label' => esc_html__( 'Select Categories', 'social-chat-buttons' ),
+                'field'        => 'display_category_ids',
+                'selected'     => array_map( 'absint', $adv['display_category_ids'] ),
+                'items'        => $this->wpscb_categories_as_picker_items(),
+                'search'       => esc_attr__( 'Search categories…', 'social-chat-buttons' ),
+                'empty'        => esc_html__( 'No categories found on this site yet.', 'social-chat-buttons' ),
+                'hint'         => esc_html__( 'No categories selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ),
+            ),
+        );
+    }
+
+    /**
+     * @return array List of array( id, label, count ) for every WP Page.
+     */
+    private function wpscb_pages_as_picker_items() {
+        $items = array();
+        foreach ( get_pages( array( 'sort_column' => 'post_title', 'sort_order' => 'ASC' ) ) as $page ) {
+            $items[] = array(
+                'id'    => (int) $page->ID,
+                'label' => $page->post_title ? $page->post_title : __( '(no title)', 'social-chat-buttons' ),
+                'count' => null,
+            );
+        }
+        return $items;
+    }
+
+    /**
+     * @return array List of array( id, label, count ) for every category.
+     */
+    private function wpscb_categories_as_picker_items() {
+        $items = array();
+        foreach ( get_categories( array( 'hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC' ) ) as $cat ) {
+            $items[] = array(
+                'id'    => (int) $cat->term_id,
+                'label' => $cat->name,
+                'count' => (int) $cat->count,
+            );
+        }
+        return $items;
+    }
+
+    /**
+     * Render one scope's picker row (search + checklist), or nothing beyond
+     * the row wrapper if that scope (like 'all') has no `items` key.
+     *
+     * @param string $scope_key Scope slug, e.g. 'pages'.
+     * @param array  $def       One entry from wpscb_get_display_scope_choices().
+     */
+    private function wpscb_render_scope_picker( $scope_key, $def ) {
+        if ( ! isset( $def['field'] ) ) {
+            return;
+        }
+        ?>
+        <div class="wpscb-setting-row wpscb-display-scope-conditional wpscb-picker-row" data-show-if-scope="<?php echo esc_attr( $scope_key ); ?>">
+            <label><?php echo esc_html( $def['picker_label'] ); ?></label>
+            <?php if ( empty( $def['items'] ) ) : ?>
+                <p class="wpscb-picker-empty"><?php echo esc_html( $def['empty'] ); ?></p>
+            <?php else : ?>
+                <input type="search" class="wpscb-picker-search" data-target="<?php echo esc_attr( $def['field'] ); ?>" placeholder="<?php echo esc_attr( $def['search'] ); ?>">
+                <div class="wpscb-picker-list" data-picker="<?php echo esc_attr( $def['field'] ); ?>">
+                    <?php foreach ( $def['items'] as $item ) : ?>
+                        <label class="wpscb-picker-item">
+                            <input type="checkbox" name="<?php echo esc_attr( $def['field'] ); ?>[]" value="<?php echo esc_attr( $item['id'] ); ?>" <?php checked( in_array( (int) $item['id'], $def['selected'], true ) ); ?>>
+                            <span><?php echo esc_html( $item['label'] ); ?><?php if ( null !== $item['count'] ) : ?><span class="wpscb-picker-count"><?php echo esc_html( $item['count'] ); ?></span><?php endif; ?></span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+                <p class="wpscb-picker-hint"><?php echo esc_html( $def['hint'] ); ?></p>
+            <?php endif; ?>
+        </div>
+        <?php
+    }
+
     public function wpscb_render_settings_page() {
         if ( ! current_user_can( 'manage_options' ) ) { return; }
         $settings = $this->core->wpscb_get_settings();
         $adv = $this->core->wpscb_get_advanced_settings();
+        $scope_choices = $this->wpscb_get_display_scope_choices( $adv );
         ?>
         <div class="wrap wpscb-wrap wpscb-settings-page">
             <h1><?php esc_html_e( 'Settings', 'social-chat-buttons' ); ?></h1>
             <p class="wpscb-page-subtitle"><?php esc_html_e( 'Configure how the chat widget looks, behaves, and where it appears on your site.', 'social-chat-buttons' ); ?></p>
             <div class="wpscb-settings-layout">
                 <div class="wpscb-settings-controls">
+                    <div class="wpscb-tabs" role="tablist">
+                        <button type="button" class="wpscb-tab" data-tab="general" role="tab" aria-selected="false" id="wpscb-tab-general" aria-controls="wpscb-panel-general"><?php esc_html_e( 'General', 'social-chat-buttons' ); ?></button>
+                        <button type="button" class="wpscb-tab" data-tab="appearance" role="tab" aria-selected="false" id="wpscb-tab-appearance" aria-controls="wpscb-panel-appearance"><?php esc_html_e( 'Appearance', 'social-chat-buttons' ); ?></button>
+                        <button type="button" class="wpscb-tab" data-tab="advanced" role="tab" aria-selected="false" id="wpscb-tab-advanced" aria-controls="wpscb-panel-advanced"><?php esc_html_e( 'Advanced', 'social-chat-buttons' ); ?></button>
+                    </div>
+
+                    <div class="wpscb-tab-panel" data-tab-panel="general" id="wpscb-panel-general" role="tabpanel" aria-labelledby="wpscb-tab-general">
                     <!-- Basic Settings -->
                     <div class="wpscb-settings-section">
                         <h2><?php esc_html_e( 'Basic Settings', 'social-chat-buttons' ); ?></h2>
@@ -268,52 +369,21 @@ class WPSCB_Admin {
                         <div class="wpscb-setting-row">
                             <label><?php esc_html_e( 'Show Button On', 'social-chat-buttons' ); ?></label>
                             <select name="display_scope" class="wpscb-select">
-                                <option value="all" <?php selected( 'all', $adv['display_scope'] ); ?>><?php esc_html_e( 'All Pages (default)', 'social-chat-buttons' ); ?></option>
-                                <option value="pages" <?php selected( 'pages', $adv['display_scope'] ); ?>><?php esc_html_e( 'Specific Pages', 'social-chat-buttons' ); ?></option>
-                                <option value="categories" <?php selected( 'categories', $adv['display_scope'] ); ?>><?php esc_html_e( 'Specific Categories', 'social-chat-buttons' ); ?></option>
+                                <?php foreach ( $scope_choices as $wpscb_scope_key => $wpscb_scope_def ) : ?>
+                                    <option value="<?php echo esc_attr( $wpscb_scope_key ); ?>" <?php selected( $wpscb_scope_key, $adv['display_scope'] ); ?>><?php echo esc_html( $wpscb_scope_def['label'] ); ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <p class="wpscb-setting-description"><?php esc_html_e( 'Choose where the chat button appears. It shows on every page by default.', 'social-chat-buttons' ); ?></p>
-
-                        <div class="wpscb-setting-row wpscb-display-scope-conditional wpscb-picker-row" data-show-if-scope="pages">
-                            <label><?php esc_html_e( 'Select Pages', 'social-chat-buttons' ); ?></label>
-                            <?php $wpscb_all_pages = get_pages( array( 'sort_column' => 'post_title', 'sort_order' => 'ASC' ) ); ?>
-                            <?php if ( empty( $wpscb_all_pages ) ) : ?>
-                                <p class="wpscb-picker-empty"><?php esc_html_e( 'No pages found on this site yet.', 'social-chat-buttons' ); ?></p>
-                            <?php else : ?>
-                                <input type="search" class="wpscb-picker-search" data-target="display_page_ids" placeholder="<?php esc_attr_e( 'Search pages…', 'social-chat-buttons' ); ?>">
-                                <div class="wpscb-picker-list" data-picker="display_page_ids">
-                                    <?php foreach ( $wpscb_all_pages as $wpscb_page ) : ?>
-                                        <label class="wpscb-picker-item">
-                                            <input type="checkbox" name="display_page_ids[]" value="<?php echo esc_attr( $wpscb_page->ID ); ?>" <?php checked( in_array( (int) $wpscb_page->ID, array_map( 'absint', $adv['display_page_ids'] ), true ) ); ?>>
-                                            <span><?php echo esc_html( $wpscb_page->post_title ? $wpscb_page->post_title : __( '(no title)', 'social-chat-buttons' ) ); ?></span>
-                                        </label>
-                                    <?php endforeach; ?>
-                                </div>
-                                <p class="wpscb-picker-hint"><?php esc_html_e( 'No pages selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ); ?></p>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="wpscb-setting-row wpscb-display-scope-conditional wpscb-picker-row" data-show-if-scope="categories">
-                            <label><?php esc_html_e( 'Select Categories', 'social-chat-buttons' ); ?></label>
-                            <?php $wpscb_all_cats = get_categories( array( 'hide_empty' => false, 'orderby' => 'name', 'order' => 'ASC' ) ); ?>
-                            <?php if ( empty( $wpscb_all_cats ) ) : ?>
-                                <p class="wpscb-picker-empty"><?php esc_html_e( 'No categories found on this site yet.', 'social-chat-buttons' ); ?></p>
-                            <?php else : ?>
-                                <input type="search" class="wpscb-picker-search" data-target="display_category_ids" placeholder="<?php esc_attr_e( 'Search categories…', 'social-chat-buttons' ); ?>">
-                                <div class="wpscb-picker-list" data-picker="display_category_ids">
-                                    <?php foreach ( $wpscb_all_cats as $wpscb_cat ) : ?>
-                                        <label class="wpscb-picker-item">
-                                            <input type="checkbox" name="display_category_ids[]" value="<?php echo esc_attr( $wpscb_cat->term_id ); ?>" <?php checked( in_array( (int) $wpscb_cat->term_id, array_map( 'absint', $adv['display_category_ids'] ), true ) ); ?>>
-                                            <span><?php echo esc_html( $wpscb_cat->name ); ?><span class="wpscb-picker-count"><?php echo esc_html( $wpscb_cat->count ); ?></span></span>
-                                        </label>
-                                    <?php endforeach; ?>
-                                </div>
-                                <p class="wpscb-picker-hint"><?php esc_html_e( 'No categories selected yet — the button stays hidden until you pick at least one.', 'social-chat-buttons' ); ?></p>
-                            <?php endif; ?>
-                        </div>
+                        <?php
+                        foreach ( $scope_choices as $wpscb_scope_key => $wpscb_scope_def ) {
+                            $this->wpscb_render_scope_picker( $wpscb_scope_key, $wpscb_scope_def );
+                        }
+                        ?>
+                    </div>
                     </div>
 
+                    <div class="wpscb-tab-panel" data-tab-panel="appearance" id="wpscb-panel-appearance" role="tabpanel" aria-labelledby="wpscb-tab-appearance">
                     <!-- Display Mode -->
                     <div class="wpscb-settings-section">
                         <h2><?php esc_html_e( 'Display Mode', 'social-chat-buttons' ); ?></h2>
@@ -442,7 +512,9 @@ class WPSCB_Admin {
                             </label>
                         </div>
                     </div>
+                    </div>
 
+                    <div class="wpscb-tab-panel" data-tab-panel="advanced" id="wpscb-panel-advanced" role="tabpanel" aria-labelledby="wpscb-tab-advanced">
                     <!-- Advanced Options -->
                     <div class="wpscb-settings-section">
                         <h2><?php esc_html_e( 'Advanced Options', 'social-chat-buttons' ); ?></h2>
@@ -486,6 +558,7 @@ class WPSCB_Admin {
                                 <?php esc_html_e( 'Removes the small credit link and site schema this plugin adds by default.', 'social-chat-buttons' ); ?>
                             </p>
                         </div>
+                    </div>
                     </div>
 
                     <div class="wpscb-settings-save-indicator" style="display:none;">
