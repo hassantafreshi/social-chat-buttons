@@ -89,6 +89,15 @@
         return WPSCB.mediaBase ? (WPSCB.mediaBase + id) : (WPSCB.uploadsBase ? (WPSCB.uploadsBase + '/' + id) : '');
     }
 
+    // Shared markup for the circular photo picker preview in the add/edit contact modal.
+    function wpscb_mediaPreviewInnerHtml(url){
+        if(url){
+            return '<img src="'+wpscb_escapeHtml(url)+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media" aria-label="'+wpscb_escapeHtml(WPSCB.i18n.remove)+'">&times;</button>';
+        }
+        return '<span class="wpscb-media-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8-3h-3.2l-1.4-1.6A2 2 0 0 0 13.9 3h-3.8a2 2 0 0 0-1.5.7L7.2 6H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2Z"/></svg></span>'
+            + '<span class="wpscb-media-empty-label">'+wpscb_escapeHtml(WPSCB.i18n.noImageSelected)+'</span>';
+    }
+
         function wpscb_openModal(editIndex){
         if(wpscb_state.modalOpen) return;
         wpscb_state.modalOpen = true;
@@ -108,7 +117,7 @@
                 <p id="wpscb-modal-desc" style="margin-top:0;color:#475569;font-size:13px">${wpscb_escapeHtml( WPSCB.i18n.contactModalHelp )}</p>
                             <div class="wpscb-field">
                                 <label>${WPSCB.i18n.name}</label>
-                                <input type="text" id="wpscb-name" value="${existing.name}" />
+                                <input type="text" id="wpscb-name" value="${wpscb_escapeHtml(existing.name)}" />
                             </div>
               <div class="wpscb-field">
                      <label>${WPSCB.i18n.network}</label>
@@ -116,17 +125,17 @@
               </div>
                             <div class="wpscb-field">
                                 <label id="wpscb-value-label"></label>
-                                                                <input type="text" id="wpscb-value" value="${existing.value}" />
+                                                                <input type="text" id="wpscb-value" value="${wpscb_escapeHtml(existing.value)}" />
                             </div>
                                                         <div class="wpscb-field">
                                                                 <label>${WPSCB.i18n.message}</label>
-                                                                <input type="text" id="wpscb-message" value="${existing.message || WPSCB.i18n.defaultMessage}" />
+                                                                <input type="text" id="wpscb-message" value="${wpscb_escapeHtml(existing.message || WPSCB.i18n.defaultMessage)}" />
                                                         </div>
                             <div class="wpscb-field">
                                 <label>${WPSCB.i18n.photo}</label>
-                                <div><button type="button" class="wpscb-btn outline" id="wpscb-pick-media">${WPSCB.i18n.chooseUpload}</button></div>
-                                                <div class="wpscb-media-preview" id="wpscb-media-preview">${(existing.photo_url||existing.photo)?('<img src="'+wpscb_escapeHtml(existing.photo_url||wpscb_getAttachmentUrl(existing.photo))+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+WPSCB.i18n.remove+'</button>'):('<span style="font-size:12px;color:#64748b">'+WPSCB.i18n.noImageSelected+'</span>')}</div>
-                                <input type="hidden" id="wpscb-photo" value="${existing.photo}" />
+                                <div class="wpscb-media-preview" id="wpscb-media-preview">${wpscb_mediaPreviewInnerHtml(existing.photo_url || (existing.photo ? wpscb_getAttachmentUrl(existing.photo) : ''))}</div>
+                                <button type="button" class="wpscb-btn outline" id="wpscb-pick-media">${WPSCB.i18n.chooseUpload}</button>
+                                <input type="hidden" id="wpscb-photo" value="${wpscb_escapeHtml(existing.photo)}" />
                             </div>
                             <div class="wpscb-field">
                                 <button type="button" class="wpscb-btn outline wpscb-accordion-toggle" id="wpscb-availability-toggle">
@@ -170,7 +179,7 @@
         wpscb_state.modal.on('click','#wpscb-cancel', wpscb_closeModal);
                 wpscb_state.modal.on('click','#wpscb-save', wpscb_saveContact);
                 wpscb_state.modal.on('click','#wpscb-pick-media', wpscb_openMediaFrame);
-                wpscb_state.modal.on('click','#wpscb-remove-media', function(){ $('#wpscb-photo').val('0'); $('#wpscb-media-preview').html('<span style="font-size:12px;color:#64748b">'+wpscb_escapeHtml(WPSCB.i18n.noImageSelected)+'</span>'); });
+                wpscb_state.modal.on('click','#wpscb-remove-media', function(){ $('#wpscb-photo').val('0'); $('#wpscb-media-preview').html(wpscb_mediaPreviewInnerHtml('')); });
         // Accordion toggle
         wpscb_state.modal.on('click','#wpscb-availability-toggle', function(){
             const $panel = $('#wpscb-availability-panel');
@@ -513,7 +522,7 @@
         mediaFrame.on('select', function(){
             const attachment = mediaFrame.state().get('selection').first().toJSON();
             $('#wpscb-photo').val(attachment.id);
-            $('#wpscb-media-preview').html('<img src="'+wpscb_escapeHtml(attachment.url)+'" alt="" /><button type="button" class="wpscb-media-remove" id="wpscb-remove-media">'+wpscb_escapeHtml(WPSCB.i18n.remove)+'</button>');
+            $('#wpscb-media-preview').html(wpscb_mediaPreviewInnerHtml(attachment.url));
         });
         mediaFrame.open();
     }
